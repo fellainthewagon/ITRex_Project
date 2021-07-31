@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/doctor.css" />
+    <title>Management</title>
+  </head>
+  <body>
+    <div class="title">
+      <h2><a href="./doctor.html">Cabinet</a></h2>
+    </div>
+    <div class="line"></div>
+
+    <section>
+      <div class="current_patient">
+        <h5>Current patient:</h5>
+        <div class="current-patient">
+          <!-- <p>Fella</p> -->
+        </div>
+      </div>
+      <div class="next_patient">
+        <h5>Next patient</h5>
+        <button id="next-btn">Next</button>
+      </div>
+    </section>
+    <div class="line"></div>
+
+    <section>
+      <h5>Set appointment resolution</h5>
+      <div>
+        <form class="add-resolution">
+          <textarea
+            id="resolution"
+            name="resolution"
+            rows="3"
+            cols="30"
+            required
+          ></textarea>
+          <button>Add</button>
+        </form>
+      </div>
+    </section>
+    <div class="line"></div>
+
+    <section>
+      <div>
+        <h5>Show resolution</h5>
+        <form class="find-resolution">
+          <input
+            id="find-patient"
+            type="text"
+            name="patient"
+            placeholder="patient"
+            required
+          />
+          <button>Show</button>
+        </form>
+      </div>
+      <div class="resolution-body">
+        <div>
+          <h5>Resolution:</h5>
+          <div class="show-resolution"></div>
+        </div>
+        <div>
+          <button id="delete-btn">Delete</button>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="../doctor.js"></script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: antiquewhite;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+
+.title {
+  margin: 2rem;
+}
+
+section {
+  max-width: 1200px;
+  height: 35vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+h5 {
+  margin: 1rem 0;
+}
+.resolution {
+  max-width: 35vw;
+}
+button {
+  width: 5rem;
+  font-size: 1.3rem;
+  padding: 2px;
+}
+input {
+  font-size: 1rem;
+  min-height: 2rem;
+  width: 20rem;
+  padding-left: 3px;
+}
+.line {
+  margin: 2rem;
+  border-bottom: 1px solid;
+}
+p {
+  padding: 1rem;
+}
