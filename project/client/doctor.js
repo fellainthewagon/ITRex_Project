@@ -4,7 +4,7 @@ import {
   addResolution,
   findResolution,
   deletePatient,
-} from "./callbacks/callbacks.js";
+} from "./handlers/handlers.js";
 
 const nextPatientBtn = document.querySelector("#next-btn");
 const addResolutionForm = document.querySelector(".add-resolution");

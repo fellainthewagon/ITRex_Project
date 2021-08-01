@@ -10,14 +10,16 @@ body {
   font-size: 1.5rem;
   font-weight: 300;
 }
-
-.title {
-  margin: 2rem;
+textarea {
+  font-size: 1.5rem;
 }
-
+a {
+  text-decoration: none;
+  color: rgb(76, 76, 76);
+}
 section {
   max-width: 1200px;
-  height: 35vh;
+  height: 20vh;
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
@@ -25,9 +27,7 @@ section {
 h5 {
   margin: 1rem 0;
 }
-.resolution {
-  max-width: 35vw;
-}
+
 button {
   width: 5rem;
   font-size: 1.3rem;
@@ -39,10 +39,32 @@ input {
   width: 20rem;
   padding-left: 3px;
 }
+p {
+  padding: 1rem;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .line {
   margin: 2rem;
   border-bottom: 1px solid;
 }
-p {
-  padding: 1rem;
+.management,
+.queue {
+  font-size: 0.8rem;
+  margin-right: 2rem;
+}
+.resolution-body {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  width: 40vw;
+}
+.title {
+  margin: 2rem;
+}
+.resolution {
+  max-width: 35vw;
 }

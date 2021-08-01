@@ -1,5 +1,5 @@
 import storage from "../classes/Storage.js";
-import stack from "../classes/Stack.js";
+import queue from "../classes/Queue.js";
 
 const showCurrentPatient = document.querySelector(".current-patient");
 const resolutionInput = document.querySelector("#resolution");
@@ -8,7 +8,15 @@ const showResolution = document.querySelector(".show-resolution");
 const addPatientInput = document.querySelector("#add-patient");
 
 let patientName;
-let currentPatient = stack.get();
+let currentPatient = queue.next();
+
+//   ======================================================
+
+export function setupLastPatient() {
+  showCurrentPatient.innerText = queue.get();
+}
+
+//   ======================================================
 
 export function setupCurrentPatient() {
   showCurrentPatient.innerText = currentPatient;
@@ -17,7 +25,7 @@ export function setupCurrentPatient() {
 //   ======================================================
 
 export function getNextPatient() {
-  currentPatient = stack.get();
+  currentPatient = queue.next();
   showCurrentPatient.innerText = currentPatient;
 }
 
@@ -52,7 +60,7 @@ export function deletePatient() {
 
 export function addPatient(e) {
   e.preventDefault();
-  stack.add(addPatientInput.value.toLowerCase().trim());
+  queue.add(addPatientInput.value.toLowerCase().trim());
   showCurrentPatient.innerText = addPatientInput.value;
   addPatientInput.value = "";
 }
