@@ -5,12 +5,12 @@ class PersonsService {
     this.dataService = dataService;
   }
 
-  async create(person) {
-    await this.dataService.pushToQueue(person);
+  async getFirst() {
+    return this.dataService.getFirst();
   }
 
-  async getOne(name) {
-    return this.dataService.findByName(name);
+  async create(person) {
+    await this.dataService.pushToQueue(person);
   }
 }
 

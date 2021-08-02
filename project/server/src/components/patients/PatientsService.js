@@ -6,7 +6,7 @@ class PatientsService {
   }
 
   async getNextPatient() {
-    return this.dataService.shiftFromQueue();
+    return this.dataService.getNext();
   }
 
   async addPatient(value) {

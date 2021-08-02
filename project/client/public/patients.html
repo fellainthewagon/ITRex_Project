@@ -15,7 +15,7 @@
   <body>
     <header>
       <div class="title">
-        <h2><a href="./doctor.html">Cabinet</a></h2>
+        <h2><a href="./patients.html">Cabinet</a></h2>
       </div>
       <div class="line"></div>
       <div class="queue">
@@ -38,10 +38,10 @@
     <section>
       <h5>Set appointment resolution</h5>
       <div>
-        <form class="add-resolution">
+        <form class="add-resolution" method="POST">
           <textarea
             id="resolution"
-            name="resolution"
+            name="patient"
             rows="3"
             cols="30"
             required
@@ -55,11 +55,11 @@
     <section>
       <div>
         <h5>Show resolution</h5>
-        <form class="find-resolution">
+        <form class="find-resolution" method="GET">
           <input
             id="find-patient"
             type="text"
-            name="patient"
+            name="name"
             placeholder="patient"
             required
           />
