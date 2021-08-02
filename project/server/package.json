@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Doctor's cabinete",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "test": ""
+  },
+  "keywords": [],
+  "author": "Rylkov Andrey <fellainthewagon@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "nodemon": "^2.0.12"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "airbnb-base",
+      "prettier",
+      "plugin:import/recommended"
+    ],
+    "env": {
+      "node": true
+    }
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
