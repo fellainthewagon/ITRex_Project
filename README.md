@@ -1,13 +1,29 @@
 # Project "Doctors cabinete"
 
+run
+
+```sh
+cd server
+npm run dev
+cd client
+connect to localhost:5500
+```
+
+test
+
+```sh
+cd server
+npm run test
+```
+
 A sigle Express-based app with two unrelated functionality:
 
-1. In-memory stack (LIFO)
+1. In-memory stack (FIFO)
 2. In-memory key-value store with TTL
 
-#### In-memory stack (LIFO):
+#### In-memory stack (FIFO):
 
-The first piece of functionality is an in-memory stack (LIFO). This portion of the application should have two endpoints:
+The first piece of functionality is an in-memory stack. This portion of the application should have two endpoints:
 
 - an endpoint to add an item to the stack
 - an endpoint to return the top item of the stack
