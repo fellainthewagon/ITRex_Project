@@ -1,5 +1,12 @@
 const patientsService = require("./PatientsService.js");
 
+class StorageError extends Error {
+  constructor(message) {
+    error.message = message;
+    error.status;
+  }
+}
+
 class PatientsController {
   async getNextPatient(req, res, next) {
     try {
@@ -28,7 +35,7 @@ class PatientsController {
       if (patient) {
         return res.json(patient);
       }
-      return res.json({ message: "Patient not found" });
+      return res.status(404).send({ message: "Patient not found" });
     } catch (error) {
       return next(error);
     }

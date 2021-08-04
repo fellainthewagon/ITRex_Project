@@ -4,7 +4,7 @@ const dataService = require("../src/data/DataService");
 
 //clearQueue
 beforeEach(() => {
-  dataService.destroy();
+  dataService.destroyQueue();
 });
 
 function addPersonToQueue(person) {
@@ -25,7 +25,7 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
   it("after add 'vincent' to the queue, last person in queue is 'vincent'", async () => {
     await addPersonToQueue({ name: "mia" });
     await addPersonToQueue({ name: "vincent" });
-    const persons = await dataService.getAll();
+    const persons = await dataService.getAllpersons();
     const lastPerson = persons[persons.length - 1];
     expect(lastPerson.name).toBe("vincent");
   });
@@ -33,7 +33,7 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
   it("after add 'vincent' to queue, last person is not to be 'mia'", async () => {
     await addPersonToQueue({ name: "mia" });
     await addPersonToQueue({ name: "vincent" });
-    const persons = await dataService.getAll();
+    const persons = await dataService.getAllpersons();
     const lastPerson = persons[persons.length - 1];
     expect(lastPerson.name).not.toBe("mia");
   });
@@ -42,7 +42,7 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
     await addPersonToQueue({ name: "mia" });
     await addPersonToQueue({ name: "vincent" });
     await addPersonToQueue({ name: "jules" });
-    const persons = await dataService.getAll();
+    const persons = await dataService.getAllpersons();
     expect(persons.length).toBe(3);
   });
 
@@ -50,7 +50,7 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
   it("after add 2 persons with the same name, queue length to be equal is 1", async () => {
     await addPersonToQueue({ name: "mia" });
     await addPersonToQueue({ name: "mia" });
-    const persons = await dataService.getAll();
+    const persons = await dataService.getAllpersons();
     expect(persons.length).toBe(1);
   });
 });
@@ -90,7 +90,7 @@ describe("FIFO: get from queue functionality ('next' button)", () => {
     await addPersonToQueue({ name: "vincent" });
     await addPersonToQueue({ name: "jules" });
     await getPersonFromQueue();
-    const persons = await dataService.getAll();
+    const persons = await dataService.getAllpersons();
     expect(persons.length).toBe(2);
   });
 });
@@ -114,7 +114,7 @@ describe("FIFO: get first person for reloading page (without deleting)", () => {
     await addPersonToQueue({ name: "mia" });
     await addPersonToQueue({ name: "vincent" });
     const res = await getFirstPersonFromQueue();
-    const persons = await dataService.getAll();
+    const persons = await dataService.getAllpersons();
     expect(res.body).toStrictEqual({ name: "mia" });
     expect(persons[0]).toStrictEqual({ name: "mia" });
     expect(persons.length).toBe(2);

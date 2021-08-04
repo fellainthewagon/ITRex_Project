@@ -4,27 +4,38 @@ class StorageService {
   }
 
   async addResolution(value) {
-    const response = await fetch(this.url + "patients/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(value),
-    });
-    return response.json();
+    try {
+      const response = await fetch(this.url + "patients/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(value),
+      });
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async findResolution(name) {
-    const response = await fetch(this.url + "patients/" + name);
-    return response.json();
+    try {
+      const response = await fetch(this.url + "patients/" + name);
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async deleteResolution(name) {
-    const response = await fetch(this.url + "patients/" + name, {
-      method: "DELETE",
-    });
-
-    return response.json();
+    try {
+      const response = await fetch(this.url + "patients/" + name, {
+        method: "DELETE",
+      });
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

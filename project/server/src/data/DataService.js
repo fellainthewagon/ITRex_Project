@@ -66,12 +66,20 @@ class DataService {
   }
 
   // create for testing
-  async getAll() {
+  async getAllpersons() {
     return queue;
   }
 
-  async destroy() {
+  async destroyQueue() {
     queue = [];
+  }
+
+  async getAllpatients() {
+    return storage;
+  }
+
+  async destroyStorage() {
+    storage = [];
   }
 
   // async #getData(path) {

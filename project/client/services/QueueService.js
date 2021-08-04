@@ -4,23 +4,35 @@ class QueueService {
   }
 
   async getFirst() {
-    const response = await fetch(this.url + "queue/first");
-    return response.json();
+    try {
+      const response = await fetch(this.url + "queue/first");
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async add(value) {
-    await fetch(this.url + "queue/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(value),
-    });
+    try {
+      await fetch(this.url + "queue/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(value),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async next() {
-    const response = await fetch(this.url + "patients/next");
-    return await response.json();
+    try {
+      const response = await fetch(this.url + "patients/next");
+      return await response.json();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
