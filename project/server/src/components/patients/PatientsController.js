@@ -1,12 +1,5 @@
 const patientsService = require("./PatientsService.js");
 
-class StorageError extends Error {
-  constructor(message) {
-    error.message = message;
-    error.status;
-  }
-}
-
 class PatientsController {
   async getNextPatient(req, res, next) {
     try {
@@ -44,7 +37,7 @@ class PatientsController {
   async deletePatient(req, res, next) {
     try {
       await patientsService.deletePatient(req.params.name);
-      return res.json({ message: "patient successfully deleted" });
+      return res.json({ message: "Patient successfully deleted" });
     } catch (error) {
       return next(error);
     }

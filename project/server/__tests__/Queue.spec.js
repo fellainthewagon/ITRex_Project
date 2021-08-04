@@ -11,6 +11,10 @@ function addPersonToQueue(person) {
   return request(app).post("/queue").send(person);
 }
 
+/**
+ * FIFO: ADD
+ */
+
 describe("FIFO: add to queue functionality ('add' button)", () => {
   it("returns 200 OK when POST request is done", async () => {
     const res = await addPersonToQueue({ name: "mia" });
@@ -54,6 +58,10 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
     expect(persons.length).toBe(1);
   });
 });
+
+/**
+ * FIFO: GET
+ */
 
 describe("FIFO: get from queue functionality ('next' button)", () => {
   function getPersonFromQueue() {
