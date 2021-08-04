@@ -1,4 +1,4 @@
-import dataService from "../../data/DataService.js";
+const dataService = require("../../data/DataService");
 
 class PersonsService {
   constructor() {
@@ -14,4 +14,4 @@ class PersonsService {
   }
 }
 
-export default new PersonsService();
+module.exports = new PersonsService();

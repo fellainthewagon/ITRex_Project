@@ -1,7 +1,7 @@
-import { promises as fs } from "fs";
+// import { promises as fs } from "fs";
 
-import path from "path";
-import { fileURLToPath } from "url";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
 let storage = [
   { name: "butch", resolution: "broken nose, a lot of blood on his face" },
@@ -16,13 +16,13 @@ let queue = [
   { name: "zed" },
 ];
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const pathS = path.join(__dirname, "storage.json");
-const pathQ = path.join(__dirname, "queue.json");
+// const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// const pathS = path.join(__dirname, "storage.json");
+// const pathQ = path.join(__dirname, "queue.json");
 
 class DataService {
   constructor() {
-    this.fs = fs;
+    // this.fs = fs;
   }
 
   async getFirst() {
@@ -65,13 +65,22 @@ class DataService {
     return queue[0];
   }
 
-  async #getData(path) {
-    return JSON.parse(await this.fs.readFile(path, "utf-8"));
+  // create for testing
+  async getAll() {
+    return queue;
   }
 
-  async #saveData(path, data) {
-    const json = JSON.stringify(data);
-    await this.fs.writeFile(path, json);
+  async destroy() {
+    queue = [];
   }
+
+  // async #getData(path) {
+  //   return JSON.parse(await this.fs.readFile(path, "utf-8"));
+  // }
+
+  // async #saveData(path, data) {
+  //   const json = JSON.stringify(data);
+  //   await this.fs.writeFile(path, json);
+  // }
 }
-export default new DataService();
+module.exports = new DataService();

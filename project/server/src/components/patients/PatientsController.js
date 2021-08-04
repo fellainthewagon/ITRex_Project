@@ -1,4 +1,4 @@
-import patientsService from "./PatientsService.js";
+const patientsService = require("./PatientsService.js");
 
 class PatientsController {
   async getNextPatient(req, res, next) {
@@ -44,4 +44,4 @@ class PatientsController {
   }
 }
 
-export default new PatientsController();
+module.exports = new PatientsController();

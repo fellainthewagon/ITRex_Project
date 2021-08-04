@@ -1,9 +1,9 @@
-import { Router } from "express";
-import personsController from "./PersonsController.js";
+const { Router } = require("express");
+const personsController = require("./PersonsController");
 
 const personsRouter = Router();
 
 personsRouter.get("/queue/first", personsController.firstPerson);
 personsRouter.post("/queue", personsController.addPerson);
 
-export default personsRouter;
+module.exports = personsRouter;

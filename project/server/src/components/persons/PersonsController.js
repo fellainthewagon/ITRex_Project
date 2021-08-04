@@ -1,4 +1,4 @@
-import personsService from "./PersonsService.js";
+const personsService = require("./PersonsService");
 
 class PersonsController {
   async firstPerson(req, res, next) {
@@ -23,4 +23,4 @@ class PersonsController {
   }
 }
 
-export default new PersonsController();
+module.exports = new PersonsController();
