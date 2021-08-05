@@ -1,4 +1,5 @@
-import handlers from "./public/Handlers.js";
+// import handlers from "./public/Handlers.js";
+import handlers from "./public/HandlersTTL.js";
 
 const nextPatientBtn = document.querySelector("#next-btn");
 const addResolutionForm = document.querySelector(".add-resolution");

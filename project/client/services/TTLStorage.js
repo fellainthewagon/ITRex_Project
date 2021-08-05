@@ -12,18 +12,21 @@ class TTLStorage {
 
     setTimeout(() => {
       this.ttlStorage = this.ttlStorage.filter(
-        (item) => item.key !== value.key
+        (item) => item.key.name !== value.name
       );
-    }, ttl + 1);
+    }, ttl + 10000);
   }
 
   getData(value) {
-    console.log(this.ttlStorage);
-    const data = this.ttlStorage.find((item) => item.key === value);
-    if (!data) return "Data not found";
+    const data = this.ttlStorage.find((item) => item.key.name === value);
+    if (!data) return { message: "Data not found" };
     if (data.timestamp > Date.now()) return data.key;
-    this.ttlStorage = this.ttlStorage.filter((item) => item.key !== value.key);
-    return "Data has expired";
+    return { message: "Data has expired" };
+  }
+
+  deleteData(value) {
+    this.ttlStorage = this.ttlStorage.filter((item) => item.key.name !== value);
+    return { message: "Data has been deleted" };
   }
 }
 

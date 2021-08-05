@@ -1,5 +1,6 @@
 import storageService from "../services/StorageService.js";
 import queueService from "../services/QueueService.js";
+import ttlStorage from "../services/TTLStorage.js";
 
 const showCurrentPatient = document.querySelectorAll(".current-patient");
 const addPatientInput = document.querySelector("#add-patient");
@@ -44,10 +45,7 @@ class Handlers {
     resolutionInput.value = "";
     firstPatient = await queueService.getFirst();
     if (!firstPatient.name) return;
-    await storageService.addResolution({
-      name: firstPatient.name,
-      resolution,
-    });
+    await ttlStorage.setData({ name: firstPatient.name, resolution });
   }
 
   async findResolution(e) {
@@ -57,7 +55,7 @@ class Handlers {
       : findInputDoctor.value.toLowerCase().trim();
     findInputQueue.value = findInputDoctor.value = "";
 
-    const data = await storageService.findResolution(patientName);
+    const data = await ttlStorage.getData(patientName);
     showResolution.forEach((item) => {
       item.innerText = data.resolution || data.message;
     });
@@ -65,10 +63,10 @@ class Handlers {
 
   async deleteResolution() {
     if (!patientName) return;
-    const data = await storageService.deleteResolution(patientName);
+    const data = await ttlStorage.deleteData(patientName);
     showResolution.forEach((item) => {
       item.innerText = data.message;
     });
   }
 }
-// export default new Handlers();
+export default new Handlers();
