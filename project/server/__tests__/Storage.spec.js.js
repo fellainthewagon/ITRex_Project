@@ -1,10 +1,10 @@
 const request = require("supertest");
 const app = require("../src/app");
-const dataService = require("../src/data/DataService");
+const patientsService = require("../src/components/patients/PatientsService");
 
 //clearStorage
 beforeEach(() => {
-  dataService.destroyStorage();
+  patientsService.destroyStorage();
 });
 
 async function addPatientToStorage(
@@ -38,7 +38,7 @@ describe("Key-value STORAGE: add (POST) to storage functionality", () => {
 
   it("added patient to storage with keys 'name' and 'resolution'", async () => {
     await addPatientToStorage();
-    const patients = await dataService.getAllpatients();
+    const patients = await patientsService.getAllpatients();
     expect(patients[0].name).toBe("mia");
     expect(patients[0].resolution).toBe("blabla");
   });
@@ -90,7 +90,7 @@ describe("Key-value STORAGE: DELETE from storage functionality", () => {
   it("deleted patient when DELETE req is done", async () => {
     await addPatientToStorage();
     await deletePatientFromStorage("mia");
-    const patients = await dataService.getAllpatients();
+    const patients = await patientsService.getAllpatients();
     expect(patients.length).toEqual(0);
   });
 
@@ -98,7 +98,7 @@ describe("Key-value STORAGE: DELETE from storage functionality", () => {
     await addPatientToStorage();
     await addPatientToStorage({ name: "vincent", resolution: "coca-cola" });
     await deletePatientFromStorage("mia");
-    const patients = await dataService.getAllpatients();
+    const patients = await patientsService.getAllpatients();
     expect(patients[0].name).toBe("vincent");
   });
 

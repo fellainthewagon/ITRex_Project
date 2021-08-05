@@ -1,11 +1,12 @@
 import storageService from "../services/StorageService.js";
 import queueService from "../services/QueueService.js";
 
-const showCurrentPatient = document.querySelector(".current-patient");
+const showCurrentPatient = document.querySelectorAll(".current-patient");
 const addPatientInput = document.querySelector("#add-patient");
 const resolutionInput = document.querySelector("#resolution");
-const showResolution = document.querySelector(".show-resolution");
-const findPatientInput = document.querySelector("#find-patient");
+const showResolution = document.querySelectorAll(".show-resolution");
+const findInputQueue = document.querySelector("#find-patient-queue");
+const findInputDoctor = document.querySelector("#find-patient-doctor");
 
 let patientName;
 let firstPatient;
@@ -13,12 +14,16 @@ let firstPatient;
 class Handlers {
   async setupCurrentPatient() {
     firstPatient = await queueService.getFirst();
-    showCurrentPatient.innerText = firstPatient.name || firstPatient.message;
+    showCurrentPatient.forEach((item) => {
+      item.innerText = firstPatient.name || firstPatient.message;
+    });
   }
 
   async getNextPatient() {
     firstPatient = await queueService.next();
-    showCurrentPatient.innerText = firstPatient.name || firstPatient.message;
+    showCurrentPatient.forEach((item) => {
+      item.innerText = firstPatient.name || firstPatient.message;
+    });
   }
 
   async addPatientToQueue(e) {
@@ -27,7 +32,9 @@ class Handlers {
     await queueService.add({ name });
     addPatientInput.value = "";
     if (!firstPatient.name) {
-      showCurrentPatient.innerText = name;
+      showCurrentPatient.forEach((item) => {
+        item.innerText = name;
+      });
     }
   }
 
@@ -44,17 +51,23 @@ class Handlers {
 
   async findResolution(e) {
     e.preventDefault();
-    patientName = findPatientInput.value.toLowerCase().trim();
-    findPatientInput.value = "";
+    patientName = findInputQueue.value
+      ? findInputQueue.value.toLowerCase().trim()
+      : findInputDoctor.value.toLowerCase().trim();
+    findInputQueue.value = findInputDoctor.value = "";
+
     const data = await storageService.findResolution(patientName);
-    showResolution.innerText = data.resolution || data.message;
+    showResolution.forEach((item) => {
+      item.innerText = data.resolution || data.message;
+    });
   }
 
   async deleteResolution() {
     if (!patientName) return;
     const data = await storageService.deleteResolution(patientName);
-    showResolution.innerText = data.message;
+    showResolution.forEach((item) => {
+      item.innerText = data.message;
+    });
   }
 }
-
 export default new Handlers();

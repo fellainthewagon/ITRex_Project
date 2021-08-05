@@ -1,18 +1,6 @@
-const patientsService = require("./PatientsService.js");
+const patientsService = require("./PatientsService");
 
 class PatientsController {
-  async getNextPatient(req, res, next) {
-    try {
-      const person = await patientsService.getNextPatient();
-      if (person) {
-        return res.json(person);
-      }
-      return res.json({ message: "The Queue is empty" });
-    } catch (error) {
-      return next(error);
-    }
-  }
-
   async addPatient(req, res, next) {
     try {
       await patientsService.addPatient(req.body);

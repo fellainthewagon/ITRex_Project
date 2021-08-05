@@ -30,13 +30,13 @@ h5 {
 
 button {
   width: 5rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   padding: 2px;
 }
 input {
   font-size: 1rem;
   min-height: 2rem;
-  width: 20rem;
+  width: 10rem;
   padding-left: 3px;
 }
 p {
@@ -47,24 +47,27 @@ header {
   justify-content: space-between;
   align-items: center;
 }
-.line {
-  margin: 2rem;
-  border-bottom: 1px solid;
+.super {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 1rem;
+  height: 100vh;
 }
-.management,
-.queue {
-  font-size: 0.8rem;
-  margin-right: 2rem;
+.queue,
+.doctor {
+  margin: 0 1rem;
+  width: 50%;
+}
+.line {
+  margin: 2rem 0;
+  border-bottom: 1px solid;
 }
 .resolution-body {
   display: flex;
   justify-content: space-around;
   align-items: baseline;
-  width: 40vw;
 }
 .title {
   margin: 2rem;
-}
-.resolution {
-  max-width: 35vw;
 }

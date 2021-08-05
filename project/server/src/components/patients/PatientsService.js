@@ -1,24 +1,28 @@
-const dataService = require("../../data/DataService");
-
 class PatientsService {
   constructor() {
-    this.dataService = dataService;
-  }
-
-  async getNextPatient() {
-    return this.dataService.getNext();
+    this.storage = [];
   }
 
   async addPatient(value) {
-    await this.dataService.saveToStorage(value);
+    this.storage = this.storage.filter((item) => item.name !== value.name);
+    this.storage.push(value);
   }
 
   async getPatient(name) {
-    return this.dataService.findByName(name);
+    return this.storage.find((item) => item.name === name);
   }
 
   async deletePatient(name) {
-    await this.dataService.findByNameAndDelete(name);
+    this.storage = this.storage.filter((item) => item.name !== name);
+  }
+
+  // create for testing
+  async getAllpatients() {
+    return this.storage;
+  }
+
+  async destroyStorage() {
+    this.storage = [];
   }
 }
 

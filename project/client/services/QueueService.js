@@ -28,7 +28,7 @@ class QueueService {
 
   async next() {
     try {
-      const response = await fetch(this.url + "patients/next");
+      const response = await fetch(this.url + "queue/next");
       return await response.json();
     } catch (error) {
       console.log(error);

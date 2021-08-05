@@ -1,16 +1,33 @@
-const dataService = require("../../data/DataService");
-
 class PersonsService {
   constructor() {
-    this.dataService = dataService;
+    this.queue = [];
   }
 
   async getFirst() {
-    return this.dataService.getFirst();
+    return this.queue[0];
   }
 
-  async create(person) {
-    await this.dataService.pushToQueue(person);
+  async getNext() {
+    this.queue.shift();
+    return this.queue[0];
+  }
+
+  async create(value) {
+    if (this.queue.find((item) => item.name === value.name)) {
+      this.queue = this.queue.filter((item) => item.name !== value.name);
+      this.queue.push(value);
+      return;
+    }
+    this.queue.push(value);
+  }
+
+  // create for testing
+  async getAllpersons() {
+    return this.queue;
+  }
+
+  async destroyQueue() {
+    this.queue = [];
   }
 }
 
