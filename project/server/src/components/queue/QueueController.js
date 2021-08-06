@@ -1,9 +1,9 @@
-const personsService = require("./PersonsService");
+const queueService = require("./QueueService");
 
-class PersonsController {
+class QueueController {
   async firstPerson(req, res, next) {
     try {
-      const person = await personsService.getFirst();
+      const person = await queueService.getFirst();
       if (person) {
         return res.json(person);
       }
@@ -13,9 +13,9 @@ class PersonsController {
     }
   }
 
-  async getNextPatient(req, res, next) {
+  async getNextPerson(req, res, next) {
     try {
-      const person = await personsService.getNext();
+      const person = await queueService.getNext();
       if (person) {
         return res.json(person);
       }
@@ -27,12 +27,12 @@ class PersonsController {
 
   async addPerson(req, res, next) {
     try {
-      await personsService.create(req.body);
-      return res.json({ message: "Person added to queue" });
+      await queueService.add(req.body);
+      return res.status(201).json({ message: "Person added to queue" });
     } catch (error) {
       return next(error);
     }
   }
 }
 
-module.exports = new PersonsController();
+module.exports = new QueueController();

@@ -1,4 +1,4 @@
-class PersonsService {
+class QueueService {
   constructor() {
     this.queue = [];
   }
@@ -12,7 +12,7 @@ class PersonsService {
     return this.queue[0];
   }
 
-  async create(value) {
+  async add(value) {
     if (this.queue.find((item) => item.name === value.name)) {
       this.queue = this.queue.filter((item) => item.name !== value.name);
       this.queue.push(value);
@@ -31,4 +31,4 @@ class PersonsService {
   }
 }
 
-module.exports = new PersonsService();
+module.exports = new QueueService();

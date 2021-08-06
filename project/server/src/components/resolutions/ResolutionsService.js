@@ -1,23 +1,23 @@
-class PatientsService {
+class ResolutionsService {
   constructor() {
     this.storage = [];
   }
 
-  async addPatient(value) {
+  async addResolution(value) {
     this.storage = this.storage.filter((item) => item.name !== value.name);
     this.storage.push(value);
   }
 
-  async getPatient(name) {
+  async getResolution(name) {
     return this.storage.find((item) => item.name === name);
   }
 
-  async deletePatient(name) {
+  async deleteResolution(name) {
     this.storage = this.storage.filter((item) => item.name !== name);
   }
 
   // create for testing
-  async getAllpatients() {
+  async getAllResolutions() {
     return this.storage;
   }
 
@@ -26,4 +26,4 @@ class PatientsService {
   }
 }
 
-module.exports = new PatientsService();
+module.exports = new ResolutionsService();
