@@ -1,4 +1,4 @@
-module.exports = class ValidationError extends Error {
+module.exports = class ValidationException extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 400;

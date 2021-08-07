@@ -1,6 +1,6 @@
 class QueueService {
   constructor() {
-    this.queue = [];
+    this.queue = [{ name: "name1" }, { name: "name2" }];
   }
 
   async getFirst() {

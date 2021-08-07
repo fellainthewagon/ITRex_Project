@@ -1,6 +1,6 @@
-# Project "Doctors cabinete"
+# Project "Clinic"
 
-run
+run:
 
 ```sh
 cd server
@@ -9,11 +9,17 @@ cd client
 connect to localhost:5500
 ```
 
-test
+test:
 
 ```sh
 cd server
 npm run test
+```
+
+API documentation:
+
+```sh
+http://localhost:3000/api-docs
 ```
 
 A sigle Express-based app with two unrelated functionality:

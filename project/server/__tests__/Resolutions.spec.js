@@ -7,17 +7,15 @@ beforeEach(() => {
   resolutionsService.destroyStorage();
 });
 
-async function addResolutionToStorage(
-  patient = { name: "mia", resolution: "blabla" }
-) {
+async function addResolution(patient = { name: "mia", resolution: "blabla" }) {
   return request(app).post("/api/resolutions").send(patient);
 }
 
-async function getPatientFromStorage(name) {
+async function getResolution(name) {
   return request(app).get(`/api/resolutions/${name}`).send();
 }
 
-async function deletePatientFromStorage(name) {
+async function deleteResolution(name) {
   return request(app).delete(`/api/resolutions/${name}`).send();
 }
 
@@ -27,20 +25,26 @@ async function deletePatientFromStorage(name) {
 
 describe("Key-value STORAGE: add (POST) to storage functionality", () => {
   it("returns 200 OK when POST req is done, patient added to storage", async () => {
-    const res = await addResolutionToStorage();
+    const res = await addResolution();
     expect(res.status).toBe(201);
   });
 
   it("returns success message when patient added to storage", async () => {
-    const res = await addResolutionToStorage();
-    expect(res.body.message).toBe("Patient added to storage");
+    const res = await addResolution();
+    expect(res.body.message).toBe("Resolution added to storage");
   });
 
   it("added patient to storage with keys 'name' and 'resolution'", async () => {
-    await addResolutionToStorage();
+    await addResolution();
     const patients = await resolutionsService.getAllResolutions();
     expect(patients[0].name).toBe("mia");
     expect(patients[0].resolution).toBe("blabla");
+  });
+
+  it("returns 404 and error message if req.body.resolution is invalid", async () => {
+    const res = await addResolution({ name: "mia" });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe("Resolution cannot be empty");
   });
 });
 
@@ -50,67 +54,74 @@ describe("Key-value STORAGE: add (POST) to storage functionality", () => {
 
 describe("Key-value STORAGE: GET from storage functionality", () => {
   it("returns 200 OK when GET req is done", async () => {
-    await addResolutionToStorage();
-    const res = await getPatientFromStorage("mia");
+    await addResolution();
+    const res = await getResolution("mia");
     expect(res.status).toBe(200);
   });
 
   it("returns existing patient when GET request is done", async () => {
-    await addResolutionToStorage();
-    await addResolutionToStorage({ name: "vincent", resolution: "coca-cola" });
-    const res = await getPatientFromStorage("mia");
+    await addResolution();
+    await addResolution({ name: "vincent", resolution: "coca-cola" });
+    const res = await getResolution("mia");
     expect(res.body).toStrictEqual({ name: "mia", resolution: "blabla" });
   });
 
   it("returns existing patient with keys 'name' and 'resolution' when GET request is done", async () => {
-    await addResolutionToStorage();
-    const res = await getPatientFromStorage("mia");
+    await addResolution();
+    const res = await getResolution("mia");
     expect(res.body.name).toBe("mia");
     expect(res.body.resolution).toBe("blabla");
   });
 
   it("returns 404 when the patient is not found", async () => {
-    await addResolutionToStorage();
-    const res = await getPatientFromStorage("vincent");
+    await addResolution();
+    const res = await getResolution("vincent");
     expect(res.status).toBe(404);
   });
 
   it("returns message when the patient is not found", async () => {
-    await addResolutionToStorage();
-    const res = await getPatientFromStorage("vincent");
-    expect(res.body.message).toBe("Patient not found");
+    await addResolution();
+    const res = await getResolution("vincent");
+    expect(res.body.message).toBe("Resolution not found");
   });
 });
 
 /**
- * STORAGE: DELETE (without TTL пока что)
+ * STORAGE: DELETE
  */
 
 describe("Key-value STORAGE: DELETE from storage functionality", () => {
   it("deleted patient when DELETE req is done", async () => {
-    await addResolutionToStorage();
-    await deletePatientFromStorage("mia");
+    await addResolution();
+    await deleteResolution("mia");
     const patients = await resolutionsService.getAllResolutions();
     expect(patients.length).toEqual(0);
   });
 
   it("deleted just patient 'mia', when req.body.params is 'mia'", async () => {
-    await addResolutionToStorage();
-    await addResolutionToStorage({ name: "vincent", resolution: "coca-cola" });
-    await deletePatientFromStorage("mia");
+    await addResolution();
+    await addResolution({ name: "vincent", resolution: "coca-cola" });
+    await deleteResolution("mia");
     const patients = await resolutionsService.getAllResolutions();
     expect(patients[0].name).toBe("vincent");
   });
 
   it("returns 200 OK when DELETE req is done", async () => {
-    await addResolutionToStorage();
-    const res = await deletePatientFromStorage("mia");
+    await addResolution();
+    const res = await deleteResolution("mia");
     expect(res.status).toBe(200);
   });
 
-  it("returns succes message when patient deleted", async () => {
-    await addResolutionToStorage();
-    const res = await deletePatientFromStorage("mia");
-    expect(res.body.message).toBe("Patient successfully deleted");
+  it("returns succes message when resolution deleted", async () => {
+    await addResolution();
+    const res = await deleteResolution("mia");
+    expect(res.body.message).toBe("Resolution successfully deleted");
+  });
+
+  it("returns 404 and message if resolution not found", async () => {
+    await addResolution();
+    const res = await deleteResolution("miaaaa");
+    expect(res.status).toBe(404);
+    expect(res.body.message).toBe("Resolution not found");
   });
 });

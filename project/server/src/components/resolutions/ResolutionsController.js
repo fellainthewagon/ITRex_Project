@@ -4,7 +4,7 @@ class ResolutionsController {
   async addResolution(req, res, next) {
     try {
       await resolutionsService.addResolution(req.body);
-      return res.status(201).json({ message: "Patient added to storage" });
+      return res.status(201).json({ message: "Resolution added to storage" });
     } catch (error) {
       return next(error);
     }
@@ -18,7 +18,7 @@ class ResolutionsController {
       if (resolution) {
         return res.json(resolution);
       }
-      return res.status(404).send({ message: "Patient not found" });
+      return res.status(404).json({ message: "Resolution not found" });
     } catch (error) {
       return next(error);
     }
@@ -26,8 +26,13 @@ class ResolutionsController {
 
   async deleteResolution(req, res, next) {
     try {
-      await resolutionsService.deleteResolution(req.params.name);
-      return res.json({ message: "Patient successfully deleted" });
+      const isDeleted = await resolutionsService.deleteResolution(
+        req.params.name
+      );
+      if (isDeleted) {
+        return res.json({ message: "Resolution successfully deleted" });
+      }
+      return res.status(404).json({ message: "Resolution not found" });
     } catch (error) {
       return next(error);
     }

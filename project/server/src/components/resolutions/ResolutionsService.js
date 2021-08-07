@@ -1,6 +1,6 @@
 class ResolutionsService {
   constructor() {
-    this.storage = [];
+    this.storage = [{ name: "vincent", resolution: "drag addict" }];
   }
 
   async addResolution(value) {
@@ -13,7 +13,10 @@ class ResolutionsService {
   }
 
   async deleteResolution(name) {
+    const resolution = this.storage.find((item) => item.name === name);
+    if (!resolution) return null;
     this.storage = this.storage.filter((item) => item.name !== name);
+    return true;
   }
 
   // create for testing
