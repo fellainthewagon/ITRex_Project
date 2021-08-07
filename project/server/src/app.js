@@ -2,42 +2,16 @@ const express = require("express");
 const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-const { errorHandler } = require("./components/middleware/middlewares");
 
+const { errorHandler } = require("./components/middleware/middlewares");
+const swaggerOptions = require("./info/swaggerOptions");
 const queueRouter = require("./components/queue/queueRouter");
 const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
 
 const app = express();
 
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "My Clinic API",
-      version: 1.0,
-      description: "Really juicy API",
-      contact: { name: "Rylkov Andrey", email: "fellainthewagon@gmail.com" },
-    },
-    servers: [{ url: "http://localhost:3000/api" }],
-    tags: [
-      {
-        name: "queue",
-      },
-      {
-        name: "resolutions",
-      },
-    ],
-  },
-  apis: [
-    "./src/app.js",
-    "./src/components/queue/*.js",
-    "./src/components/resolutions/*.js",
-  ],
-};
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
-
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

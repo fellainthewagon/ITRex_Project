@@ -37,8 +37,8 @@ describe("Key-value STORAGE: add (POST) to storage functionality", () => {
   it("added patient to storage with keys 'name' and 'resolution'", async () => {
     await addResolution();
     const patients = await resolutionsService.getAllResolutions();
-    expect(patients[0].name).toBe("mia");
-    expect(patients[0].resolution).toBe("blabla");
+    expect(patients[0].data.name).toBe("mia");
+    expect(patients[0].data.resolution).toBe("blabla");
   });
 
   it("returns 404 and error message if req.body.resolution is invalid", async () => {
@@ -84,6 +84,16 @@ describe("Key-value STORAGE: GET from storage functionality", () => {
     const res = await getResolution("vincent");
     expect(res.body.message).toBe("Resolution not found");
   });
+
+  it("returns status 410 and message when data expired", async () => {
+    jest.useFakeTimers();
+    await addResolution();
+    jest.advanceTimersByTime(35000);
+    const res = await getResolution("mia");
+    expect(res.status).toBe(410);
+    expect(res.body.message).toBe("Data has expired");
+    jest.useRealTimers();
+  });
 });
 
 /**
@@ -103,7 +113,7 @@ describe("Key-value STORAGE: DELETE from storage functionality", () => {
     await addResolution({ name: "vincent", resolution: "coca-cola" });
     await deleteResolution("mia");
     const patients = await resolutionsService.getAllResolutions();
-    expect(patients[0].name).toBe("vincent");
+    expect(patients[0].data.name).toBe("vincent");
   });
 
   it("returns 200 OK when DELETE req is done", async () => {

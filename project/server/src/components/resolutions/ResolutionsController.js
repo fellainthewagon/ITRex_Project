@@ -15,10 +15,13 @@ class ResolutionsController {
       const resolution = await resolutionsService.getResolution(
         req.params.name
       );
-      if (resolution) {
-        return res.json(resolution);
+      if (!resolution) {
+        return res.status(404).json({ message: "Resolution not found" });
       }
-      return res.status(404).json({ message: "Resolution not found" });
+      if (resolution === "expired") {
+        return res.status(410).json({ message: "Data has expired" });
+      }
+      return res.json(resolution.data);
     } catch (error) {
       return next(error);
     }

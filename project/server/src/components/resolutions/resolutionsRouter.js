@@ -64,6 +64,11 @@ resolutionsRouter.post(
  *         content:
  *           application/json:
  *             example: {name: "vincent", resolution: "drug addict"}
+ *       '410':
+ *         description: Data that you want to get has expired
+ *         content:
+ *           application/json:
+ *             example: { message: "Data has expired" }
  *       '400':
  *         description: It means that params property in URL is invalid
  *         content:

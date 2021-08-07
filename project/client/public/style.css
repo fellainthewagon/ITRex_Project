@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: antiquewhite;
+  background-color: #e3f7fa;
   font-family: "Roboto", sans-serif;
   font-size: 1.5rem;
   font-weight: 300;
@@ -29,6 +29,8 @@ h5 {
 }
 
 button {
+  background-color: #a5ebf5;
+  border-radius: 5px;
   width: 5rem;
   font-size: 1.2rem;
   padding: 2px;

@@ -4,9 +4,7 @@ class QueueController {
   async firstPerson(req, res, next) {
     try {
       const person = await queueService.getFirst();
-      if (person) {
-        return res.json(person);
-      }
+      if (person) return res.json(person);
       return res.json({ message: "The Queue is empty" });
     } catch (error) {
       return next(error);
@@ -16,9 +14,7 @@ class QueueController {
   async getNextPerson(req, res, next) {
     try {
       const person = await queueService.getNext();
-      if (person) {
-        return res.json(person);
-      }
+      if (person) return res.json(person);
       return res.json({ message: "The Queue is empty" });
     } catch (error) {
       return next(error);
