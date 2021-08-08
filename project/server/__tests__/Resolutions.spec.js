@@ -2,6 +2,8 @@ const request = require("supertest");
 const app = require("../src/app");
 const resolutionsService = require("../src/components/resolutions/ResolutionsService");
 
+const ttl = 30000;
+
 //clearStorage
 beforeEach(() => {
   resolutionsService.destroyStorage();
@@ -73,26 +75,11 @@ describe("Key-value STORAGE: GET from storage functionality", () => {
     expect(res.body.resolution).toBe("blabla");
   });
 
-  it("returns 404 when the patient is not found", async () => {
+  it("returns 404 not found and info message when the patient is not found", async () => {
     await addResolution();
     const res = await getResolution("vincent");
     expect(res.status).toBe(404);
-  });
-
-  it("returns message when the patient is not found", async () => {
-    await addResolution();
-    const res = await getResolution("vincent");
     expect(res.body.message).toBe("Resolution not found");
-  });
-
-  it("returns status 410 and message when data expired", async () => {
-    jest.useFakeTimers();
-    await addResolution();
-    jest.advanceTimersByTime(35000);
-    const res = await getResolution("mia");
-    expect(res.status).toBe(410);
-    expect(res.body.message).toBe("Data has expired");
-    jest.useRealTimers();
   });
 });
 
@@ -128,7 +115,7 @@ describe("Key-value STORAGE: DELETE from storage functionality", () => {
     expect(res.body.message).toBe("Resolution successfully deleted");
   });
 
-  it("returns 404 and message if resolution not found", async () => {
+  it("returns 404 not found and message if resolution not found", async () => {
     await addResolution();
     const res = await deleteResolution("miaaaa");
     expect(res.status).toBe(404);

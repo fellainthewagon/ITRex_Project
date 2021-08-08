@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { validName } = require("../middleware/middlewares");
+const Validator = require("../helpers/Validator");
 const queueController = require("./QueueController");
 
 const queueRouter = Router();
@@ -72,6 +72,6 @@ queueRouter.get("/queue/next", queueController.getNextPerson);
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Name cannot be empty"}
  */
-queueRouter.post("/queue", validName, queueController.addPerson);
+queueRouter.post("/queue", Validator.validName, queueController.addPerson);
 
 module.exports = queueRouter;

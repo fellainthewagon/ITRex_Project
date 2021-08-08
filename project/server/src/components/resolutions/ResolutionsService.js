@@ -20,14 +20,12 @@ class ResolutionsService {
       this.storage = this.storage.filter(
         (item) => item.data.name !== value.name
       );
-    }, ttl + 10000);
+    }, ttl);
   }
 
   async getResolution(name) {
     const patient = this.storage.find((item) => item.data.name === name);
-    if (!patient) return;
-    if (patient.timestamp > Date.now()) return patient;
-    return "expired";
+    return !patient ? null : patient;
   }
 
   async deleteResolution(name) {

@@ -1,9 +1,6 @@
 const { Router } = require("express");
 const resolutionsController = require("./ResolutionsController");
-const {
-  validParamsName,
-  validResolution,
-} = require("../middleware/middlewares");
+const Validator = require("../helpers/Validator");
 
 const resolutionsRouter = Router();
 
@@ -40,7 +37,7 @@ const resolutionsRouter = Router();
  */
 resolutionsRouter.post(
   "/resolutions",
-  validResolution,
+  Validator.validResolution,
   resolutionsController.addResolution
 );
 
@@ -64,11 +61,6 @@ resolutionsRouter.post(
  *         content:
  *           application/json:
  *             example: {name: "vincent", resolution: "drug addict"}
- *       '410':
- *         description: Data that you want to get has expired
- *         content:
- *           application/json:
- *             example: { message: "Data has expired" }
  *       '400':
  *         description: It means that params property in URL is invalid
  *         content:
@@ -82,7 +74,7 @@ resolutionsRouter.post(
  */
 resolutionsRouter.get(
   "/resolutions/:name",
-  validParamsName,
+  Validator.validParamsName,
   resolutionsController.getResolution
 );
 
@@ -119,7 +111,7 @@ resolutionsRouter.get(
  */
 resolutionsRouter.delete(
   "/resolutions/:name",
-  validParamsName,
+  Validator.validParamsName,
   resolutionsController.deleteResolution
 );
 

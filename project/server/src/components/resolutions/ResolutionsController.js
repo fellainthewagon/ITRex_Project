@@ -4,6 +4,7 @@ class ResolutionsController {
   async addResolution(req, res, next) {
     try {
       await resolutionsService.addResolution(req.body);
+      res.setHeader("Location", "/api" + req.url + req.body.name);
       return res.status(201).json({ message: "Resolution added to storage" });
     } catch (error) {
       return next(error);
@@ -15,13 +16,8 @@ class ResolutionsController {
       const resolution = await resolutionsService.getResolution(
         req.params.name
       );
-      if (!resolution) {
-        return res.status(404).json({ message: "Resolution not found" });
-      }
-      if (resolution === "expired") {
-        return res.status(410).json({ message: "Data has expired" });
-      }
-      return res.json(resolution.data);
+      if (resolution) return res.json(resolution.data);
+      return res.status(404).json({ message: "Resolution not found" });
     } catch (error) {
       return next(error);
     }

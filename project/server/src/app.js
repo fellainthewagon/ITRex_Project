@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 
-const { errorHandler } = require("./components/middleware/middlewares");
+const errorHandler = require("./components/helpers/errorHandler");
 const swaggerOptions = require("./info/swaggerOptions");
 const queueRouter = require("./components/queue/queueRouter");
 const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
