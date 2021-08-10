@@ -1,15 +1,19 @@
 version: "3"
 services:
   clinic-api:
-    image: clinic-api
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     networks:
       - clinic-app
   client:
-    image: danjellz/http-server
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "5000:5000"
     networks:
       - clinic-app
     depends_on:

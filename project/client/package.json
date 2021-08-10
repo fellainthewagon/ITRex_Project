@@ -1,8 +1,15 @@
 {
   "scripts": {
-    "start": "./node_modules/.bin/http-server -a localhost -p 8000 -c-1"
+    "start": "http-server -a localhost -p 8000 -c-1"
   },
   "dependencies": {
-    "http-server": "^13.0.0"
-  }
+    "express": "^4.17.1"
+  },
+  "name": "client",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
