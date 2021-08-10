@@ -1,5 +1,5 @@
-import storageService from "../services/StorageService.js";
-import queueService from "../services/QueueService.js";
+import Resolution from "./Resolution.js";
+import Queue from "./Queue.js";
 
 const showCurrentPatient = document.querySelectorAll(".current-patient");
 const addPatientInput = document.querySelector("#add-patient");
@@ -8,30 +8,31 @@ const showResolution = document.querySelectorAll(".show-resolution");
 const findInputQueue = document.querySelector("#find-patient-queue");
 const findInputDoctor = document.querySelector("#find-patient-doctor");
 
-let patientName;
-let firstPatient;
+let name;
+let current;
 
 class Handlers {
   async setupCurrentPatient() {
-    firstPatient = await queueService.getFirst();
+    current = await Queue.getCurrent();
     showCurrentPatient.forEach((item) => {
-      item.innerText = firstPatient.name || firstPatient.message;
+      item.innerText = current.key || current.message;
     });
   }
 
   async getNextPatient() {
-    firstPatient = await queueService.next();
+    current = await Queue.next();
     showCurrentPatient.forEach((item) => {
-      item.innerText = firstPatient.name || firstPatient.message;
+      item.innerText = current.key || current.message;
     });
   }
 
   async addPatientToQueue(e) {
     e.preventDefault();
     const name = addPatientInput.value.toLowerCase().trim();
-    await queueService.add({ name });
+    await Queue.add({ key: name });
     addPatientInput.value = "";
-    if (!firstPatient.name) {
+    if (!current.key) {
+      current.key = name;
       showCurrentPatient.forEach((item) => {
         item.innerText = name;
       });
@@ -40,34 +41,31 @@ class Handlers {
 
   async addResolution(e) {
     e.preventDefault();
-    const resolution = resolutionInput.value;
+    const { key } = await Queue.getCurrent();
+    if (!key) return;
+    await Resolution.add(key, { resolution: resolutionInput.value });
     resolutionInput.value = "";
-    firstPatient = await queueService.getFirst();
-    if (!firstPatient.name) return;
-    await storageService.addResolution({
-      name: firstPatient.name,
-      resolution,
-    });
   }
 
   async findResolution(e) {
     e.preventDefault();
-    patientName = findInputQueue.value
+    name = findInputQueue.value
       ? findInputQueue.value.toLowerCase().trim()
       : findInputDoctor.value.toLowerCase().trim();
     findInputQueue.value = findInputDoctor.value = "";
 
-    const data = await storageService.findResolution(patientName);
+    const { resolution, message } = await Resolution.find(name);
     showResolution.forEach((item) => {
-      item.innerText = data.resolution || data.message;
+      item.innerText = resolution || message;
     });
   }
 
   async deleteResolution() {
-    if (!patientName) return;
-    const data = await storageService.deleteResolution(patientName);
+    if (!name) return;
+    const { message } = await Resolution.delete(name);
+    name = null;
     showResolution.forEach((item) => {
-      item.innerText = data.message;
+      item.innerText = message;
     });
   }
 }

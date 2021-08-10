@@ -1,9 +1,9 @@
 const queueService = require("./QueueService");
 
 class QueueController {
-  async firstPerson(req, res, next) {
+  async getCurrentPerson(req, res, next) {
     try {
-      const person = await queueService.getFirst();
+      const person = await queueService.getCurrent();
       if (person) return res.json(person);
       return res.json({ message: "The Queue is empty" });
     } catch (error) {

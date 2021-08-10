@@ -6,7 +6,7 @@ run:
 cd server
 npm run dev
 cd client
-connect to localhost:5500
+npm start
 ```
 
 test:

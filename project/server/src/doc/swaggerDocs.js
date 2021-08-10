@@ -1,4 +1,6 @@
-module.exports = {
+const swaggerJsDoc = require("swagger-jsdoc");
+
+const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -23,3 +25,5 @@ module.exports = {
     "./src/components/resolutions/*.js",
   ],
 };
+
+module.exports = swaggerJsDoc(swaggerOptions);

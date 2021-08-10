@@ -16,7 +16,7 @@ function getPersonFromQueue() {
 }
 
 function getFirstPersonFromQueue() {
-  return request(app).get("/api/queue/first").send();
+  return request(app).get("/api/queue/current").send();
 }
 
 /**
@@ -25,43 +25,43 @@ function getFirstPersonFromQueue() {
 
 describe("FIFO: add to queue functionality ('add' button)", () => {
   it("returns 200 OK when POST request is done", async () => {
-    const res = await addPersonToQueue({ name: "mia" });
+    const res = await addPersonToQueue({ key: "mia" });
     expect(res.status).toBe(201);
   });
 
   it("returns success body.message when person added to queue", async () => {
-    const res = await addPersonToQueue({ name: "mia" });
+    const res = await addPersonToQueue({ key: "mia" });
     expect(res.body.message).toBe("Person added to queue");
   });
 
   it("after add 'vincent' to the queue, last person in queue is 'vincent'", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "vincent" });
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "vincent" });
     const queue = await queueService.getAllpersons();
     const lastPerson = queue[queue.length - 1];
-    expect(lastPerson.name).toBe("vincent");
+    expect(lastPerson.key).toBe("vincent");
   });
 
   it("after add 'vincent' to queue, last person is not to be 'mia'", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "vincent" });
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "vincent" });
     const queue = await queueService.getAllpersons();
     const lastPerson = queue[queue.length - 1];
-    expect(lastPerson.name).not.toBe("mia");
+    expect(lastPerson.key).not.toBe("mia");
   });
 
   it("after add 3 persons, queue length is equal 3", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "vincent" });
-    await addPersonToQueue({ name: "jules" });
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "vincent" });
+    await addPersonToQueue({ key: "jules" });
     const queue = await queueService.getAllpersons();
     expect(queue.length).toBe(3);
   });
 
   // мы дог на митинге добавлять в очередь только уникальных пациентов
-  it("after add 2 persons with the same name, queue length to be equal is 1", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "mia" });
+  it("after add 2 persons with the same key, queue length to be equal is 1", async () => {
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "mia" });
     const queue = await queueService.getAllpersons();
     expect(queue.length).toBe(1);
   });
@@ -90,17 +90,17 @@ describe("FIFO: get from queue functionality ('next' button)", () => {
    * */
 
   it("returns second (but first for UI) person when GET request is done", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "vincent" });
-    await addPersonToQueue({ name: "jules" });
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "vincent" });
+    await addPersonToQueue({ key: "jules" });
     const res = await getPersonFromQueue();
-    expect(res.body).toStrictEqual({ name: "vincent" });
+    expect(res.body).toStrictEqual({ key: "vincent" });
   });
 
   it("after add 3 persons and GET request, queue length to be equal is 2", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "vincent" });
-    await addPersonToQueue({ name: "jules" });
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "vincent" });
+    await addPersonToQueue({ key: "jules" });
     await getPersonFromQueue();
     const queue = await queueService.getAllpersons();
     expect(queue.length).toBe(2);
@@ -119,12 +119,12 @@ describe("FIFO: get first person for reloading page (without deleting)", () => {
   });
 
   it("returns first person from queue without deleting him", async () => {
-    await addPersonToQueue({ name: "mia" });
-    await addPersonToQueue({ name: "vincent" });
+    await addPersonToQueue({ key: "mia" });
+    await addPersonToQueue({ key: "vincent" });
     const res = await getFirstPersonFromQueue();
     const queue = await queueService.getAllpersons();
-    expect(res.body).toStrictEqual({ name: "mia" });
-    expect(queue[0]).toStrictEqual({ name: "mia" });
+    expect(res.body).toStrictEqual({ key: "mia" });
+    expect(queue[0]).toStrictEqual({ key: "mia" });
     expect(queue.length).toBe(2);
   });
 });

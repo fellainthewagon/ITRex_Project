@@ -1,0 +1,19 @@
+version: "3"
+services:
+  clinic-api:
+    image: clinic-api
+    ports:
+      - "3000:3000"
+    networks:
+      - clinic-app
+  client:
+    image: danjellz/http-server
+    ports:
+      - "8080:8080"
+    networks:
+      - clinic-app
+    depends_on:
+      - clinic-api
+networks:
+  clinic-app:
+    driver: bridge

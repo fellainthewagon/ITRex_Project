@@ -1,10 +1,11 @@
+const queueService = require("../queue/QueueService");
 const resolutionsService = require("./ResolutionsService");
 
 class ResolutionsController {
   async addResolution(req, res, next) {
     try {
-      await resolutionsService.addResolution(req.body);
-      res.setHeader("Location", "/api" + req.url + req.body.name);
+      await resolutionsService.addResolution({ ...req.params, ...req.body });
+      res.setHeader("Location", "/api" + req.url + req.body.key);
       return res.status(201).json({ message: "Resolution added to storage" });
     } catch (error) {
       return next(error);
@@ -13,9 +14,7 @@ class ResolutionsController {
 
   async getResolution(req, res, next) {
     try {
-      const resolution = await resolutionsService.getResolution(
-        req.params.name
-      );
+      const resolution = await resolutionsService.getResolution(req.params.key);
       if (resolution) return res.json(resolution.data);
       return res.status(404).json({ message: "Resolution not found" });
     } catch (error) {
@@ -26,7 +25,7 @@ class ResolutionsController {
   async deleteResolution(req, res, next) {
     try {
       const isDeleted = await resolutionsService.deleteResolution(
-        req.params.name
+        req.params.key
       );
       if (isDeleted) {
         return res.json({ message: "Resolution successfully deleted" });

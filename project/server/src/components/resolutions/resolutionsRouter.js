@@ -1,15 +1,24 @@
 const { Router } = require("express");
 const resolutionsController = require("./ResolutionsController");
-const Validator = require("../helpers/Validator");
+const Validate = require("../../middleware/Validate");
 
 const resolutionsRouter = Router();
 
+resolutionsRouter.use("/:key/resolution", Validate.keyParams);
 /**
  * @swagger
- * /resolutions:
+ * /patients/{key}/resolution:
  *   post:
  *     tags: [resolutions]
  *     description: Add resolutions
+ *     parameters:
+ *       - in: path
+ *         name: key
+ *         schema:
+ *           type: string
+ *         required: true
+ *         example: "vincent"
+ *         description: Patient key (name)
  *     requestBody:
  *       required: true
  *       content:
@@ -17,9 +26,6 @@ const resolutionsRouter = Router();
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
- *                 example: "vincent"
  *               resolution:
  *                 type: string
  *                 example: "drug addict"
@@ -33,65 +39,61 @@ const resolutionsRouter = Router();
  *         description: It means that request body is invalid
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 400}, message: "Resolution cannot be empty"}
+ *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
 resolutionsRouter.post(
-  "/resolutions",
-  Validator.validResolution,
+  "/:key/resolution",
+  Validate.body,
   resolutionsController.addResolution
 );
 
 /**
  * @swagger
- * /resolutions/{name}:
+ * /patients/{key}/resolution:
  *   get:
  *     tags: [resolutions]
  *     description: Get patient resolution
  *     parameters:
  *       - in: path
- *         name: name
+ *         name: key
  *         schema:
  *           type: string
  *         required: true
  *         example: "vincent"
- *         description: Patient name
+ *         description: Patient key (name)
  *     responses:
  *       '200':
  *         description: Get resolution has been successfully
  *         content:
  *           application/json:
- *             example: {name: "vincent", resolution: "drug addict"}
+ *             example: {resolution: "drug addict"}
  *       '400':
  *         description: It means that params property in URL is invalid
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 400}, message: "Name cannot be empty"}
+ *             example: {error: {"statusCode": 400}, message: "'Key' parameter is not valid"}
  *       '404':
  *         description: It means that resolution not found
  *         content:
  *           application/json:
  *             example: {message: "Resolution not found"}
  */
-resolutionsRouter.get(
-  "/resolutions/:name",
-  Validator.validParamsName,
-  resolutionsController.getResolution
-);
+resolutionsRouter.get("/:key/resolution", resolutionsController.getResolution);
 
 /**
  * @swagger
- * /resolutions/{name}:
+ * /patients/{key}/resolution:
  *   delete:
  *     tags: [resolutions]
  *     description: Delete patient resolution
  *     parameters:
  *       - in: path
- *         name: name
+ *         name: key
  *         schema:
  *           type: string
  *         required: true
  *         example: "vincent"
- *         description: Patient name that need delete
+ *         description: Patient key (name) that need delete
  *     responses:
  *       '200':
  *         description: Resolution has been successfully deleted
@@ -102,7 +104,7 @@ resolutionsRouter.get(
  *         description: It means that params property in URL is invalid
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 400}, message: "Name cannot be empty"}
+ *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  *       '404':
  *         description: It means that resolution not found
  *         content:
@@ -110,8 +112,7 @@ resolutionsRouter.get(
  *             example: {message: "Resolution not found"}
  */
 resolutionsRouter.delete(
-  "/resolutions/:name",
-  Validator.validParamsName,
+  "/:key/resolution",
   resolutionsController.deleteResolution
 );
 

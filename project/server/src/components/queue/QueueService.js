@@ -1,9 +1,11 @@
 class QueueService {
   constructor() {
-    this.queue = [{ name: "name1" }, { name: "name2" }];
+    this.queue = [
+      /* { key: "name1" }, { key: "name2" } */
+    ];
   }
 
-  async getFirst() {
+  async getCurrent() {
     return this.queue[0];
   }
 
@@ -13,8 +15,8 @@ class QueueService {
   }
 
   async add(value) {
-    if (this.queue.find((item) => item.name === value.name)) {
-      this.queue = this.queue.filter((item) => item.name !== value.name);
+    if (this.queue.find((item) => item.key === value.key)) {
+      this.queue = this.queue.filter((item) => item.key !== value.key);
       this.queue.push(value);
       return;
     }

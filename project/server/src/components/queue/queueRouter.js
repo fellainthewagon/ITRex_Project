@@ -1,12 +1,12 @@
 const { Router } = require("express");
-const Validator = require("../helpers/Validator");
 const queueController = require("./QueueController");
+const Validate = require("../../middleware/Validate");
 
 const queueRouter = Router();
 
 /**
  * @swagger
- * /queue/first:
+ * /queue/current:
  *   get:
  *     tags: [queue]
  *     description: Get first person from queue
@@ -22,7 +22,7 @@ const queueRouter = Router();
  *                    type: string
  *                    example: "jules"
  */
-queueRouter.get("/queue/first", queueController.firstPerson);
+queueRouter.get("/current", queueController.getCurrentPerson);
 
 /**
  * @swagger
@@ -42,7 +42,7 @@ queueRouter.get("/queue/first", queueController.firstPerson);
  *                    type: string
  *                    example: "butch"
  */
-queueRouter.get("/queue/next", queueController.getNextPerson);
+queueRouter.get("/next", queueController.getNextPerson);
 
 /**
  * @swagger
@@ -57,12 +57,12 @@ queueRouter.get("/queue/next", queueController.getNextPerson);
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               key:
  *                 type: string
  *                 example: "vincent"
  *     responses:
  *       '201':
- *         description: It means person added to queue
+ *         description: It means person added to queue (created)
  *         content:
  *           application/json:
  *             example: {message: "Person added to queue"}
@@ -70,8 +70,8 @@ queueRouter.get("/queue/next", queueController.getNextPerson);
  *         description: It means request body invalid
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 400}, message: "Name cannot be empty"}
+ *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
-queueRouter.post("/queue", Validator.validName, queueController.addPerson);
+queueRouter.post("/", Validate.body, queueController.addPerson);
 
 module.exports = queueRouter;
