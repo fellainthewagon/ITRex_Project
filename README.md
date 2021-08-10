@@ -4,8 +4,11 @@ run:
 
 ```sh
 cd server
+npm i
 npm run dev
+
 cd client
+npm i
 npm start
 ```
 
@@ -16,13 +19,19 @@ cd server
 npm run test
 ```
 
-API documentation:
+up:
 
 ```sh
-http://localhost:3000/api-docs
+cd project
+docker-compose up -d
+http://localhost:5000
 ```
 
-A sigle Express-based app with two unrelated functionality:
+```sh
+http://localhost:3000/api-docs - API documentation
+```
+
+### A sigle Express-based app with two unrelated functionality:
 
 1. In-memory stack (FIFO)
 2. In-memory key-value store with TTL

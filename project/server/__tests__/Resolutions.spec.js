@@ -9,8 +9,11 @@ beforeEach(() => {
   resolutionsService.destroyStorage();
 });
 
-async function addResolution(key = "mia", patient = { resolution: "blabla" }) {
-  return request(app).post(`/api/patients/${key}/resolution`).send(patient);
+async function addResolution(
+  key = "mia",
+  resolution = { resolution: "blabla" }
+) {
+  return request(app).post(`/api/patients/${key}/resolution`).send(resolution);
 }
 
 async function getResolution(key) {
@@ -26,21 +29,37 @@ async function deleteResolution(key) {
  */
 
 describe("Key-value STORAGE: add (POST) to storage functionality", () => {
-  it("returns 200 OK when POST req is done, patient added to storage", async () => {
+  it("returns 201 OK when POST req is done", async () => {
     const res = await addResolution();
     expect(res.status).toBe(201);
   });
 
-  it("returns success message when patient added to storage", async () => {
+  it("returns created resolution after successfull POST req", async () => {
+    const res = await addResolution("vic", {
+      resolution: "piu-piu",
+    });
+    expect(res.body.resolution).toStrictEqual({
+      key: "vic",
+      resolution: "piu-piu",
+    });
+  });
+
+  it("returns success message when resolution added to storage", async () => {
     const res = await addResolution();
     expect(res.body.message).toBe("Resolution added to storage");
   });
 
   it("added patient to storage with 'key' and 'resolution' properties", async () => {
     await addResolution();
-    const patients = await resolutionsService.getAllResolutions();
-    expect(patients[0].data.key).toBe("mia");
-    expect(patients[0].data.resolution).toBe("blabla");
+    const res = await getResolution("mia");
+    expect(res.body.key).toBeDefined();
+    expect(res.body.resolution).toBeDefined();
+  });
+
+  it("returns 400 and error message when body is not valid", async () => {
+    const res = await addResolution("vic", { age: 44 });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe("Invalid body");
   });
 });
 
@@ -82,25 +101,25 @@ describe("Key-value STORAGE: GET from storage functionality", () => {
  */
 
 describe("Key-value STORAGE: DELETE from storage functionality", () => {
+  it("returns 200 OK when DELETE req is done", async () => {
+    await addResolution();
+    const res = await deleteResolution("mia");
+    expect(res.status).toBe(200);
+  });
+
   it("deleted patient when DELETE req is done", async () => {
     await addResolution();
     await deleteResolution("mia");
-    const patients = await resolutionsService.getAllResolutions();
-    expect(patients.length).toEqual(0);
+    const resolutions = await resolutionsService.getAllResolutions();
+    expect(resolutions.length).toEqual(0);
   });
 
   it("deleted just patient 'mia', when req.body.params is 'mia'", async () => {
     await addResolution();
     await addResolution("vincent", { resolution: "coca-cola" });
     await deleteResolution("mia");
-    const patients = await resolutionsService.getAllResolutions();
-    expect(patients[0].data.key).toBe("vincent");
-  });
-
-  it("returns 200 OK when DELETE req is done", async () => {
-    await addResolution();
-    const res = await deleteResolution("mia");
-    expect(res.status).toBe(200);
+    const res = await getResolution("vincent");
+    expect(res.body.key).toBe("vincent");
   });
 
   it("returns succes message when resolution deleted", async () => {

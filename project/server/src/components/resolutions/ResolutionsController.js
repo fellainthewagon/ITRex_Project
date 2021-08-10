@@ -4,9 +4,13 @@ const resolutionsService = require("./ResolutionsService");
 class ResolutionsController {
   async addResolution(req, res, next) {
     try {
-      await resolutionsService.addResolution({ ...req.params, ...req.body });
-      res.setHeader("Location", "/api" + req.url + req.body.key);
-      return res.status(201).json({ message: "Resolution added to storage" });
+      const resolution = await resolutionsService.addResolution({
+        ...req.params,
+        ...req.body,
+      });
+      return res
+        .status(201)
+        .json({ resolution, message: "Resolution added to storage" });
     } catch (error) {
       return next(error);
     }

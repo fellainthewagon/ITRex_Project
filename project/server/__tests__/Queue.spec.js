@@ -42,14 +42,6 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
     expect(lastPerson.key).toBe("vincent");
   });
 
-  it("after add 'vincent' to queue, last person is not to be 'mia'", async () => {
-    await addPersonToQueue({ key: "mia" });
-    await addPersonToQueue({ key: "vincent" });
-    const queue = await queueService.getAllpersons();
-    const lastPerson = queue[queue.length - 1];
-    expect(lastPerson.key).not.toBe("mia");
-  });
-
   it("after add 3 persons, queue length is equal 3", async () => {
     await addPersonToQueue({ key: "mia" });
     await addPersonToQueue({ key: "vincent" });
@@ -58,12 +50,17 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
     expect(queue.length).toBe(3);
   });
 
-  // мы дог на митинге добавлять в очередь только уникальных пациентов
   it("after add 2 persons with the same key, queue length to be equal is 1", async () => {
     await addPersonToQueue({ key: "mia" });
     await addPersonToQueue({ key: "mia" });
     const queue = await queueService.getAllpersons();
     expect(queue.length).toBe(1);
+  });
+
+  it("returns 400 and error message when body is not valid", async () => {
+    const res = await addPersonToQueue({ age: 44 });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe("Invalid body");
   });
 });
 
@@ -86,10 +83,10 @@ describe("FIFO: get from queue functionality ('next' button)", () => {
    * здесь метод "get" я реализовал таким образом, что он забирает
    * всегда второй элемент из очереди а не первый. Первый нужен для
    * отображения актуального клиента на странице при ее загрузке или
-   * перезагрузке.
+   * перезагрузке. Бизнес-логика при этом соблюдена
    * */
 
-  it("returns second (but first for UI) person when GET request is done", async () => {
+  it("returns next person from queue when GET request is done", async () => {
     await addPersonToQueue({ key: "mia" });
     await addPersonToQueue({ key: "vincent" });
     await addPersonToQueue({ key: "jules" });
