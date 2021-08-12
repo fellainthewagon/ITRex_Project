@@ -1,34 +1,52 @@
 # Project "Clinic"
 
-run:
+### How to setup Application:
+
+Version of node and npm:
+`npm 7.17.0`
+`node 14.15.5`
+
+Clone the repo, install the dependencies and run.
+
+```bash
+git clone https://github.com/fellainthewagon/ITRex_Project.git
+```
+
+Frontend:
 
 ```sh
 cd server
 npm i
 npm run dev
+```
 
+Backend:
+
+```sh
 cd client
 npm i
 npm start
 ```
 
-test:
+How to run API tests:
 
 ```sh
 cd server
 npm run test
 ```
 
-up:
+How to up Application:
 
 ```sh
 cd project
 docker-compose up -d
-http://localhost:5000
+click http://localhost:5000
 ```
 
+API documentation:
+
 ```sh
-http://localhost:3000/api-docs - API documentation
+http://localhost:3000/api-docs
 ```
 
 ### A sigle Express-based app with two unrelated functionality:

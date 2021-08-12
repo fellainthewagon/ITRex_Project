@@ -1,5 +1,4 @@
-const queueService = require("../queue/QueueService");
-const resolutionsService = require("./ResolutionsService");
+const resolutionsService = require("./resolutionsService");
 
 class ResolutionsController {
   async addResolution(req, res, next) {

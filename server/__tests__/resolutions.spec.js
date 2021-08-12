@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../src/app");
-const resolutionsService = require("../src/components/resolutions/ResolutionsService");
+const resolutionsService = require("../src/components/resolutions/resolutionsService");
 
 const ttl = 30000;
 

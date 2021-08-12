@@ -24,6 +24,9 @@ app.use(cors);
  */
 app.use("/api/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
+app.get("/", (req, res) => {
+  res.send("<h1>Miracle! It works...</h1>");
+});
 
 app.use(errorHandler);
 

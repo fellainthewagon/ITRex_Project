@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const queueController = require("./QueueController");
-const Validate = require("../../middleware/Validate");
+const queueController = require("./queueController");
+const Validate = require("../../middleware/validate");
 
 const queueRouter = Router();
 

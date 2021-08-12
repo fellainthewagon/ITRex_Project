@@ -1,4 +1,4 @@
-const ValidationException = require("../errors/ValidationException");
+const ValidationException = require("../errors/validationException");
 const formatter = require("../utils/formatter");
 const valid = require("../schema/resolution");
 

@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const resolutionsController = require("./ResolutionsController");
-const Validate = require("../../middleware/Validate");
+const resolutionsController = require("./resolutionsController");
+const Validate = require("../../middleware/validate");
 
 const resolutionsRouter = Router();
 

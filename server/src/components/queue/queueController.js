@@ -1,4 +1,4 @@
-const queueService = require("./QueueService");
+const queueService = require("./queueService");
 
 class QueueController {
   async getCurrentPerson(req, res, next) {

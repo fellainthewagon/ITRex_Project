@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../src/app");
-const queueService = require("../src/components/queue/QueueService");
+const queueService = require("../src/components/queue/queueService");
 
 //clearQueue
 beforeEach(async () => {
