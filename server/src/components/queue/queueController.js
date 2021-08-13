@@ -10,6 +10,7 @@ class QueueController {
   getCurrentPerson = async (req, res, next) => {
     try {
       const person = await this.queueService.getCurrent();
+
       return person ? res.json(person) : res.json({ message: msg.QUEUE_EMPTY });
     } catch (error) {
       return next(error);
@@ -19,6 +20,7 @@ class QueueController {
   getNextPerson = async (req, res, next) => {
     try {
       const person = await this.queueService.getNext();
+
       return person ? res.json(person) : res.json({ message: msg.QUEUE_EMPTY });
     } catch (error) {
       return next(error);
@@ -28,6 +30,7 @@ class QueueController {
   addPerson = async (req, res, next) => {
     try {
       await this.queueService.add(req.body);
+
       return res
         .status(StatusCodes.CREATED)
         .json({ message: msg.PERSON_CREATED });

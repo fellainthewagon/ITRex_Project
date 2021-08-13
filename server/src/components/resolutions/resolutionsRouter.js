@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const resolutionsController = require("./resolutionsController");
 const validate = require("../../middleware/validate");
-const ttlAdapter = require("../../middleware/ttlAdapter");
 
 const resolutionsRouter = Router();
 
@@ -42,7 +41,6 @@ resolutionsRouter.use("/:key/resolution", validate.keyParams);
 resolutionsRouter.patch(
   "/:key/resolution",
   validate.body,
-  ttlAdapter,
   resolutionsController.addResolution
 );
 
