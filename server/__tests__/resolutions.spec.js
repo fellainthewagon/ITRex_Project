@@ -2,8 +2,6 @@ const request = require("supertest");
 const app = require("../src/app");
 const resolutionsService = require("../src/components/resolutions/resolutionsService");
 
-const ttl = 30000;
-
 //clearStorage
 beforeEach(() => {
   resolutionsService.destroyStorage();
@@ -86,10 +84,10 @@ describe("Key-value STORAGE: GET from storage functionality", () => {
  */
 
 describe("Key-value STORAGE: DELETE from storage functionality", () => {
-  it("returns 200 OK when DELETE req is done", async () => {
+  it("returns 204 NO CONTENT when DELETE req is done", async () => {
     await addResolution();
     const res = await deleteResolution("mia");
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(204);
   });
 
   it("deleted patient when DELETE req is done", async () => {
@@ -105,12 +103,6 @@ describe("Key-value STORAGE: DELETE from storage functionality", () => {
     await deleteResolution("mia");
     const res = await getResolution("vincent");
     expect(res.body.key).toBe("vincent");
-  });
-
-  it("returns succes message when resolution deleted", async () => {
-    await addResolution();
-    const res = await deleteResolution("mia");
-    expect(res.body.message).toBe("Resolution successfully deleted");
   });
 
   it("returns 404 not found and message if resolution not found", async () => {

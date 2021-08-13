@@ -1,7 +1,8 @@
 const app = require("./src/app");
+const config = require("./config/config");
 
-const PORT = process.env.PORT || 3000;
+const { port: PORT, host: HOST } = config.app;
 
-app.listen(PORT, () => {
-  global.console.log(`Server has been started on port: ${PORT}`);
+app.listen(PORT, HOST, () => {
+  global.console.log(`Server has been started on ${HOST}, port: ${PORT}`);
 });

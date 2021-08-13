@@ -1,4 +1,6 @@
 const queueService = require("./queueService");
+const StatusCodes = require("http-status-codes");
+const msg = require("../../library/statusMessage");
 
 class QueueController {
   constructor(queueService) {
@@ -8,8 +10,7 @@ class QueueController {
   getCurrentPerson = async (req, res, next) => {
     try {
       const person = await this.queueService.getCurrent();
-      if (person) return res.json(person);
-      return res.json({ message: "The Queue is empty" });
+      return person ? res.json(person) : res.json({ message: msg.QUEUE_EMPTY });
     } catch (error) {
       return next(error);
     }
@@ -18,8 +19,7 @@ class QueueController {
   getNextPerson = async (req, res, next) => {
     try {
       const person = await this.queueService.getNext();
-      if (person) return res.json(person);
-      return res.json({ message: "The Queue is empty" });
+      return person ? res.json(person) : res.json({ message: msg.QUEUE_EMPTY });
     } catch (error) {
       return next(error);
     }
@@ -28,7 +28,9 @@ class QueueController {
   addPerson = async (req, res, next) => {
     try {
       await this.queueService.add(req.body);
-      return res.status(201).json({ message: "Person added to queue" });
+      return res
+        .status(StatusCodes.CREATED)
+        .json({ message: msg.PERSON_CREATED });
     } catch (error) {
       return next(error);
     }

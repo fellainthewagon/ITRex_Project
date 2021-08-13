@@ -65,7 +65,7 @@ queueRouter.get("/next", queueController.getNextPerson);
  *         description: It means person added to queue (created)
  *         content:
  *           application/json:
- *             example: {message: "Person added to queue"}
+ *             example: {message: "Person added to Queue"}
  *       '400':
  *         description: It means request body invalid
  *         content:

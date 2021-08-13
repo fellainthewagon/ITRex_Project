@@ -89,10 +89,10 @@ class Handlers {
   deleteResolution = async () => {
     try {
       if (!this.name) return;
-      const { message } = await this.resolution.delete(this.name);
+      await this.resolution.delete(this.name);
       this.name = null;
       showResolution.forEach((item) => {
-        item.innerText = message;
+        item.innerText = "Resolution successfully deleted";
       });
     } catch (error) {
       this.displayError(error);

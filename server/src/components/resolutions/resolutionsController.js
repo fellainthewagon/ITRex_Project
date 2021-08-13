@@ -1,4 +1,6 @@
 const resolutionsService = require("./resolutionsService");
+const StatusCodes = require("http-status-codes");
+const msg = require("../../library/statusMessage");
 
 class ResolutionsController {
   constructor(resolutionsService) {
@@ -11,7 +13,7 @@ class ResolutionsController {
         ...req.params,
         ...req.body,
       });
-      return res.status(204).send();
+      return res.status(StatusCodes.NO_CONTENT).send();
     } catch (error) {
       return next(error);
     }
@@ -20,8 +22,11 @@ class ResolutionsController {
   getResolution = async (req, res, next) => {
     try {
       const resolution = await resolutionsService.getResolution(req.params.key);
-      if (resolution) return res.json(resolution.data);
-      return res.status(404).json({ message: "Resolution not found" });
+      return resolution
+        ? res.json(resolution.data)
+        : res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ message: msg.RESOLUTION_NOT_FOUND });
     } catch (error) {
       return next(error);
     }
@@ -32,10 +37,11 @@ class ResolutionsController {
       const isDeleted = await resolutionsService.deleteResolution(
         req.params.key
       );
-      if (isDeleted) {
-        return res.json({ message: "Resolution successfully deleted" });
-      }
-      return res.status(404).json({ message: "Resolution not found" });
+      return isDeleted
+        ? res.status(StatusCodes.NO_CONTENT).send()
+        : res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ message: msg.RESOLUTION_NOT_FOUND });
     } catch (error) {
       return next(error);
     }

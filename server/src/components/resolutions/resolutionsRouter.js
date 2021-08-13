@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const resolutionsController = require("./resolutionsController");
 const validate = require("../../middleware/validate");
+const ttlAdapter = require("../../middleware/ttlAdapter");
 
 const resolutionsRouter = Router();
 
@@ -41,6 +42,7 @@ resolutionsRouter.use("/:key/resolution", validate.keyParams);
 resolutionsRouter.patch(
   "/:key/resolution",
   validate.body,
+  ttlAdapter,
   resolutionsController.addResolution
 );
 
@@ -92,11 +94,8 @@ resolutionsRouter.get("/:key/resolution", resolutionsController.getResolution);
  *         example: "vincent"
  *         description: Patient key (name) that need delete
  *     responses:
- *       '200':
+ *       '204':
  *         description: Resolution has been successfully deleted
- *         content:
- *           application/json:
- *             example: { message: "Resolution successfully deleted" }
  *       '400':
  *         description: It means that params property in URL is invalid
  *         content:

@@ -31,7 +31,7 @@ describe("FIFO: add to queue functionality ('add' button)", () => {
 
   it("returns success body.message when person added to queue", async () => {
     const res = await addPersonToQueue({ key: "mia" });
-    expect(res.body.message).toBe("Person added to queue");
+    expect(res.body.message).toBe("Person added to Queue");
   });
 
   it("after add 'vincent' to the queue, last person in queue is 'vincent'", async () => {

@@ -1,6 +1,7 @@
 const ValidationException = require("../errors/validationException");
 const formatter = require("../utils/formatter");
 const valid = require("../schema/resolution");
+const msg = require("../library/statusMessage");
 
 class Validate {
   constructor(formatter, valid) {
@@ -10,7 +11,7 @@ class Validate {
 
   keyParams = (req, res, next) => {
     if (!this.valid(req.params)) {
-      throw new ValidationException("'Key' parameter is not valid");
+      throw new ValidationException(msg.INVALID_PARAMS);
     }
     req.params.key = this.formatter(req.params.key);
     next();
@@ -18,7 +19,7 @@ class Validate {
 
   body = (req, res, next) => {
     if (!this.valid(req.body)) {
-      throw new ValidationException("Invalid body");
+      throw new ValidationException(msg.INVALID_BODY);
     }
     next();
   };

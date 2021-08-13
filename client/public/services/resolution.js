@@ -2,7 +2,7 @@ import config from "../config/config.js";
 
 class Resolution {
   constructor({ protocol, host, port } = config) {
-    this.url = `${protocol}://${host}:${port}/api/patients/;`;
+    this.url = `${protocol}://${host}:${port}/api/patients/`;
   }
 
   async add(key, value) {
@@ -21,10 +21,9 @@ class Resolution {
   }
 
   async delete(key) {
-    const response = await fetch(this.url + key + "/resolution", {
+    await fetch(this.url + key + "/resolution", {
       method: "DELETE",
     });
-    return response.json();
   }
 }
 

@@ -8,16 +8,17 @@ class ResolutionsService {
     ];
   }
 
-  async addResolution(value, ttl = 30000) {
-    this.storage = this.storage.filter((item) => item.data.key !== value.key);
-    const resolution = {
-      data: value,
+  async addResolution(value) {
+    const { key, resolution, ttl } = value;
+    this.storage = this.storage.filter((item) => item.data.key !== key);
+    const patientResolution = {
+      data: { key, resolution },
       timestamp: Date.now() + ttl,
     };
-    this.storage.push(resolution);
+    this.storage.push(patientResolution);
 
     setTimeout(() => {
-      this.storage = this.storage.filter((item) => item.data.key !== value.key);
+      this.storage = this.storage.filter((item) => item.data.key !== key);
     }, ttl);
   }
 
