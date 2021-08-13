@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const queueController = require("./queueController");
-const Validate = require("../../middleware/validate");
+const validate = require("../../middleware/validate");
 
 const queueRouter = Router();
 
@@ -72,6 +72,6 @@ queueRouter.get("/next", queueController.getNextPerson);
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
-queueRouter.post("/", Validate.body, queueController.addPerson);
+queueRouter.post("/", validate.body, queueController.addPerson);
 
 module.exports = queueRouter;

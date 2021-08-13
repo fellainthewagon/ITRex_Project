@@ -1,21 +1,23 @@
 const resolutionsService = require("./resolutionsService");
 
 class ResolutionsController {
-  async addResolution(req, res, next) {
+  constructor(resolutionsService) {
+    this.resolutionsService = resolutionsService;
+  }
+
+  addResolution = async (req, res, next) => {
     try {
-      const resolution = await resolutionsService.addResolution({
+      await resolutionsService.addResolution({
         ...req.params,
         ...req.body,
       });
-      return res
-        .status(201)
-        .json({ resolution, message: "Resolution added to storage" });
+      return res.status(204).send();
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
-  async getResolution(req, res, next) {
+  getResolution = async (req, res, next) => {
     try {
       const resolution = await resolutionsService.getResolution(req.params.key);
       if (resolution) return res.json(resolution.data);
@@ -23,9 +25,9 @@ class ResolutionsController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 
-  async deleteResolution(req, res, next) {
+  deleteResolution = async (req, res, next) => {
     try {
       const isDeleted = await resolutionsService.deleteResolution(
         req.params.key
@@ -37,7 +39,7 @@ class ResolutionsController {
     } catch (error) {
       return next(error);
     }
-  }
+  };
 }
 
-module.exports = new ResolutionsController();
+module.exports = new ResolutionsController(resolutionsService);

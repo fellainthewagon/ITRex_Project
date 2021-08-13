@@ -1,5 +1,6 @@
-import Resolution from "./resolution.js";
-import Queue from "./queue.js";
+import resolution from "./services/resolution.js";
+import queue from "./services/queue.js";
+import displayError from "./error/displayError.js";
 
 const showCurrentPatient = document.querySelectorAll(".current-patient");
 const addPatientInput = document.querySelector("#add-patient");
@@ -8,97 +9,94 @@ const showResolution = document.querySelectorAll(".show-resolution");
 const findInputQueue = document.querySelector("#find-patient-queue");
 const findInputDoctor = document.querySelector("#find-patient-doctor");
 
-let name;
-let current;
-
 class Handlers {
-  async setupCurrentPatient() {
-    try {
-      current = await Queue.getCurrent();
-      showCurrentPatient.forEach((item) => {
-        item.innerText = current.key || current.message;
-      });
-    } catch (error) {
-      displayError(error);
-    }
+  constructor(resolution, queue, displayError) {
+    this.resolution = resolution;
+    this.queue = queue;
+    this.displayError = displayError;
+
+    this.name;
+    this.current;
   }
 
-  async getNextPatient() {
+  setupCurrentPatient = async () => {
     try {
-      current = await Queue.next();
+      this.current = await this.queue.getCurrent();
       showCurrentPatient.forEach((item) => {
-        item.innerText = current.key || current.message;
+        item.innerText = this.current.key || this.current.message;
       });
     } catch (error) {
-      displayError(error);
+      this.displayError(error);
     }
-  }
+  };
 
-  async addPatientToQueue(e) {
+  getNextPatient = async () => {
+    try {
+      this.current = await this.queue.next();
+      showCurrentPatient.forEach((item) => {
+        item.innerText = this.current.key || this.current.message;
+      });
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
+
+  addPatientToQueue = async (e) => {
     e.preventDefault();
     try {
       const name = addPatientInput.value.toLowerCase().trim();
-      await Queue.add({ key: name });
+      await this.queue.add({ key: name });
       addPatientInput.value = "";
-      if (!current.key) {
-        current.key = name;
+      if (!this.current.key) {
+        this.current.key = name;
         showCurrentPatient.forEach((item) => {
           item.innerText = name;
         });
       }
     } catch (error) {
-      displayError(error);
+      this.displayError(error);
     }
-  }
+  };
 
-  async addResolution(e) {
+  addResolution = async (e) => {
     e.preventDefault();
     try {
-      const { key } = await Queue.getCurrent();
+      const { key } = await this.queue.getCurrent();
       if (!key) return;
-      await Resolution.add(key, { resolution: resolutionInput.value });
+      await this.resolution.add(key, { resolution: resolutionInput.value });
       resolutionInput.value = "";
     } catch (error) {
-      displayError(error);
+      this.displayError(error);
     }
-  }
+  };
 
-  async findResolution(e) {
+  findResolution = async (e) => {
     e.preventDefault();
     try {
       const value = findInputQueue.value || findInputDoctor.value;
-      name = value.toLowerCase().trim();
+      this.name = value.toLowerCase().trim();
       findInputQueue.value = findInputDoctor.value = "";
 
-      const { resolution, message } = await Resolution.find(name);
+      const { resolution, message } = await this.resolution.find(this.name);
       showResolution.forEach((item) => {
         item.innerText = resolution || message;
       });
     } catch (error) {
-      displayError(error);
+      this.displayError(error);
     }
-  }
+  };
 
-  async deleteResolution() {
+  deleteResolution = async () => {
     try {
-      if (!name) return;
-      const { message } = await Resolution.delete(name);
-      name = null;
+      if (!this.name) return;
+      const { message } = await this.resolution.delete(this.name);
+      this.name = null;
       showResolution.forEach((item) => {
         item.innerText = message;
       });
     } catch (error) {
-      displayError(error);
+      this.displayError(error);
     }
-  }
+  };
 }
-export default new Handlers();
-
-function displayError(error) {
-  alert(
-    `Ouch!\n` +
-      `An error occurred while uploading data\n` +
-      "Error: " +
-      error.message
-  );
-}
+export default new Handlers(resolution, queue, displayError);

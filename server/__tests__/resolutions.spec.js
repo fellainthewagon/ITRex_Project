@@ -13,7 +13,7 @@ async function addResolution(
   key = "mia",
   resolution = { resolution: "blabla" }
 ) {
-  return request(app).post(`/api/patients/${key}/resolution`).send(resolution);
+  return request(app).patch(`/api/patients/${key}/resolution`).send(resolution);
 }
 
 async function getResolution(key) {
@@ -28,25 +28,10 @@ async function deleteResolution(key) {
  * STORAGE: ADD (POST)
  */
 
-describe("Key-value STORAGE: add (POST) to storage functionality", () => {
-  it("returns 201 OK when POST req is done", async () => {
+describe("Key-value STORAGE: add (PATCH) to storage functionality", () => {
+  it("returns 204 OK when POST req is done", async () => {
     const res = await addResolution();
-    expect(res.status).toBe(201);
-  });
-
-  it("returns created resolution after successfull POST req", async () => {
-    const res = await addResolution("vic", {
-      resolution: "piu-piu",
-    });
-    expect(res.body.resolution).toStrictEqual({
-      key: "vic",
-      resolution: "piu-piu",
-    });
-  });
-
-  it("returns success message when resolution added to storage", async () => {
-    const res = await addResolution();
-    expect(res.body.message).toBe("Resolution added to storage");
+    expect(res.status).toBe(204);
   });
 
   it("added patient to storage with 'key' and 'resolution' properties", async () => {

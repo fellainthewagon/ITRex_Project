@@ -1,9 +1,7 @@
-import config from "./config/config.js";
-
-const { protocol, host, port } = config;
+import config from "../config/config.js";
 
 class Queue {
-  constructor() {
+  constructor({ protocol, host, port } = config) {
     this.url = `${protocol}://${host}:${port}/api/queue`;
   }
 

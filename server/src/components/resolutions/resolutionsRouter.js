@@ -1,16 +1,16 @@
 const { Router } = require("express");
 const resolutionsController = require("./resolutionsController");
-const Validate = require("../../middleware/validate");
+const validate = require("../../middleware/validate");
 
 const resolutionsRouter = Router();
 
-resolutionsRouter.use("/:key/resolution", Validate.keyParams);
+resolutionsRouter.use("/:key/resolution", validate.keyParams);
 /**
  * @swagger
  * /patients/{key}/resolution:
- *   post:
+ *   patch:
  *     tags: [resolutions]
- *     description: Add resolutions
+ *     description: Add resolution
  *     parameters:
  *       - in: path
  *         name: key
@@ -30,20 +30,17 @@ resolutionsRouter.use("/:key/resolution", Validate.keyParams);
  *                 type: string
  *                 example: "drug addict"
  *     responses:
- *       '201':
+ *       '204':
  *         description: It means resolution successfully created
- *         content:
- *           application/json:
- *             example: {message: "Resolution added to storage"}
  *       '400':
  *         description: It means that request body is invalid
  *         content:
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
-resolutionsRouter.post(
+resolutionsRouter.patch(
   "/:key/resolution",
-  Validate.body,
+  validate.body,
   resolutionsController.addResolution
 );
 

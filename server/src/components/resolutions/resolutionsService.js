@@ -19,7 +19,6 @@ class ResolutionsService {
     setTimeout(() => {
       this.storage = this.storage.filter((item) => item.data.key !== value.key);
     }, ttl);
-    return resolution.data;
   }
 
   async getResolution(key) {
