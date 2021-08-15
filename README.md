@@ -39,7 +39,7 @@ npm start
 If you want to use "Redis" run App with the following command:
 
 ```sh
-STORAGE="redis" npm run dev
+npm run dev:redis
 ```
 
 > NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application.

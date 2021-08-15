@@ -13,10 +13,10 @@ class StorageFactory {
       throw new Error(msg.UNSUPPORTED_TYPE);
     }
 
-    const StorageConstructor = this.container.get(this.storage.type);
+    const storageProvider = this.container.get(this.storage.type);
     global.console.log(`'${this.storage.type}-storage' in action!`);
 
-    return StorageConstructor();
+    return storageProvider();
   };
 }
 
