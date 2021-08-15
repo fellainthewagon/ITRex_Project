@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
-const config = require("../config/config");
+const config = require("../config");
 require("dotenv").config();
 
 const queueRouter = require("./components/queue/queueRouter");

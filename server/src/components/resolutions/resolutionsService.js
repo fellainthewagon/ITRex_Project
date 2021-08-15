@@ -1,46 +1,21 @@
+const storageService = require("../storageFactory");
+
 class ResolutionsService {
-  constructor() {
-    this.storage = [
-      /*       {
-        data: { key: "vincent", resolution: "drag addict" },
-        timestamp: 1728346053674,
-      }, */
-    ];
+  constructor(storageService) {
+    this.storageService = storageService;
   }
 
-  async addResolution(value, ttl) {
-    this.storage = this.storage.filter((item) => item.data.key !== value.key);
-    const patientResolution = {
-      data: value,
-      timestamp: Date.now() + ttl,
-    };
-    this.storage.push(patientResolution);
+  addResolution = async (value, ttl) => {
+    await this.storageService.create(value, ttl);
+  };
 
-    setTimeout(() => {
-      this.storage = this.storage.filter((item) => item.data.key !== value.key);
-    }, ttl);
-  }
+  getResolution = async (key) => {
+    return this.storageService.findByKey(key);
+  };
 
-  async getResolution(key) {
-    const patient = this.storage.find((item) => item.data.key === key);
-    return !patient ? null : patient;
-  }
-
-  async deleteResolution(key) {
-    const resolution = this.storage.find((item) => item.data.key === key);
-    if (!resolution) return null;
-    this.storage = this.storage.filter((item) => item.data.key !== key);
-    return true;
-  }
-
-  // create for testing
-  async getAllResolutions() {
-    return this.storage;
-  }
-
-  async destroyStorage() {
-    this.storage = [];
-  }
+  deleteResolution = async (key) => {
+    return this.storageService.deleteByKey(key);
+  };
 }
 
-module.exports = new ResolutionsService();
+module.exports = new ResolutionsService(storageService);

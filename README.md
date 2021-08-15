@@ -1,6 +1,6 @@
 # Project "Clinic"
 
-### How to setup Application:
+### App description
 
 Version of node and npm:
 `npm 7.17.0`
@@ -11,6 +11,8 @@ Clone the repo, install the dependencies and run.
 ```bash
 git clone https://github.com/fellainthewagon/ITRex_Project.git
 ```
+
+#### How to run App:
 
 Frontend:
 
@@ -28,14 +30,28 @@ npm i
 npm start
 ```
 
-How to run API tests:
+> NOTE: configure the App with your environment variables! Use `.env.example` file.
+> Or use default vars which is in `config` folder file.
+
+##### Storage type
+
+"In-Memory" (the RAM of your machine) storage set by default.
+If you want to use "Redis" run App with the following command:
+
+```sh
+STORAGE="redis" npm run dev
+```
+
+> NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application.
+
+#### How to run API tests:
 
 ```sh
 cd server
 npm run test
 ```
 
-How to up Application:
+#### How to up App:
 
 ```sh
 cd project
@@ -43,11 +59,13 @@ docker-compose up -d
 click http://localhost:5000
 ```
 
-API documentation:
+#### API documentation:
 
 ```sh
 http://localhost:3000/api-docs
 ```
+
+## Description
 
 ### A sigle Express-based app with two unrelated functionality:
 

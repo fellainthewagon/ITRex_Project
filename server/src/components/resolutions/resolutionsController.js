@@ -1,7 +1,7 @@
 const resolutionsService = require("./resolutionsService");
 const StatusCodes = require("http-status-codes");
 const msg = require("../../library/statusMessage");
-const config = require("../../../config/config");
+const config = require("../../../config");
 
 class ResolutionsController {
   constructor(resolutionsService) {
@@ -10,8 +10,7 @@ class ResolutionsController {
 
   addResolution = async (req, res, next) => {
     try {
-      console.log(req.body);
-      await resolutionsService.addResolution(
+      await this.resolutionsService.addResolution(
         { ...req.params, ...req.body },
         config.app.ttl
       );
@@ -24,10 +23,12 @@ class ResolutionsController {
 
   getResolution = async (req, res, next) => {
     try {
-      const resolution = await resolutionsService.getResolution(req.params.key);
+      const resolution = await this.resolutionsService.getResolution(
+        req.params.key
+      );
 
       return resolution
-        ? res.json(resolution.data)
+        ? res.json(resolution)
         : res
             .status(StatusCodes.NOT_FOUND)
             .json({ message: msg.RESOLUTION_NOT_FOUND });
@@ -38,7 +39,7 @@ class ResolutionsController {
 
   deleteResolution = async (req, res, next) => {
     try {
-      const isDeleted = await resolutionsService.deleteResolution(
+      const isDeleted = await this.resolutionsService.deleteResolution(
         req.params.key
       );
 
