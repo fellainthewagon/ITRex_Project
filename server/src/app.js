@@ -26,7 +26,10 @@ app.use(express.json());
 app.use("/api/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
 app.get("/", (req, res) => {
-  res.send(`<h1>Miracle! It works... Database: ${process.env.RESOLUTION}</h1>`);
+  res.send(
+    `<h1>Miracle! It works... Database: resolutions - ${process.env.RESOLUTION}, ` +
+      `queue - ${process.env.QUEUE}</h1>`
+  );
 });
 
 app.use(errorHandler);

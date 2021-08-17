@@ -18,6 +18,8 @@ services:
       - redis
     environment:
       DEV_REDIS_HOST: redis
+      RESOLUTION: redis
+      QUEUE: redis
   client:
     build:
       context: ./client

@@ -33,7 +33,7 @@ npm start
 > NOTE: configure the App with your environment variables! Use `.env.example` file.
 > Or use default vars which is in `config` folder file.
 
-##### Storage type
+#### Storage type
 
 "In-Memory" (the RAM of your machine) storage set by default for each entities (`.env.example`).
 If you want to use "Redis" storage run App with the following command:
@@ -53,7 +53,7 @@ In this configuration above, the "queue" data will use the default storage - "In
 
 > NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application.
 
-##### Time to live (TTL)
+#### Time to live (TTL)
 
 You can set TTL manually. In this case, the TTL will be equal to 1 hour:
 
@@ -73,7 +73,17 @@ npm run test
 ```sh
 cd project
 docker-compose up -d
-click http://localhost:5000
+```
+
+Then click http://localhost:5000
+
+If you want to change the storage type, add values (redis/memory) to the `docker-compose.yml`.
+
+```
+    environment:
+      DEV_REDIS_HOST: redis
+      RESOLUTION: # redis || memory
+      QUEUE: # redis || memory
 ```
 
 #### API documentation:
