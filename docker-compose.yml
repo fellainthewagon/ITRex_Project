@@ -1,13 +1,23 @@
 version: "3"
 services:
+  redis:
+    image: redis
+    networks:
+      - clinic-app
   clinic-api:
     build:
       context: ./server
       dockerfile: Dockerfile
+    volumes:
+      - ./server:/app
     ports:
       - "3000:3000"
     networks:
       - clinic-app
+    depends_on:
+      - redis
+    environment:
+      DEV_REDIS_HOST: redis
   client:
     build:
       context: ./client

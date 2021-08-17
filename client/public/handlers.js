@@ -21,7 +21,7 @@ class Handlers {
 
   setupCurrentPatient = async () => {
     try {
-      this.current = await this.queue.getCurrent();
+      this.current = this.current || (await this.queue.getCurrent());
       showCurrentPatient.forEach((item) => {
         item.innerText = this.current.key || this.current.message;
       });

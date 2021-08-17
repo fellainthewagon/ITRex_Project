@@ -1,21 +1,27 @@
-const MemoryStorage = require("../storageServices/memoryStorage");
-const RedisStorage = require("../storageServices/redisStorage");
+const ResolutionMemoryStorage = require("../storageServices/memoryServices/resolutionMemoryStorage");
+const ResolutionRedisStorage = require("../storageServices/redisServices/resolutionRedisStorage");
+const QueueMemoryStorage = require("../storageServices/memoryServices/queueMemoryStorage");
+const QueueRedisStorage = require("../storageServices/redisServices/queueRedisStorage");
 
 const redis = require("../../redis");
+const { resolution, queue } = require("../../../config");
 const DatabaseException = require("../../errors/databaseException");
-const { storage } = require("../../../config");
+const closure = require("../../utils/closure");
 
-// create redis provider
-function redisClosureFunction(storageData, redisDB, exception) {
-  return () => new RedisStorage(storageData, redisDB, exception);
-}
-const redisStorageProvider = redisClosureFunction(
-  storage,
+exports.resolutionRedisStorageProvider = closure(
+  resolution,
   redis,
-  DatabaseException
+  DatabaseException,
+  ResolutionRedisStorage
 );
 
-// create in-memory provider
-const memoryStorageProvider = () => new MemoryStorage();
+exports.queueRedisStorageProvider = closure(
+  queue,
+  redis,
+  DatabaseException,
+  QueueRedisStorage
+);
 
-module.exports = { redisStorageProvider, memoryStorageProvider };
+exports.resolutionMemoryStorageProvider = () => new ResolutionMemoryStorage();
+
+exports.queueMemoryStorageProvider = () => new QueueMemoryStorage();

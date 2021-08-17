@@ -35,14 +35,31 @@ npm start
 
 ##### Storage type
 
-"In-Memory" (the RAM of your machine) storage set by default.
-If you want to use "Redis" run App with the following command:
+"In-Memory" (the RAM of your machine) storage set by default for each entities (`.env.example`).
+If you want to use "Redis" storage run App with the following command:
 
 ```sh
 npm run dev:redis
 ```
 
+You can use different types of storage for different entities.
+For example, if you want to use "Redis" to store only "resolutions", run App with the following command:
+
+```sh
+RESOLUTION=redis npm run dev
+```
+
+In this configuration above, the "queue" data will use the default storage - "In-Memory"
+
 > NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application.
+
+##### Time to live (TTL)
+
+You can set TTL manually. In this case, the TTL will be equal to 1 hour:
+
+```sh
+TTL=3600 npm run dev
+```
 
 #### How to run API tests:
 

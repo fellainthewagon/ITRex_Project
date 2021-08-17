@@ -1,36 +1,21 @@
+const { queueStorageService } = require("../storageFactory");
+
 class QueueService {
-  constructor() {
-    this.queue = [
-      /* { key: "name1" }, { key: "name2" } */
-    ];
+  constructor(storageService) {
+    this.storageService = storageService;
   }
 
-  async getCurrent() {
-    return this.queue[0];
-  }
+  getCurrent = async () => {
+    return this.storageService.getCurrent();
+  };
 
-  async getNext() {
-    this.queue.shift();
-    return this.queue[0];
-  }
+  getNext = async () => {
+    return this.storageService.getNext();
+  };
 
-  async add(value) {
-    if (this.queue.find((item) => item.key === value.key)) {
-      this.queue = this.queue.filter((item) => item.key !== value.key);
-      this.queue.push(value);
-      return;
-    }
-    this.queue.push(value);
-  }
-
-  // create for testing
-  async getAllpersons() {
-    return this.queue;
-  }
-
-  async destroyQueue() {
-    this.queue = [];
-  }
+  add = async (value) => {
+    await this.storageService.add(value);
+  };
 }
 
-module.exports = new QueueService();
+module.exports = new QueueService(queueStorageService);

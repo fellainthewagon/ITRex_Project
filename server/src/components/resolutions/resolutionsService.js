@@ -1,4 +1,4 @@
-const storageService = require("../storageFactory");
+const { resolutionStorageService } = require("../storageFactory");
 
 class ResolutionsService {
   constructor(storageService) {
@@ -18,4 +18,4 @@ class ResolutionsService {
   };
 }
 
-module.exports = new ResolutionsService(storageService);
+module.exports = new ResolutionsService(resolutionStorageService);

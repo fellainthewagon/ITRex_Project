@@ -1,25 +1,23 @@
-const { storage } = require("../../../config");
 const container = require("./storageContainer");
-const msg = require("../../library/statusMessage");
+const { resolution, queue } = require("../../../config");
+const { UNSUPPORTED_TYPE } = require("../../library/statusMessage");
 
-class StorageFactory {
-  constructor(storage, container) {
-    this.storage = storage;
+class Factory {
+  constructor(container) {
     this.container = container;
   }
 
-  create = () => {
-    if (!this.container.has(this.storage.type)) {
-      throw new Error(msg.UNSUPPORTED_TYPE);
+  createStorage = ({ type }) => {
+    if (!this.container.has(type)) {
+      throw new Error(UNSUPPORTED_TYPE);
     }
-
-    const storageProvider = this.container.get(this.storage.type);
-    global.console.log(`'${this.storage.type}-storage' in action!`);
+    const storageProvider = this.container.get(type);
 
     return storageProvider();
   };
 }
 
-const storageFactory = new StorageFactory(storage, container);
+const factory = new Factory(container);
 
-module.exports = storageFactory.create();
+exports.resolutionStorageService = factory.createStorage(resolution);
+exports.queueStorageService = factory.createStorage(queue);

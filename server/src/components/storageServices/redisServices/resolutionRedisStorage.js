@@ -1,10 +1,15 @@
-module.exports = class RedisStorage {
+module.exports = class ResolutionRedisStorage {
   constructor(storage, redis, DatabaseException) {
-    this.redis = redis;
     this.storage = storage;
-    this.client = this.redis.createClient(this.storage.port, this.storage.host);
+    this.redis = redis;
+    this.client = this.redis.createClient(
+      `redis://${this.storage.host}:${this.storage.port}/1`
+    );
     this.client.on("connect", () =>
-      global.console.log("... connected to Redis!")
+      global.console.log(
+        `Connected to Redis! | ${this.storage.host}:${this.storage.port} |` +
+          ` Database: '${this.storage.type.split("_")[1]}'`
+      )
     );
     this.exception = DatabaseException;
   }

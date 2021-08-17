@@ -4,7 +4,7 @@
   "description": "Clinic",
   "main": "index.js",
   "scripts": {
-    "dev:redis": "STORAGE=redis nodemon index",
+    "dev:redis": "RESOLUTION=redis QUEUE=redis nodemon index",
     "dev": "nodemon index",
     "test": "jest --watch"
   },

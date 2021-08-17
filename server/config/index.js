@@ -1,5 +1,9 @@
-require("dotenv").config();
-const STORAGE_TYPE = require("../src/library/storageType");
+const {
+  REDIS_RESOLUTION,
+  MEMORY_RESOLUTION,
+  REDIS_QUEUE,
+  MEMORY_QUEUE,
+} = require("../src/library/storageType");
 
 const config = {
   mode: process.env.NODE_ENV || "dev",
@@ -10,15 +14,28 @@ const config = {
   },
 };
 
-const storage = {
-  memory: { type: STORAGE_TYPE.MEMORY },
+const host = process.env.DEV_REDIS_HOST || "127.0.0.1";
+const port = parseInt(process.env.DEV_REDIS_PORT, 10) || 6379;
+
+const resolution = {
   redis: {
-    type: STORAGE_TYPE.REDIS,
-    port: parseInt(process.env.DEV_REDIS_PORT, 10) || 6379,
-    host: process.env.DEV_REDIS_HOST || "127.0.0.1",
+    host,
+    port,
+    type: REDIS_RESOLUTION,
   },
+  memory: { type: MEMORY_RESOLUTION },
 };
 
-config.storage = storage[process.env.STORAGE];
+const queue = {
+  redis: {
+    host,
+    port,
+    type: REDIS_QUEUE,
+  },
+  memory: { type: MEMORY_QUEUE },
+};
+
+config.resolution = resolution[process.env.RESOLUTION];
+config.queue = queue[process.env.QUEUE];
 
 module.exports = config;

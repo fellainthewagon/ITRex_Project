@@ -1,6 +1,7 @@
-module.exports = class MemoryStorage {
+module.exports = class ResolutionMemoryStorage {
   constructor() {
     this.storage = [];
+    global.console.log("Connected to Memory! | Database: 'resolution'");
   }
 
   async create(value, ttl) {

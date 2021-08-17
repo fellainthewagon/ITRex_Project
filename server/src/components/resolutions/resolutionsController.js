@@ -1,6 +1,6 @@
 const resolutionsService = require("./resolutionsService");
 const StatusCodes = require("http-status-codes");
-const msg = require("../../library/statusMessage");
+const { RESOLUTION_NOT_FOUND } = require("../../library/statusMessage");
 const config = require("../../../config");
 
 class ResolutionsController {
@@ -31,7 +31,7 @@ class ResolutionsController {
         ? res.json(resolution)
         : res
             .status(StatusCodes.NOT_FOUND)
-            .json({ message: msg.RESOLUTION_NOT_FOUND });
+            .json({ message: RESOLUTION_NOT_FOUND });
     } catch (error) {
       return next(error);
     }
@@ -47,7 +47,7 @@ class ResolutionsController {
         ? res.status(StatusCodes.NO_CONTENT).send()
         : res
             .status(StatusCodes.NOT_FOUND)
-            .json({ message: msg.RESOLUTION_NOT_FOUND });
+            .json({ message: RESOLUTION_NOT_FOUND });
     } catch (error) {
       return next(error);
     }

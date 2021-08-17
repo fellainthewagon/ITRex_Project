@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
 const config = require("../config");
-require("dotenv").config();
 
 const queueRouter = require("./components/queue/queueRouter");
 const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
@@ -27,7 +26,7 @@ app.use(express.json());
 app.use("/api/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
 app.get("/", (req, res) => {
-  res.send("<h1>Miracle! It works...</h1>");
+  res.send(`<h1>Miracle! It works... Database: ${process.env.RESOLUTION}</h1>`);
 });
 
 app.use(errorHandler);
