@@ -1,7 +1,7 @@
-const ResolutionMemoryStorage = require("../storageServices/memoryServices/resolutionMemoryStorage");
-const ResolutionRedisStorage = require("../storageServices/redisServices/resolutionRedisStorage");
-const QueueMemoryStorage = require("../storageServices/memoryServices/queueMemoryStorage");
-const QueueRedisStorage = require("../storageServices/redisServices/queueRedisStorage");
+const ResolutionMemoryStorage = require("../resolutions/resolutionMemoryStorage");
+const ResolutionRedisStorage = require("../resolutions/resolutionRedisStorage");
+const QueueMemoryStorage = require("../queue/queueMemoryStorage");
+const QueueRedisStorage = require("../queue/queueRedisStorage");
 
 const redis = require("../../redis");
 const { resolution, queue } = require("../../../config");

@@ -1,16 +1,16 @@
-const resolutionsService = require("./resolutionsService");
+const { resolutionStorageService } = require("../storageFactory");
 const StatusCodes = require("http-status-codes");
 const { RESOLUTION_NOT_FOUND } = require("../../library/statusMessage");
 const config = require("../../../config");
 
 class ResolutionsController {
-  constructor(resolutionsService) {
-    this.resolutionsService = resolutionsService;
+  constructor(storageService) {
+    this.resolutionStorageService = storageService;
   }
 
   addResolution = async (req, res, next) => {
     try {
-      await this.resolutionsService.addResolution(
+      await this.resolutionStorageService.create(
         { ...req.params, ...req.body },
         config.app.ttl
       );
@@ -23,7 +23,7 @@ class ResolutionsController {
 
   getResolution = async (req, res, next) => {
     try {
-      const resolution = await this.resolutionsService.getResolution(
+      const resolution = await this.resolutionStorageService.findByKey(
         req.params.key
       );
 
@@ -39,7 +39,7 @@ class ResolutionsController {
 
   deleteResolution = async (req, res, next) => {
     try {
-      const isDeleted = await this.resolutionsService.deleteResolution(
+      const isDeleted = await this.resolutionStorageService.deleteByKey(
         req.params.key
       );
 
@@ -54,4 +54,4 @@ class ResolutionsController {
   };
 }
 
-module.exports = new ResolutionsController(resolutionsService);
+module.exports = new ResolutionsController(resolutionStorageService);

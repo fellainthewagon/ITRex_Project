@@ -1,9 +1,13 @@
 require("dotenv").config();
-const ResolutionRedisStorage = require("../src/components/storageServices/redisServices/resolutionRedisStorage");
-const DatabaseException = require("../src/errors/databaseException");
-const redis = require("../src/redis");
+const ResolutionRedisStorage = require("../../src/components/resolutions/resolutionRedisStorage");
+const DatabaseException = require("../../src/errors/databaseException");
+const redis = require("../../src/redis");
 
-const storage = { host: "127.0.0.1", port: 6379, type: "redis_resolution" };
+const storage = {
+  host: process.env.DEV_REDIS_HOST,
+  port: process.env.TEST_REDIS_PORT,
+  type: "redis_resolution",
+};
 const client = redis.createClient(`redis://${storage.host}:${storage.port}/1`);
 
 const value = { key: "vinny", resolution: "booom" };
@@ -16,7 +20,7 @@ const resolutionRedisStorage = new ResolutionRedisStorage(
 );
 
 afterAll(() => jest.restoreAllMocks());
-beforeEach(async () => await client.flushallAsync());
+afterEach(async () => await client.flushallAsync());
 
 describe("ResolutionRedisStorage class", () => {
   it("init class, create instance with props and methods", () => {

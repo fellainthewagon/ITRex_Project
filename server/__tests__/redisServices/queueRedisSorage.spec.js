@@ -1,9 +1,13 @@
 require("dotenv").config();
-const QueueRedisStorage = require("../src/components/storageServices/redisServices/queueRedisStorage");
-const DatabaseException = require("../src/errors/databaseException");
-const redis = require("../src/redis");
+const QueueRedisStorage = require("../../src/components/queue/queueRedisStorage");
+const DatabaseException = require("../../src/errors/databaseException");
+const redis = require("../../src/redis");
 
-const storage = { host: "127.0.0.1", port: 6379, type: "redis_queue" };
+const storage = {
+  host: process.env.DEV_REDIS_HOST,
+  port: process.env.TEST_REDIS_PORT,
+  type: "redis_queue",
+};
 const client = redis.createClient(`redis://${storage.host}:${storage.port}/0`);
 
 const basicKey = { key: "donny" };
@@ -14,7 +18,7 @@ const queueRedisStorage = new QueueRedisStorage(
   DatabaseException
 );
 
-beforeEach(async () => await client.delAsync("key"));
+afterEach(async () => await client.flushallAsync());
 afterAll(() => jest.restoreAllMocks());
 
 describe("QueueRedisStorage class", () => {

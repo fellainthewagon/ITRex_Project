@@ -4,9 +4,10 @@
   "description": "Clinic",
   "main": "index.js",
   "scripts": {
-    "dev:redis": "RESOLUTION=redis QUEUE=redis nodemon index",
     "dev": "nodemon index",
-    "test": "jest --watch"
+    "dev:redis": "RESOLUTION=redis QUEUE=redis nodemon index",
+    "test": "NODE_ENV=test jest --watch",
+    "test:redis": "RESOLUTION=redis QUEUE=redis NODE_ENV=test jest --watch"
   },
   "keywords": [],
   "author": "Rylkov Andrey <fellainthewagon@gmail.com>",

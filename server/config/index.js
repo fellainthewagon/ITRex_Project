@@ -14,8 +14,13 @@ const config = {
   },
 };
 
+const portMode = {
+  dev: process.env.DEV_REDIS_PORT,
+  test: process.env.TEST_REDIS_PORT,
+};
+
 const host = process.env.DEV_REDIS_HOST || "127.0.0.1";
-const port = parseInt(process.env.DEV_REDIS_PORT, 10) || 6379;
+const port = parseInt(portMode[process.env.NODE_ENV], 10) || 6379;
 
 const resolution = {
   redis: {

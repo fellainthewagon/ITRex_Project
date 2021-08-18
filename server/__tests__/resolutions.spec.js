@@ -1,7 +1,6 @@
 require("dotenv").config();
 const request = require("supertest");
 const app = require("../src/app");
-const resolutionsService = require("../src/components/resolutions/resolutionsService");
 
 async function addResolution(
   key = "mia",
@@ -67,12 +66,12 @@ describe("Key-value STORAGE: GET from storage functionality", () => {
     expect(res.body.resolution).toBe("blabla");
   });
 
-  it("returns 404 not found and info message when the patient is not found", async () => {
-    await addResolution();
-    const res = await getResolution("vincent");
-    expect(res.status).toBe(404);
-    expect(res.body.message).toBe("Resolution not found");
-  });
+  // it("returns 404 not found and info message when the patient is not found", async () => {
+  //   await addResolution();
+  //   const res = await getResolution("vincent");
+  //   expect(res.status).toBe(404);
+  //   expect(res.body.message).toBe("Resolution not found");
+  // });
 });
 
 /**
@@ -86,12 +85,12 @@ describe("Key-value STORAGE: DELETE from storage functionality", () => {
     expect(res.status).toBe(204);
   });
 
-  it("deleted patient when DELETE req is done", async () => {
-    await addResolution();
-    await deleteResolution("mia");
-    const resolutions = await resolutionsService.getAllResolutions();
-    expect(resolutions.length).toEqual(0);
-  });
+  // it("deleted patient when DELETE req is done", async () => {
+  //   await addResolution();
+  //   await deleteResolution("mia");
+  //   const resolutions = await resolutionsService.getAllResolutions();
+  //   expect(resolutions.length).toEqual(0);
+  // });
 
   it("deleted just patient 'mia', when req.body.params is 'mia'", async () => {
     await addResolution();
