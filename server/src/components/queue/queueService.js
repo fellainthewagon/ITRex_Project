@@ -5,17 +5,17 @@ class QueueService {
     this.storageService = storageService;
   }
 
-  getCurrent = async () => {
-    return this.storageService.getCurrent();
-  };
+  async getCurrent() {
+    return this.storageService.getFirst();
+  }
 
-  getNext = async () => {
+  async getNext() {
     return this.storageService.getNext();
-  };
+  }
 
-  add = async (value) => {
+  async add(value) {
     await this.storageService.add(value);
-  };
+  }
 }
 
 module.exports = new QueueService(queueStorageService);

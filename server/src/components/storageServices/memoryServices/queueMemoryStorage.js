@@ -4,8 +4,8 @@ module.exports = class QueueMemoryStorage {
     global.console.log("Connected to Memory! | Database: 'queue'");
   }
 
-  async getCurrent() {
-    return this.queue[0];
+  async getFirst() {
+    return this.queue[0] ? this.queue[0] : null;
   }
 
   async getNext() {

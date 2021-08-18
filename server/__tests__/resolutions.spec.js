@@ -3,11 +3,6 @@ const request = require("supertest");
 const app = require("../src/app");
 const resolutionsService = require("../src/components/resolutions/resolutionsService");
 
-//clearStorage
-beforeEach(() => {
-  resolutionsService.destroyStorage();
-});
-
 async function addResolution(
   key = "mia",
   resolution = { resolution: "blabla" }

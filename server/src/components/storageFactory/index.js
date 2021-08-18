@@ -7,14 +7,14 @@ class Factory {
     this.container = container;
   }
 
-  createStorage = ({ type }) => {
+  createStorage({ type }) {
     if (!this.container.has(type)) {
       throw new Error(UNSUPPORTED_TYPE);
     }
     const storageProvider = this.container.get(type);
 
     return storageProvider();
-  };
+  }
 }
 
 const factory = new Factory(container);

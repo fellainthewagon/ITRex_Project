@@ -5,17 +5,17 @@ class ResolutionsService {
     this.storageService = storageService;
   }
 
-  addResolution = async (value, ttl) => {
+  async addResolution(value, ttl) {
     await this.storageService.create(value, ttl);
-  };
+  }
 
-  getResolution = async (key) => {
+  async getResolution(key) {
     return this.storageService.findByKey(key);
-  };
+  }
 
-  deleteResolution = async (key) => {
+  async deleteResolution(key) {
     return this.storageService.deleteByKey(key);
-  };
+  }
 }
 
 module.exports = new ResolutionsService(resolutionStorageService);
