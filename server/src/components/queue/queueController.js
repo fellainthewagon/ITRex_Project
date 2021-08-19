@@ -10,7 +10,7 @@ class QueueController {
     this.queueService = queueService;
   }
 
-  getCurrentPerson = async (req, res, next) => {
+  async getCurrentPerson(req, res, next) {
     try {
       const person = await this.queueService.getCurrentPerson();
 
@@ -18,9 +18,9 @@ class QueueController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getNextPerson = async (req, res, next) => {
+  async getNextPerson(req, res, next) {
     try {
       const person = await this.queueService.getNextPerson();
 
@@ -28,9 +28,9 @@ class QueueController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  addPerson = async (req, res, next) => {
+  async addPerson(req, res, next) {
     try {
       await this.queueService.addToQueue(req.body);
 
@@ -38,7 +38,7 @@ class QueueController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 }
 
 module.exports = new QueueController(queueService);

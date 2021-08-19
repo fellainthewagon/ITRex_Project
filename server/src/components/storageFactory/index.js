@@ -1,6 +1,6 @@
 const { UNSUPPORTED_TYPE } = require("../../constants/statusMessage");
-const Memory = require("./memoryStorage");
-const Redis = require("./redisStorage");
+const Memory = require("./memory");
+const Redis = require("./redis");
 
 module.exports = class Factory {
   static create(storageType) {

@@ -5,7 +5,7 @@ const redis = require("../../redis");
 module.exports = class Redis {
   constructor() {
     this.client = redis
-      .createClient(`redis://${config.redis.host}:${config.redis.port}/0`)
+      .createClient({ host: config.redis.host, port: config.redis.port })
       .on("connect", () =>
         global.console.log(
           `Connected to Redis! | ${config.redis.host}:${config.redis.port}`

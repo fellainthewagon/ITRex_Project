@@ -23,6 +23,10 @@ class ResolutionsService {
   }
 }
 
+/**
+ *  start point for setting type of storage => redis || memory
+ */
+
 module.exports = new ResolutionsService(
   Factory.create(config.resolutionsStorage)
 );

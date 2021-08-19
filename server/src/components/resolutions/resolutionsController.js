@@ -8,7 +8,7 @@ class ResolutionsController {
     this.resolutionsService = service;
   }
 
-  addResolution = async (req, res, next) => {
+  async addResolution(req, res, next) {
     try {
       await this.resolutionsService.add(
         req.params.key,
@@ -20,9 +20,9 @@ class ResolutionsController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  getResolution = async (req, res, next) => {
+  async getResolution(req, res, next) {
     try {
       const resolution = await this.resolutionsService.get(req.params.key);
 
@@ -34,9 +34,9 @@ class ResolutionsController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 
-  deleteResolution = async (req, res, next) => {
+  async deleteResolution(req, res, next) {
     try {
       const isDeleted = await this.resolutionsService.delete(req.params.key);
 
@@ -48,7 +48,7 @@ class ResolutionsController {
     } catch (error) {
       return next(error);
     }
-  };
+  }
 }
 
 module.exports = new ResolutionsController(resolutionsService);

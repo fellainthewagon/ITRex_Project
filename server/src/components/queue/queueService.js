@@ -24,4 +24,8 @@ class QueueService {
   }
 }
 
+/**
+ *  start point for setting type of storage => redis || memory
+ */
+
 module.exports = new QueueService(Factory.create(config.queueStorage));

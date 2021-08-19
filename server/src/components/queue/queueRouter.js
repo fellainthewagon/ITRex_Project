@@ -22,7 +22,9 @@ const queueRouter = Router();
  *                    type: string
  *                    example: "jules"
  */
-queueRouter.get("/current", queueController.getCurrentPerson);
+queueRouter.get("/current", async (req, res, next) => {
+  await queueController.getCurrentPerson(req, res, next);
+});
 
 /**
  * @swagger
@@ -42,7 +44,9 @@ queueRouter.get("/current", queueController.getCurrentPerson);
  *                    type: string
  *                    example: "butch"
  */
-queueRouter.get("/next", queueController.getNextPerson);
+queueRouter.get("/next", async (req, res, next) => {
+  await queueController.getNextPerson(req, res, next);
+});
 
 /**
  * @swagger
@@ -72,6 +76,8 @@ queueRouter.get("/next", queueController.getNextPerson);
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
-queueRouter.post("/", validate.body, queueController.addPerson);
+queueRouter.post("/", validate.body, async (req, res, next) => {
+  await queueController.addPerson(req, res, next);
+});
 
 module.exports = queueRouter;
