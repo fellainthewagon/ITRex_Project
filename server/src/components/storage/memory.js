@@ -4,22 +4,22 @@ module.exports = class Memory {
     this.resolutions = [];
   }
 
-  async getFirstFromList() {
+  getFirstFromList() {
     return this.queue[0];
   }
 
-  async popFromList() {
+  popFromList() {
     this.queue.shift();
   }
 
-  async addToList(data) {
+  addToList(data) {
     if (this.queue.some((item) => item === data)) {
       this.queue = this.queue.filter((item) => item !== data);
     }
     this.queue.push(data);
   }
 
-  async create(key, resolution, ttl) {
+  create(key, resolution, ttl) {
     const patientResolution = {
       data: { key, resolution },
       timestamp: Date.now() + ttl,
@@ -29,13 +29,13 @@ module.exports = class Memory {
     setTimeout(() => this.remove(key), ttl * 1000);
   }
 
-  async findByName(name) {
+  findByName(name) {
     const patient = this.search(name);
 
     return patient ? patient.data.resolution : null;
   }
 
-  async deleteByName(name) {
+  deleteByName(name) {
     const patient = this.search(name);
 
     return patient ? this.remove(name) : null;

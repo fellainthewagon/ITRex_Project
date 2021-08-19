@@ -1,19 +1,13 @@
-const queueService = require("../src/components/queue/queueService");
+const queueService = require("../../src/components/queue/queueService");
 
-/**
- *  Prepare this.storage inside testing classes
- */
-const queueStorage = (queueService.storage = jest.fn());
-queueStorage.getFirstFromList = jest.fn();
-queueStorage.popFromList = jest.fn();
-queueStorage.addToList = jest.fn();
-
-/**
- *  Testing QueueService and ResolutionsService
- */
 beforeEach(() => jest.clearAllMocks());
 
 describe("'QueueService' class", () => {
+  const queueStorage = (queueService.storage = jest.fn());
+  queueStorage.getFirstFromList = jest.fn();
+  queueStorage.popFromList = jest.fn();
+  queueStorage.addToList = jest.fn();
+
   it("'getCurrentPerson' method", async () => {
     queueStorage.getFirstFromList.mockResolvedValue("mia");
     const result = await queueService.getCurrentPerson();

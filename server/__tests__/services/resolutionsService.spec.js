@@ -1,20 +1,13 @@
-const resolutionsService = require("../src/components/resolutions/resolutionsService");
+const resolutionsService = require("../../src/components/resolutions/resolutionsService");
 
-/**
- *  Prepare this.storage inside testing classes
- */
-
-const resolutionsStorage = (resolutionsService.storage = jest.fn());
-resolutionsStorage.create = jest.fn();
-resolutionsStorage.findByName = jest.fn();
-resolutionsStorage.deleteByName = jest.fn();
-
-/**
- *  Testing QueueService and ResolutionsService
- */
 beforeEach(() => jest.clearAllMocks());
 
 describe("'ResolutionsService' class", () => {
+  const resolutionsStorage = (resolutionsService.storage = jest.fn());
+  resolutionsStorage.create = jest.fn();
+  resolutionsStorage.findByName = jest.fn();
+  resolutionsStorage.deleteByName = jest.fn();
+
   it("'add' method", async () => {
     const result = await resolutionsService.add("mia", "hello nodeJS", 30);
 
