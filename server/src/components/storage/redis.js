@@ -4,13 +4,15 @@ const redis = require("../../redis");
 
 module.exports = class Redis {
   constructor() {
-    this.client = redis
-      .createClient({ host: config.redis.host, port: config.redis.port })
-      .on("connect", () =>
+    this.client = redis.createClient({
+      host: config.redis.host,
+      port: config.redis.port,
+    });
+    /*       .on("connect", () =>
         global.console.log(
           `Connected to Redis! | ${config.redis.host}:${config.redis.port}`
         )
-      );
+      ); */
     this.exception = DatabaseException;
     this.listName = "clinicQueue";
   }

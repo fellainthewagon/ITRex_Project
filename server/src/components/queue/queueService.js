@@ -1,4 +1,4 @@
-const Factory = require("../storageFactory");
+const Factory = require("../storage");
 const config = require("../../../config");
 
 class QueueService {
