@@ -17,8 +17,8 @@ services:
     depends_on:
       - redis
     environment:
-      DEV_REDIS_HOST: redis
-      RESOLUTION: redis
+      REDIS_HOST: redis
+      RESOLUTIONS: redis
       QUEUE: redis
   client:
     build:

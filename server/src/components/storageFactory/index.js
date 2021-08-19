@@ -1,23 +1,18 @@
-const container = require("./storageContainer");
-const { resolution, queue } = require("../../../config");
-const { UNSUPPORTED_TYPE } = require("../../library/statusMessage");
+const { UNSUPPORTED_TYPE } = require("../../constants/statusMessage");
+const Memory = require("./memoryStorage");
+const Redis = require("./redisStorage");
 
-class Factory {
-  constructor(container) {
-    this.container = container;
-  }
+module.exports = class Factory {
+  static create(storageType) {
+    switch (storageType) {
+      case "redis":
+        return new Redis();
 
-  createStorage({ type }) {
-    if (!this.container.has(type)) {
-      throw new Error(UNSUPPORTED_TYPE);
+      case "memory":
+        return new Memory();
+
+      default:
+        throw new Error(UNSUPPORTED_TYPE);
     }
-    const storageProvider = this.container.get(type);
-
-    return storageProvider();
   }
-}
-
-const factory = new Factory(container);
-
-exports.resolutionStorageService = factory.createStorage(resolution);
-exports.queueStorageService = factory.createStorage(queue);
+};

@@ -35,18 +35,12 @@ npm start
 
 #### Storage type
 
-"In-Memory" (the RAM of your machine) storage set by default for each entities (`.env.example`).
-If you want to use "Redis" storage run App with the following command:
-
-```sh
-npm run dev:redis
-```
-
+"In-Memory" (the RAM of your machine) storage set by default (`.env.example`).
 You can use different types of storage for different entities.
 For example, if you want to use "Redis" to store only "resolutions", run App with the following command:
 
 ```sh
-RESOLUTION=redis npm run dev
+RESOLUTIONS=redis npm run dev
 ```
 
 In this configuration above, the "queue" data will use the default storage - "In-Memory"

@@ -1,7 +1,7 @@
 const ValidationException = require("../errors/validationException");
 const formatter = require("../utils/formatter");
 const valid = require("../schema/resolution");
-const { INVALID_PARAMS, INVALID_BODY } = require("../library/statusMessage");
+const { INVALID_PARAMS, INVALID_BODY } = require("../constants/statusMessage");
 
 class Validate {
   constructor(formatter, valid) {

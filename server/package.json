@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index",
-    "dev:redis": "RESOLUTION=redis QUEUE=redis nodemon index",
-    "test": "NODE_ENV=test jest --watch",
-    "test:redis": "RESOLUTION=redis QUEUE=redis NODE_ENV=test jest --watch"
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "Rylkov Andrey <fellainthewagon@gmail.com>",

@@ -21,7 +21,7 @@ class Resolution {
   }
 
   async delete(key) {
-    await fetch(this.url + key + "/resolution", {
+    return fetch(this.url + key + "/resolution", {
       method: "DELETE",
     });
   }

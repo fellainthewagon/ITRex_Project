@@ -4,7 +4,7 @@ const DatabaseException = require("../../src/errors/databaseException");
 const redis = require("../../src/redis");
 
 const storage = {
-  host: process.env.DEV_REDIS_HOST,
+  host: process.env.REDIS_HOST,
   port: process.env.TEST_REDIS_PORT,
   type: "redis_resolution",
 };

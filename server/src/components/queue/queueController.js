@@ -1,15 +1,18 @@
-const { queueStorageService } = require("../storageFactory");
 const StatusCodes = require("http-status-codes");
-const { QUEUE_EMPTY, PERSON_CREATED } = require("../../library/statusMessage");
+const {
+  QUEUE_EMPTY,
+  PERSON_CREATED,
+} = require("../../constants/statusMessage");
+const queueService = require("./queueService");
 
 class QueueController {
-  constructor(storageService) {
-    this.queueStorageService = storageService;
+  constructor(queueService) {
+    this.queueService = queueService;
   }
 
   getCurrentPerson = async (req, res, next) => {
     try {
-      const person = await this.queueStorageService.getFirst();
+      const person = await this.queueService.getCurrentPerson();
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
     } catch (error) {
@@ -19,7 +22,7 @@ class QueueController {
 
   getNextPerson = async (req, res, next) => {
     try {
-      const person = await this.queueStorageService.getNext();
+      const person = await this.queueService.getNextPerson();
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
     } catch (error) {
@@ -29,7 +32,7 @@ class QueueController {
 
   addPerson = async (req, res, next) => {
     try {
-      await this.queueStorageService.add(req.body);
+      await this.queueService.addToQueue(req.body);
 
       return res.status(StatusCodes.CREATED).json({ message: PERSON_CREATED });
     } catch (error) {
@@ -38,4 +41,4 @@ class QueueController {
   };
 }
 
-module.exports = new QueueController(queueStorageService);
+module.exports = new QueueController(queueService);
