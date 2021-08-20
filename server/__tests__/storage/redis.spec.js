@@ -1,4 +1,5 @@
 const Redis = require("../../src/components/storage/redis");
+const DatabaseException = require("../../src/errors/databaseException");
 
 beforeEach(() => jest.clearAllMocks());
 
@@ -64,5 +65,12 @@ describe("'Redis' class", () => {
 
     client.delAsync.mockResolvedValue(null);
     expect(await redis.deleteByName("mia")).toEqual(null);
+  });
+
+  it("'DatabaseException' throwing", async () => {
+    client.delAsync.mockResolvedValue(() => {
+      throw new DatabaseException();
+    });
+    expect(await redis.deleteByName()).toThrow(DatabaseException);
   });
 });
