@@ -22,7 +22,7 @@ module.exports = class Memory {
   create(key, resolution, ttl) {
     const patientResolution = {
       data: { key, resolution },
-      timestamp: Date.now() + ttl,
+      // timestamp: Date.now() + ttl,
     };
     this.resolutions.push(patientResolution);
 

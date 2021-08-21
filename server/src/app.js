@@ -9,6 +9,14 @@ const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
 
 const swaggerDocs = require("./doc/swaggerDocs");
 const errorHandler = require("./middleware/errorHandler");
+const db = require("./models/db");
+
+db.sequelize
+  .authenticate()
+  .then(() => {
+    global.console.log("...connected to DB!");
+  })
+  .catch((error) => global.console.log(error));
 
 const app = express();
 
