@@ -1,0 +1,37 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - clinic
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: api
+    volumes:
+      - ./server:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - clinic
+    depends_on:
+      - redis
+    environment:
+      RESOLUTIONS: redis
+      QUEUE: redis
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "5000:5000"
+    networks:
+      - clinic
+    depends_on:
+      - api
+networks:
+  clinic:
+    driver: bridge
