@@ -5,8 +5,8 @@ class Resolution {
     this.url = `${protocol}://${host}:${port}/api/patients/`;
   }
 
-  async add(key, value) {
-    await fetch(this.url + key + "/resolution", {
+  async add(id, value) {
+    await fetch(this.url + id + "/resolution", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -15,13 +15,17 @@ class Resolution {
     });
   }
 
-  async find(key) {
-    const response = await fetch(this.url + key + "/resolution");
+  async find(value) {
+    const params = new URLSearchParams({
+      name: value,
+    });
+
+    const response = await fetch(this.url + "resolution?" + params);
     return response.json();
   }
 
-  async delete(key) {
-    return fetch(this.url + key + "/resolution", {
+  async delete(id) {
+    return fetch(this.url + id + "/resolution", {
       method: "DELETE",
     });
   }

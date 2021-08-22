@@ -15,6 +15,7 @@ module.exports = class Redis {
       ); */
     this.exception = DatabaseException;
     this.listName = "clinicQueue";
+    this.prefix = "resolution:";
   }
 
   async getFirstFromList() {
@@ -41,25 +42,25 @@ module.exports = class Redis {
     }
   }
 
-  async create(name, data, ttl) {
+  async create(patientId, data, ttl) {
     try {
-      await this.client.setexAsync(name, ttl, data);
+      await this.client.setexAsync(this.prefix + patientId, ttl, data);
     } catch (error) {
       throw new this.exception(error);
     }
   }
 
-  async findByName(name) {
+  async findById(patientId) {
     try {
-      return this.client.getAsync(name);
+      return this.client.getAsync(this.prefix + patientId);
     } catch (error) {
       throw new this.exception(error);
     }
   }
 
-  async deleteByName(name) {
+  async deleteById(patientId) {
     try {
-      return this.client.delAsync(name);
+      return this.client.delAsync(this.prefix + patientId);
     } catch (error) {
       throw new this.exception(error);
     }

@@ -2,16 +2,8 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Patient extends Model {
-    static associate({ Resolution }) {
-      this.hasMany(Resolution, {
-        onDelete: "cascade",
-        foreignKey: "patientId",
-        as: "resolutions",
-      });
-    }
-
     toJSON() {
-      return { ...this.get(), id: undefined, uuid: undefined };
+      return { ...this.get(), id: undefined };
     }
   }
 

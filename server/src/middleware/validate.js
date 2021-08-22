@@ -9,11 +9,18 @@ class Validate {
     this.valid = valid;
   }
 
-  keyParams = (req, res, next) => {
+  params = (req, res, next) => {
     if (!this.valid(req.params)) {
       throw new ValidationException(INVALID_PARAMS);
     }
-    req.params.key = this.formatter(req.params.key);
+    // req.params.key = this.formatter(req.params.key);
+    next();
+  };
+
+  query = (req, res, next) => {
+    if (!this.valid(req.query)) {
+      throw new ValidationException(INVALID_QUERY);
+    }
     next();
   };
 

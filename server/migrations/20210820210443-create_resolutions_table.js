@@ -6,6 +6,7 @@ module.exports = {
       id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
       },
       uuid: {
@@ -13,7 +14,7 @@ module.exports = {
         defaultValue: DataTypes.UUIDV4,
       },
       resolution: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       patientId: {

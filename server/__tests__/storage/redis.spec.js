@@ -47,9 +47,9 @@ describe("'Redis' class", () => {
     expect(client.setexAsync).toHaveBeenCalledWith("mia", TTL, "hello node.js");
   });
 
-  it("'findByName' method", async () => {
+  it("'findById' method", async () => {
     client.getAsync.mockResolvedValue("hello node.js");
-    expect(await redis.findByName("mia")).toEqual("hello node.js");
+    expect(await redis.findById("mia")).toEqual("hello node.js");
     expect(client.getAsync).toHaveBeenCalledTimes(1);
     expect(client.getAsync).toHaveBeenCalledWith("mia");
 
@@ -57,20 +57,20 @@ describe("'Redis' class", () => {
     expect(await redis.findByName("mia")).toEqual(null);
   });
 
-  it("'deleteByName' method", async () => {
+  it("'deleteById' method", async () => {
     client.delAsync.mockResolvedValue("hello node.js");
-    expect(await redis.deleteByName("mia")).toEqual("hello node.js");
+    expect(await redis.deleteById("mia")).toEqual("hello node.js");
     expect(client.delAsync).toHaveBeenCalledTimes(1);
     expect(client.delAsync).toHaveBeenCalledWith("mia");
 
     client.delAsync.mockResolvedValue(null);
-    expect(await redis.deleteByName("mia")).toEqual(null);
+    expect(await redis.deleteById("mia")).toEqual(null);
   });
 
   it("'DatabaseException' throwing", async () => {
     client.delAsync.mockResolvedValue(() => {
       throw new DatabaseException();
     });
-    expect(await redis.deleteByName()).toThrow(DatabaseException);
+    expect(await redis.deleteById()).toThrow(DatabaseException);
   });
 });

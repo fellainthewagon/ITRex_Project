@@ -9,14 +9,7 @@ const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
 
 const swaggerDocs = require("./doc/swaggerDocs");
 const errorHandler = require("./middleware/errorHandler");
-const db = require("./models/db");
-
-db.sequelize
-  .authenticate()
-  .then(() => {
-    global.console.log("...connected to DB!");
-  })
-  .catch((error) => global.console.log(error));
+const db = require("./db");
 
 const app = express();
 
@@ -27,6 +20,16 @@ app.use(cors());
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(morgan(config.mode));
 app.use(express.json());
+
+/**
+ * database connection
+ */
+db.sequelize
+  .authenticate()
+  .then(() => {
+    global.console.log("...connected to DB!");
+  })
+  .catch((error) => global.console.log(error));
 
 /**
  * routes

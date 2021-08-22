@@ -4,8 +4,6 @@ const validate = require("../../middleware/validate");
 
 const resolutionsRouter = Router();
 
-resolutionsRouter.use("/:key/resolution", validate.keyParams);
-
 /**
  * @swagger
  * /patients/{key}/resolution:
@@ -40,7 +38,8 @@ resolutionsRouter.use("/:key/resolution", validate.keyParams);
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
 resolutionsRouter.patch(
-  "/:key/resolution",
+  "/:id/resolution",
+  validate.params,
   validate.body,
   async (req, res, next) => {
     await resolutionsController.addResolution(req, res, next);
@@ -78,7 +77,7 @@ resolutionsRouter.patch(
  *           application/json:
  *             example: {message: "Resolution not found"}
  */
-resolutionsRouter.get("/:key/resolution", async (req, res, next) => {
+resolutionsRouter.get("/resolution", validate.query, async (req, res, next) => {
   await resolutionsController.getResolution(req, res, next);
 });
 
@@ -110,8 +109,12 @@ resolutionsRouter.get("/:key/resolution", async (req, res, next) => {
  *           application/json:
  *             example: {message: "Resolution not found"}
  */
-resolutionsRouter.delete("/:key/resolution", async (req, res, next) => {
-  await resolutionsController.deleteResolution(req, res, next);
-});
+resolutionsRouter.delete(
+  "/:id/resolution",
+  validate.params,
+  async (req, res, next) => {
+    await resolutionsController.deleteResolution(req, res, next);
+  }
+);
 
 module.exports = resolutionsRouter;

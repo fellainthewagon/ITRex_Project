@@ -3,11 +3,16 @@ const ajv = require("./ajv");
 const schema = {
   type: "object",
   properties: {
-    key: { type: "string" },
+    id: { type: "string" },
+    name: { type: "string" },
     resolution: { type: "string" },
   },
   additionalProperties: false,
-  oneOf: [{ required: ["key"] }, { required: ["resolution"] }],
+  oneOf: [
+    { required: ["name"] },
+    { required: ["id"] },
+    { required: ["resolution"] },
+  ],
 };
 
 module.exports = ajv.compile(schema);

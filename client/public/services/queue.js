@@ -10,19 +10,20 @@ class Queue {
     return response.json();
   }
 
+  async next() {
+    const response = await fetch(this.url + "/next");
+    return response.json();
+  }
+
   async add(value) {
-    await fetch(this.url + "/", {
+    const response = await fetch(this.url + "/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(value),
     });
-  }
-
-  async next() {
-    const response = await fetch(this.url + "/next");
-    return await response.json();
+    return response.json();
   }
 }
 

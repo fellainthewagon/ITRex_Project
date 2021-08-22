@@ -56,14 +56,14 @@ describe("'Memory' class", () => {
     jest.useRealTimers();
   });
 
-  it("'findByName' method", () => {
-    expect(memory.findByName("jules")).toBeNull();
-    expect(memory.findByName("mia")).toBe("hello baby");
+  it("'findById' method", () => {
+    expect(memory.findById("jules")).toBeNull();
+    expect(memory.findById("mia")).toBe("hello baby");
   });
 
-  it("'deleteByName' method", () => {
-    expect(memory.deleteByName("jules")).toBeNull();
-    expect(memory.deleteByName("mia")).toBeTruthy();
+  it("'deleteById' method", () => {
+    expect(memory.deleteById("jules")).toBeNull();
+    expect(memory.deleteById("mia")).toBeTruthy();
   });
 
   it("'search' and 'remove' secondary halper methods", () => {
