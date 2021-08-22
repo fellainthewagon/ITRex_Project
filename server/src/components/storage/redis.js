@@ -20,7 +20,8 @@ module.exports = class Redis {
 
   async getFirstFromList() {
     try {
-      return this.client.lindexAsync(this.listName, 0);
+      const json = await this.client.lindexAsync(this.listName, 0);
+      return JSON.parse(json);
     } catch (error) {
       throw new this.exception(error);
     }
@@ -36,7 +37,8 @@ module.exports = class Redis {
 
   async addToList(data) {
     try {
-      await this.client.rpushAsync(this.listName, data);
+      const json = JSON.stringify(data);
+      await this.client.rpushAsync(this.listName, json);
     } catch (error) {
       throw new this.exception(error);
     }
@@ -44,7 +46,9 @@ module.exports = class Redis {
 
   async create(patientId, data, ttl) {
     try {
-      await this.client.setexAsync(this.prefix + patientId, ttl, data);
+      const json = JSON.stringify(data);
+      // console.log("redis-create ====>" + json);
+      await this.client.setexAsync(this.prefix + patientId, ttl, json);
     } catch (error) {
       throw new this.exception(error);
     }
@@ -52,7 +56,10 @@ module.exports = class Redis {
 
   async findById(patientId) {
     try {
-      return this.client.getAsync(this.prefix + patientId);
+      // console.log("redis-create ====>" + this.prefix + patientId);
+      const json = await this.client.getAsync(this.prefix + patientId);
+
+      return JSON.parse(json);
     } catch (error) {
       throw new this.exception(error);
     }

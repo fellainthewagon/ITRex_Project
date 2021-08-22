@@ -7,22 +7,15 @@ class ResolutionsService {
     this.storage = storageType;
   }
 
-  async add(patientId, resolution, ttl) {
+  async add(patientId, body, ttl) {
     try {
-      const saved = await db.Resolution.create({
-        resolution,
-        patientId,
-      });
+      const { id, resolution } = (
+        await db.Resolution.create({ resolution: body, patientId })
+      ).get({ plain: true });
 
-      await this.storage.create(
-        patientId,
-        JSON.stringify({
-          id: saved.dataValues.id,
-          resolution: saved.dataValues.resolution,
-          patientId,
-        }),
-        ttl
-      );
+      const data = { id, resolution, patientId };
+
+      await this.storage.create(patientId, data, ttl);
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +28,7 @@ class ResolutionsService {
 
       const data = await this.storage.findById(patient.id);
 
-      return data ? JSON.parse(data) : null;
+      return data || null;
     } catch (error) {
       console.log(error);
     }

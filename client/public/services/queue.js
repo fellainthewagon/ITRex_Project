@@ -2,7 +2,7 @@ import config from "../config/config.js";
 
 class Queue {
   constructor({ protocol, host, port } = config) {
-    this.url = `${protocol}://${host}:${port}/api/queue`;
+    this.url = `${protocol}://${host}:${port}/api/patients/queue`;
   }
 
   async getCurrent() {
@@ -15,13 +15,13 @@ class Queue {
     return response.json();
   }
 
-  async add(value) {
+  async add(name) {
     const response = await fetch(this.url + "/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(value),
+      body: JSON.stringify({ name }),
     });
     return response.json();
   }

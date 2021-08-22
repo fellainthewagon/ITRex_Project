@@ -25,7 +25,7 @@ app.use(express.json());
  * database connection
  */
 db.sequelize
-  .authenticate()
+  .sync(/* {force: true} */)
   .then(() => {
     global.console.log("...connected to DB!");
   })
@@ -34,7 +34,7 @@ db.sequelize
 /**
  * routes
  */
-app.use("/api/queue", queueRouter);
+app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
 app.get("/", (req, res) => {
   res.send(

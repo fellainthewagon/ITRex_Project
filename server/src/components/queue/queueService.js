@@ -9,16 +9,13 @@ class QueueService {
 
   async addToQueue(data) {
     try {
-      const patient = await db.Patient.create({ name: data.name });
+      const { id, name } = (await db.Patient.create({ name: data })).get({
+        plain: true,
+      });
 
-      await this.storage.addToList(
-        JSON.stringify({
-          id: patient.dataValues.id,
-          name: patient.dataValues.name,
-        })
-      );
+      await this.storage.addToList({ id, name });
 
-      return patient.dataValues;
+      return { id, name };
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +25,7 @@ class QueueService {
     try {
       const data = await this.storage.getFirstFromList();
 
-      return data ? { data: JSON.parse(data) } : null;
+      return data || null;
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +36,7 @@ class QueueService {
       await this.storage.popFromList();
       const data = await this.storage.getFirstFromList();
 
-      return data ? { data: JSON.parse(data) } : null;
+      return data || null;
     } catch (error) {
       console.log(error);
     }

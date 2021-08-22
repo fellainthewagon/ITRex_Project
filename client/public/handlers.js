@@ -58,16 +58,16 @@ class Handlers {
     e.preventDefault();
     try {
       const name = formatter(addPatientInput.value);
-      const patient = await this.queue.add({ name });
+      const patient = await this.queue.add(name);
 
       if (!this.data.name) {
         this.data.name = patient.name;
+        this.data.id = patient.id;
         showCurrentPatient.forEach((item) => {
           item.innerText = this.data.name;
         });
       }
 
-      this.data.id = patient.id;
       clearInputs();
     } catch (error) {
       this.displayError(error);

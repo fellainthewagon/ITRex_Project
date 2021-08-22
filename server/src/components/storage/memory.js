@@ -13,9 +13,6 @@ module.exports = class Memory {
   }
 
   async addToList(data) {
-    if (this.queue.some((item) => item === data)) {
-      this.queue = this.queue.filter((item) => item !== data);
-    }
     this.queue.push(data);
   }
 
