@@ -8,13 +8,8 @@ module.exports = class Redis {
       host: config.redis.host,
       port: config.redis.port,
     });
-    /*       .on("connect", () =>
-        global.console.log(
-          `Connected to Redis! | ${config.redis.host}:${config.redis.port}`
-        )
-      ); */
     this.exception = DatabaseException;
-    this.listName = "clinicQueue";
+    this.listName = "queue";
     this.prefix = "resolution:";
   }
 
@@ -27,9 +22,10 @@ module.exports = class Redis {
     }
   }
 
-  async popFromList() {
+  async getNextFromList() {
     try {
       await this.client.lpopAsync(this.listName);
+      return this.getFirstFromList();
     } catch (error) {
       throw new this.exception(error);
     }
@@ -44,11 +40,9 @@ module.exports = class Redis {
     }
   }
 
-  async create(patientId, data, ttl) {
+  async create(patientId, resolution, ttl) {
     try {
-      const json = JSON.stringify(data);
-      // console.log("redis-create ====>" + json);
-      await this.client.setexAsync(this.prefix + patientId, ttl, json);
+      await this.client.setexAsync(this.prefix + patientId, ttl, resolution);
     } catch (error) {
       throw new this.exception(error);
     }
@@ -56,10 +50,9 @@ module.exports = class Redis {
 
   async findById(patientId) {
     try {
-      // console.log("redis-create ====>" + this.prefix + patientId);
-      const json = await this.client.getAsync(this.prefix + patientId);
+      const resolution = await this.client.getAsync(this.prefix + patientId);
 
-      return JSON.parse(json);
+      return resolution ? { patientId, resolution } : null;
     } catch (error) {
       throw new this.exception(error);
     }

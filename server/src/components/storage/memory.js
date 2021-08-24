@@ -8,24 +8,29 @@ module.exports = class Memory {
     return this.queue[0];
   }
 
-  async popFromList() {
+  async getNextFromList() {
     this.queue.shift();
+    return this.queue[0];
   }
 
   async addToList(data) {
     this.queue.push(data);
   }
 
-  async create(patientId, data, ttl) {
-    this.resolutions.push({ patientId, data });
-
-    setTimeout(async () => await this.remove(patientId), ttl * 1000);
+  async create(patientId, resolution, ttl) {
+    this.resolutions.push({
+      patientId,
+      resolution,
+      timestamp: Date.now() + ttl * 1000,
+    });
   }
 
   async findById(patientId) {
-    const resolution = await this.search(patientId.toString());
+    const data = await this.search(patientId.toString());
+    if (data.timestamp >= Date.now()) return data;
 
-    return resolution?.data || null;
+    this.remove(data.patientId);
+    return null;
   }
 
   async deleteById(patientId) {

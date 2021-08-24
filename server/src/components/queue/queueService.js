@@ -1,21 +1,23 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
-const db = require("../../../src/db");
+const { Patient } = require("../../../src/db");
 
 class QueueService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async addToQueue(data) {
+  async addToQueue(name) {
     try {
-      const { id, name } = (await db.Patient.create({ name: data })).get({
-        plain: true,
-      });
+      let patient = await Patient.findOne({ where: { name } });
 
-      await this.storage.addToList({ id, name });
+      if (!patient) {
+        patient = await Patient.create({ name });
+      }
 
-      return { id, name };
+      await this.storage.addToList({ id: patient.id, name: patient.name });
+
+      return { id: patient.id, name: patient.name };
     } catch (error) {
       console.log(error);
     }
@@ -33,8 +35,7 @@ class QueueService {
 
   async getNextPerson() {
     try {
-      await this.storage.popFromList();
-      const data = await this.storage.getFirstFromList();
+      const data = await this.storage.getNextFromList();
 
       return data || null;
     } catch (error) {

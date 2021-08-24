@@ -1,21 +1,15 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
-const db = require("../../db");
+const { Patient } = require("../../db");
 
 class ResolutionsService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async add(patientId, body, ttl) {
+  async add(patientId, resolution, ttl) {
     try {
-      const { id, resolution } = (
-        await db.Resolution.create({ resolution: body, patientId })
-      ).get({ plain: true });
-
-      const data = { id, resolution, patientId };
-
-      await this.storage.create(patientId, data, ttl);
+      await this.storage.create(patientId, resolution, ttl);
     } catch (error) {
       console.log(error);
     }
@@ -23,8 +17,8 @@ class ResolutionsService {
 
   async get(name) {
     try {
-      const patient = await db.Patient.findOne({ where: { name }, raw: true });
-      if (!patient) return null;
+      const patient = await Patient.findOne({ where: { name } });
+      if (!patient) return null; // "Patient not found"
 
       const data = await this.storage.findById(patient.id);
 
@@ -36,8 +30,6 @@ class ResolutionsService {
 
   async delete(patientId) {
     try {
-      await db.Resolution.destroy({ where: { patientId } });
-
       const isDeleted = await this.storage.deleteById(patientId);
 
       return isDeleted || null;

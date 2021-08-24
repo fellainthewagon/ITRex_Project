@@ -15,19 +15,23 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      uuid: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: { msg: "Patient must have a name" },
         },
+        unique: true,
       },
     },
     {
+      indexes: [
+        {
+          name: "name",
+          unique: true,
+          fields: ["name"],
+        },
+      ],
       sequelize,
       tableName: "patients",
       modelName: "Patient",

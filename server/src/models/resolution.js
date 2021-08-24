@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      uuid: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-      },
       resolution: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      timestamp: {
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
     },
