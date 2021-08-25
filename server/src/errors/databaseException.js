@@ -5,6 +5,6 @@ module.exports = class DatabaseException extends Error {
   constructor(error) {
     super(DATABASE_ERROR);
     this.statusCode = INTERNAL_SERVER_ERROR;
-    global.console.error(error);
+    // global.console.error(error);
   }
 };

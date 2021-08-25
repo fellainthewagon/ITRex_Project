@@ -59,7 +59,9 @@ TTL=3600 npm run dev
 
 ```sh
 cd server
+
 npm run test
+npm run test:coverage
 ```
 
 #### How to up App:

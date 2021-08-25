@@ -11,7 +11,7 @@ class ResolutionsService {
     try {
       await this.storage.create(patientId, resolution, ttl);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -24,7 +24,7 @@ class ResolutionsService {
 
       return data || null;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -34,7 +34,7 @@ class ResolutionsService {
 
       return isDeleted || null;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 }

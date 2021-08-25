@@ -19,7 +19,7 @@ class QueueService {
 
       return { id: patient.id, name: patient.name };
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -29,7 +29,7 @@ class QueueService {
 
       return data || null;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -39,7 +39,7 @@ class QueueService {
 
       return data || null;
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 }
