@@ -1,9 +1,12 @@
 version: "3.8"
 services:
   mysqldb:
-    image: mysql:5.7
+    image: mysql
     container_name: mysqldb
     restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: clinic
+      MYSQL_ROOT_PASSWORD: fella
     ports:
       - 3307:3306
     networks:
@@ -28,7 +31,6 @@ services:
       - clinic
     depends_on:
       - mysqldb
-      - redis
   client:
     build:
       context: ./client

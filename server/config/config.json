@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "fella",
+    "username": "root",
     "password": "fella",
     "database": "clinic",
-    "host": "host.docker.internal",
+    "host": "mysqldb",
     "dialect": "mysql"
   }
 }

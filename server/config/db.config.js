@@ -1,7 +1,7 @@
 module.exports = {
-  DB: process.env.DB_NAME || "clinic",
-  USER: process.env.DB_USER || "fella",
-  PASSWORD: process.env.DB_PASSWORD || "fella",
+  DB: process.env.MYSQL_DATABASE || "clinic",
+  USER: process.env.MYSQL_USER || "fella",
+  PASSWORD: process.env.MYSQL_ROOT_PASSWORD || "fella",
   HOST: process.env.DB_HOST || "127.0.0.1",
   PORT: process.env.DB_PORT || 3306,
   dialect: "mysql",

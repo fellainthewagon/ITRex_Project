@@ -35,17 +35,13 @@ npm start
 
 #### Storage type
 
-"In-Memory" (the RAM of your machine) storage set by default (`.env.example`).
-You can use different types of storage for different entities.
-For example, if you want to use "Redis" to store only "resolutions", run App with the following command:
+You can use different types of storage for different entities(change `.env.example`).
+The app provides the following repositories:
 
-```sh
-RESOLUTIONS=redis npm run dev
-```
+Queue: `memory` or `Redis`
+Resolutions: `memory`, `Redis` or `MySQL`
 
-In this configuration above, the "queue" data will use the default storage - "In-Memory"
-
-> NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application.
+> NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application. Or run it with Docker.
 
 #### Time to live (TTL)
 
@@ -72,15 +68,6 @@ docker-compose up -d
 ```
 
 Then click http://localhost:5000
-
-If you want to change the storage type, add values (redis/memory) to the `docker-compose.yml`.
-
-```
-    environment:
-      DEV_REDIS_HOST: redis
-      RESOLUTION: # redis || memory
-      QUEUE: # redis || memory
-```
 
 #### API documentation:
 

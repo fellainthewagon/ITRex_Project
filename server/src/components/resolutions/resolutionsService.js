@@ -46,16 +46,3 @@ class ResolutionsService {
 module.exports = new ResolutionsService(
   Factory.create(config.resolutionsStorage)
 );
-
-// db.Patient.findOne({
-//   where: { id: 4 },
-//   include: "resolutions",
-//   raw: true,
-//   nest: true,
-// }).then((data) => console.log(data));
-
-// db.Resolution.findAll({
-//   where: { patientId: 4 },
-//   raw: true,
-//   nest: true,
-// }).then((data) => console.log(data));
