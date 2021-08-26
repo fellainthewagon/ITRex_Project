@@ -1,11 +1,7 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Resolution extends Model {
-    toJSON() {
-      return { ...this.get(), id: undefined };
-    }
-  }
+  class Resolution extends Model {}
 
   Resolution.init(
     {

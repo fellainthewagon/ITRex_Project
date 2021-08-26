@@ -15,27 +15,13 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-prettier": "^3.4.1",
     "jest": "^27.0.6",
     "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
     "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.4"
-  },
-  "eslintConfig": {
-    "root": true,
-    "parserOptions": {
-      "ecmaVersion": 6
-    },
-    "extends": [
-      "airbnb-base",
-      "prettier",
-      "plugin:import/recommended"
-    ],
-    "env": {
-      "node": true,
-      "es6": true,
-      "jest": true
-    }
   },
   "dependencies": {
     "ajv": "^8.2.0",

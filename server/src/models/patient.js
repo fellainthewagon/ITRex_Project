@@ -1,11 +1,7 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Patient extends Model {
-    toJSON() {
-      return { ...this.get(), id: undefined };
-    }
-  }
+  class Patient extends Model {}
 
   Patient.init(
     {

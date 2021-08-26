@@ -1,4 +1,5 @@
 const Memory = require("../../src/components/storage/memory");
+
 const memory = new Memory();
 
 /**

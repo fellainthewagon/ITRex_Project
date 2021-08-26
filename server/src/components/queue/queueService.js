@@ -1,6 +1,6 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
-const { Patient } = require("../../../src/db");
+const { Patient } = require("../../db");
 
 class QueueService {
   constructor(storageType) {

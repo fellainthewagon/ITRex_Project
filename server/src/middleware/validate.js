@@ -13,7 +13,6 @@ class Validate {
     if (!this.valid(req.params)) {
       throw new ValidationException(INVALID_PARAMS);
     }
-    // req.params.key = this.formatter(req.params.key);
     next();
   };
 
