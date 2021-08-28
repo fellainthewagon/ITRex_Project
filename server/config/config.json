@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "fella",
+    "username": "root",
     "password": "fella",
     "database": "clinic",
-    "host": "127.0.0.1",
+    "host": "mysqldb",
     "dialect": "mysql"
   }
 }

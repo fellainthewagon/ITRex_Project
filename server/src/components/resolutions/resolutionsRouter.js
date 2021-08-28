@@ -6,18 +6,18 @@ const resolutionsRouter = Router();
 
 /**
  * @swagger
- * /patients/{key}/resolution:
+ * /patients/{id}/resolution:
  *   patch:
  *     tags: [resolutions]
  *     description: Add resolution
  *     parameters:
  *       - in: path
- *         name: key
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         example: "vincent"
- *         description: Patient key (name)
+ *         example: "1"
+ *         description: PatientId
  *     requestBody:
  *       required: true
  *       content:
@@ -26,8 +26,8 @@ const resolutionsRouter = Router();
  *             type: object
  *             properties:
  *               resolution:
- *                 type: string
- *                 example: "drug addict"
+ *                 type: object
+ *                 example: "hello dniwe"
  *     responses:
  *       '204':
  *         description: It means resolution successfully created
@@ -48,29 +48,29 @@ resolutionsRouter.patch(
 
 /**
  * @swagger
- * /patients/{key}/resolution:
+ * /patients/resolution?name=vincent:
  *   get:
  *     tags: [resolutions]
  *     description: Get patient resolution
  *     parameters:
- *       - in: path
- *         name: key
+ *       - in: query
+ *         name: name
  *         schema:
  *           type: string
  *         required: true
  *         example: "vincent"
- *         description: Patient key (name)
+ *         description: Patient name
  *     responses:
  *       '200':
  *         description: Get resolution has been successfully
  *         content:
  *           application/json:
- *             example: {resolution: "drug addict"}
+ *             example: {patientId: "1", resolution: "hello dniwe", id: "1"}
  *       '400':
  *         description: It means that params property in URL is invalid
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 400}, message: "'Key' parameter is not valid"}
+ *             example: {error: {"statusCode": 400}, message: "Query is not valid"}
  *       '404':
  *         description: It means that resolution not found
  *         content:
@@ -83,18 +83,18 @@ resolutionsRouter.get("/resolution", validate.query, async (req, res, next) => {
 
 /**
  * @swagger
- * /patients/{key}/resolution:
+ * /patients/{id}/resolution:
  *   delete:
  *     tags: [resolutions]
  *     description: Delete patient resolution
  *     parameters:
  *       - in: path
- *         name: key
+ *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         example: "vincent"
- *         description: Patient key (name) that need delete
+ *         example: "1"
+ *         description: PatientId of resolution that need to delete
  *     responses:
  *       '204':
  *         description: Resolution has been successfully deleted
@@ -102,9 +102,9 @@ resolutionsRouter.get("/resolution", validate.query, async (req, res, next) => {
  *         description: It means that params property in URL is invalid
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 400}, message: "Invalid body"}
+ *             example: {error: {"statusCode": 400}, message: "Parameter is not valid"}
  *       '404':
- *         description: It means that resolution not found
+ *         description: It means that resolution not found in the repo
  *         content:
  *           application/json:
  *             example: {message: "Resolution not found"}

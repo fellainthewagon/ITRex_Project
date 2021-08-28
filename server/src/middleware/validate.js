@@ -1,11 +1,9 @@
 const ValidationException = require("../errors/validationException");
-const formatter = require("../utils/formatter");
-const valid = require("../schema/resolution");
+const valid = require("../schema/schema");
 const { INVALID_PARAMS, INVALID_BODY } = require("../constants/statusMessage");
 
 class Validate {
-  constructor(formatter, valid) {
-    this.formatter = formatter;
+  constructor(valid) {
     this.valid = valid;
   }
 
@@ -24,6 +22,7 @@ class Validate {
   };
 
   body = (req, res, next) => {
+    console.log(req.body);
     if (!this.valid(req.body)) {
       throw new ValidationException(INVALID_BODY);
     }
@@ -31,4 +30,4 @@ class Validate {
   };
 }
 
-module.exports = new Validate(formatter, valid);
+module.exports = new Validate(valid);

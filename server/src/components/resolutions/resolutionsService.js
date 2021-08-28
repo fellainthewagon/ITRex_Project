@@ -40,7 +40,7 @@ class ResolutionsService {
 }
 
 /**
- *  start point for setting type of storage => redis || memory
+ *  start point for setting type of storage => "redis" || "memory" || "database"
  */
 
 module.exports = new ResolutionsService(

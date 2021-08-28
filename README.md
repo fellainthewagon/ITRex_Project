@@ -12,7 +12,28 @@ Clone the repo, install the dependencies and run.
 git clone https://github.com/fellainthewagon/ITRex_Project.git
 ```
 
-#### How to run App:
+#### How to up App:
+
+1. Open your terminal in the root directory:
+
+```sh
+// run
+docker-compose up -d
+
+// then you need to create database with folowing command
+docker-compose exec api npx sequelize db:create
+```
+
+2. Now you need to resave the app for the sequalize to create tables.
+   Then click http://localhost:5000
+
+#### How to run API tests:
+
+```sh
+docker-compose exec api npm run test:coverage
+```
+
+#### How to run App on your local machine:
 
 Frontend:
 
@@ -50,24 +71,6 @@ You can set TTL manually. In this case, the TTL will be equal to 1 hour:
 ```sh
 TTL=3600 npm run dev
 ```
-
-#### How to run API tests:
-
-```sh
-cd server
-
-npm run test
-npm run test:coverage
-```
-
-#### How to up App:
-
-```sh
-cd project
-docker-compose up -d
-```
-
-Then click http://localhost:5000
 
 #### API documentation:
 
