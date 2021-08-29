@@ -1,5 +1,3 @@
-// const { DataTypes } = require("sequelize");
-
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     queryInterface.createTable("resolutions", {
@@ -13,7 +11,7 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      timestamp: {
+      expire_timestamp: {
         type: DataTypes.BIGINT,
         allowNull: false,
       },

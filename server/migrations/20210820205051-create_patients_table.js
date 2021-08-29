@@ -1,5 +1,3 @@
-// const { DataTypes } = require("sequelize");
-
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable(

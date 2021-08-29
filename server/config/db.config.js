@@ -4,7 +4,7 @@ module.exports = {
   PASSWORD: process.env.MYSQL_ROOT_PASSWORD || "fella",
   HOST: process.env.DB_HOST || "127.0.0.1",
   PORT: process.env.DB_PORT || 3306,
-  dialect: "mysql",
+  dialect: process.env.DB_DIALECT || "mysql",
   pool: {
     max: 5,
     min: 0,

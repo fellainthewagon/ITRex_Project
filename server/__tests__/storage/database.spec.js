@@ -1,7 +1,7 @@
 const Database = require("../../src/components/storage/database");
 const DatabaseException = require("../../src/errors/databaseException");
 
-jest.mock("../../src/db.js");
+jest.mock("../../src/db");
 const db = require("../../src/db");
 
 const database = new Database();
@@ -21,12 +21,12 @@ Date.now = jest.fn();
 const rawValue = {
   patientId: 99,
   resolution: "hello",
-  timestamp: 1000,
+  expire_timestamp: 1000,
 };
 
 const fullValue = {
   dataValues: rawValue,
-  timestamp: 1000,
+  expire_timestamp: 1000,
   destroy: jest.fn(),
 };
 
@@ -55,7 +55,7 @@ describe("'Database' storage class", () => {
     expect(dbFunction.create).toHaveBeenCalledTimes(1);
     expect(dbFunction.create).toHaveBeenCalledWith({
       ...rawValue,
-      timestamp: Date.now() + TTL * 1000,
+      expire_timestamp: Date.now() + TTL * 1000,
     });
 
     catchBlockTest("create", database.create);

@@ -8,8 +8,7 @@ const storage = (queueService.storage = jest.fn());
 storage.addToList = jest.fn();
 storage.getFirstFromList = jest.fn();
 storage.getNextFromList = jest.fn();
-Patient.findOne = jest.fn();
-Patient.create = jest.fn();
+Patient.findOrCreate = jest.fn();
 
 /**
  *  vars
@@ -30,28 +29,19 @@ async function catchBlockTest(method, fn) {
  * TEST
  */
 describe("'QueueService' class", () => {
-  it("'addToQueue' method, if name found in DB and Patient.create doesn't called", async () => {
+  it("'findOrCreate' method", async () => {
     storage.addToList.mockResolvedValue();
-    Patient.findOne.mockResolvedValue(test);
+    Patient.findOrCreate.mockResolvedValue([test]);
 
     expect(await queueService.addToQueue("mia")).toEqual(test);
     expect(storage.addToList).toHaveBeenCalledTimes(1);
     expect(storage.addToList).toHaveBeenCalledWith(test);
-    expect(Patient.findOne).toHaveBeenCalledTimes(1);
-    expect(Patient.findOne).toHaveBeenCalledWith({ where: { name: "mia" } });
-    expect(Patient.create).toHaveBeenCalledTimes(0);
+    expect(Patient.findOrCreate).toHaveBeenCalledTimes(1);
+    expect(Patient.findOrCreate).toHaveBeenCalledWith({
+      where: { name: "mia" },
+    });
 
     await catchBlockTest("addToList", queueService.addToQueue);
-  });
-
-  it("'addToQueue' method, if name doesn't exist in DB and Patient.create called", async () => {
-    Patient.findOne.mockResolvedValue(null);
-    storage.addToList.mockResolvedValue();
-    Patient.create.mockResolvedValue(test);
-
-    expect(await queueService.addToQueue("mia")).toEqual(test);
-    expect(Patient.create).toHaveBeenCalledTimes(1);
-    expect(Patient.create).toHaveBeenCalledWith({ name: "mia" });
   });
 
   it("'getCurrentPerson' method, if positive result", async () => {

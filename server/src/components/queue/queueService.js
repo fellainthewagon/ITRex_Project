@@ -9,13 +9,12 @@ class QueueService {
 
   async addToQueue(name) {
     try {
-      let patient = await Patient.findOne({ where: { name } });
+      const [patient] = await Patient.findOrCreate({ where: { name } });
 
-      if (!patient) {
-        patient = await Patient.create({ name });
-      }
-
-      await this.storage.addToList({ id: patient.id, name: patient.name });
+      await this.storage.addToList({
+        id: patient.id,
+        name: patient.name,
+      });
 
       return { id: patient.id, name: patient.name };
     } catch (error) {

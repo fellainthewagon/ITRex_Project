@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const dbConfig = require("../config/db.config");
+const dbConfig = require("../../config/db.config");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   dialect: dbConfig.dialect,
@@ -11,8 +11,8 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
 const db = {};
 
-db.Patient = require("./models/patient")(sequelize, Sequelize.DataTypes);
-db.Resolution = require("./models/resolution")(sequelize, Sequelize.DataTypes);
+db.Patient = require("../models/patient")(sequelize, Sequelize.DataTypes);
+db.Resolution = require("../models/resolution")(sequelize, Sequelize.DataTypes);
 
 db.Patient.hasMany(db.Resolution, {
   onDelete: "cascade",

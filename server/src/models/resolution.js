@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      timestamp: {
+      expire_timestamp: {
         type: DataTypes.BIGINT,
         allowNull: false,
       },

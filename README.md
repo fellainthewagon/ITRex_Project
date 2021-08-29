@@ -12,22 +12,21 @@ Clone the repo, install the dependencies and run.
 git clone https://github.com/fellainthewagon/ITRex_Project.git
 ```
 
-#### How to up App:
+### How to up App:
 
 1. Open your terminal in the root directory:
 
 ```sh
-// run
 docker-compose up -d
 
-// then you need to create database with folowing command
+// then you need to create database and migrate with folowing commands:
 docker-compose exec api npx sequelize db:create
+docker-compose exec api npx sequelize db:migrate
 ```
 
-2. Now you need to resave the app for the sequalize to create tables.
-   Then click http://localhost:5000
+2. Click http://localhost:5000
 
-#### How to run API tests:
+### How to run API tests:
 
 ```sh
 docker-compose exec api npm run test:coverage
@@ -59,8 +58,8 @@ npm start
 You can use different types of storage for different entities(change `.env.example`).
 The app provides the following repositories:
 
-Queue: `memory` or `Redis`
-Resolutions: `memory`, `Redis` or `MySQL`
+Queue: `memory` or `redis`
+Resolutions: `memory`, `redis` or `database`
 
 > NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application. Or run it with Docker.
 

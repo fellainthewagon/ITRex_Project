@@ -36,9 +36,13 @@ db.sequelize
  */
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
+
+/**
+ * API face
+ */
 app.get("/", (req, res) => {
   res.send(
-    `<h1>Miracle! It works... Database: resolutions - ${process.env.RESOLUTIONS}, ` +
+    `<h1>Miracle! Repositories: resolutions - ${process.env.RESOLUTIONS}, ` +
       `queue - ${process.env.QUEUE}</h1>`
   );
 });

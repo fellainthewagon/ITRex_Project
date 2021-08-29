@@ -1,9 +1,9 @@
 const DatabaseException = require("../../errors/databaseException");
-const db = require("../../db");
+const { Resolution } = require("../../db");
 
 module.exports = class Database {
   constructor() {
-    this.Resolution = db.Resolution;
+    this.Resolution = Resolution;
     this.DatabaseException = DatabaseException;
   }
 
@@ -14,7 +14,7 @@ module.exports = class Database {
       await this.Resolution.create({
         patientId,
         resolution,
-        timestamp,
+        expire_timestamp: timestamp,
       });
     } catch (error) {
       throw new this.DatabaseException(error);
@@ -29,7 +29,7 @@ module.exports = class Database {
 
       if (!resolution) return null; // Resolution not found
 
-      if (resolution.timestamp < Date.now()) {
+      if (resolution.expire_timestamp < Date.now()) {
         await resolution.destroy();
         return null; // "Resolution expired"
       }
