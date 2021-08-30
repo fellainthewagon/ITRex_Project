@@ -22,7 +22,6 @@ class Validate {
   };
 
   body = (req, res, next) => {
-    console.log(req.body);
     if (!this.valid(req.body)) {
       throw new ValidationException(INVALID_BODY);
     }

@@ -27,11 +27,11 @@ module.exports = class Database {
         where: { patientId: id },
       });
 
-      if (!resolution) return null; // Resolution not found
+      if (!resolution) return null;
 
       if (resolution.expire_timestamp < Date.now()) {
         await resolution.destroy();
-        return null; // "Resolution expired"
+        return null;
       }
 
       return resolution.dataValues;

@@ -18,7 +18,7 @@ class ResolutionsService {
   async get(name) {
     try {
       const patient = await Patient.findOne({ where: { name } });
-      if (!patient) return null; // "Patient not found"
+      if (!patient) return null;
 
       const data = await this.storage.findById(patient.id);
 
@@ -38,10 +38,6 @@ class ResolutionsService {
     }
   }
 }
-
-/**
- *  start point for setting type of storage => "redis" || "memory" || "database"
- */
 
 module.exports = new ResolutionsService(
   Factory.create(config.resolutionsStorage)

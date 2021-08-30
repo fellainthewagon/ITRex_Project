@@ -10,7 +10,7 @@ const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
 const swaggerDocs = require("./doc/swaggerDocs");
 const errorHandler = require("./middleware/errorHandler");
 const db = require("./db");
-const { PAGE_NOT_FOUND } = require("./constants/statusMessage");
+const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
 
 const app = express();
 
@@ -41,15 +41,8 @@ app.use("/api/patients", resolutionsRouter);
 /**
  * API face
  */
-app.get("/", (req, res) => {
-  res.send(
-    `<h1>Miracle! Repositories: resolutions - ${process.env.RESOLUTIONS}, ` +
-      `queue - ${process.env.QUEUE}</h1>`
-  );
-});
-app.get("*", (req, res) => {
-  res.send(PAGE_NOT_FOUND);
-});
+app.get("/", (req, res) => res.send(IT_WORKS));
+app.get("*", (req, res) => res.send(PAGE_NOT_FOUND));
 
 app.use(errorHandler);
 

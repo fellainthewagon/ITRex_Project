@@ -9,8 +9,8 @@ const config = {
     ttl: parseInt(process.env.TTL, 10) || 30,
   },
   redis: { host, port },
-  resolutionsStorage: process.env.RESOLUTIONS || "memory",
-  queueStorage: process.env.QUEUE || "memory",
+  resolutionsStorage: process.env.RESOLUTIONS_STORAGE || "memory",
+  queueStorage: process.env.QUEUE_STORAGE || "memory",
 };
 
 module.exports = config;
