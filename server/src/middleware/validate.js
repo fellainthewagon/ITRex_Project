@@ -1,19 +1,23 @@
 const ValidationException = require("../errors/validationException");
-const formatter = require("../utils/formatter");
-const valid = require("../schema/resolution");
+const valid = require("../schema/schema");
 const { INVALID_PARAMS, INVALID_BODY } = require("../constants/statusMessage");
 
 class Validate {
-  constructor(formatter, valid) {
-    this.formatter = formatter;
+  constructor(valid) {
     this.valid = valid;
   }
 
-  keyParams = (req, res, next) => {
+  params = (req, res, next) => {
     if (!this.valid(req.params)) {
       throw new ValidationException(INVALID_PARAMS);
     }
-    req.params.key = this.formatter(req.params.key);
+    next();
+  };
+
+  query = (req, res, next) => {
+    if (!this.valid(req.query)) {
+      throw new ValidationException(INVALID_QUERY);
+    }
     next();
   };
 
@@ -25,4 +29,4 @@ class Validate {
   };
 }
 
-module.exports = new Validate(formatter, valid);
+module.exports = new Validate(valid);

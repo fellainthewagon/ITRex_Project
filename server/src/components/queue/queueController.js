@@ -1,13 +1,10 @@
 const StatusCodes = require("http-status-codes");
-const {
-  QUEUE_EMPTY,
-  PERSON_CREATED,
-} = require("../../constants/statusMessage");
+const { QUEUE_EMPTY } = require("../../constants/statusMessage");
 const queueService = require("./queueService");
 
 class QueueController {
-  constructor(queueService) {
-    this.queueService = queueService;
+  constructor(service) {
+    this.queueService = service;
   }
 
   async getCurrentPerson(req, res, next) {
@@ -32,9 +29,9 @@ class QueueController {
 
   async addPerson(req, res, next) {
     try {
-      await this.queueService.addToQueue(req.body);
+      const patient = await this.queueService.addToQueue(req.body.name);
 
-      return res.status(StatusCodes.CREATED).json({ message: PERSON_CREATED });
+      return res.status(StatusCodes.CREATED).json(patient);
     } catch (error) {
       return next(error);
     }

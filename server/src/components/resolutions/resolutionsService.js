@@ -1,31 +1,43 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
+const { Patient } = require("../../db");
 
 class ResolutionsService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async add(key, resolution, ttl) {
-    await this.storage.create(key, resolution, ttl);
+  async add(patientId, resolution, ttl) {
+    try {
+      await this.storage.create(patientId, resolution, ttl);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  async get(key) {
-    const resolution = await this.storage.findByName(key);
+  async get(name) {
+    try {
+      const patient = await Patient.findOne({ where: { name } });
+      if (!patient) return null;
 
-    return resolution ? { key, resolution } : null;
+      const data = await this.storage.findById(patient.id);
+
+      return data || null;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  async delete(key) {
-    const isDeleted = await this.storage.deleteByName(key);
+  async delete(patientId) {
+    try {
+      const isDeleted = await this.storage.deleteById(patientId);
 
-    return isDeleted || null;
+      return isDeleted || null;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
-
-/**
- *  start point for setting type of storage => redis || memory
- */
 
 module.exports = new ResolutionsService(
   Factory.create(config.resolutionsStorage)

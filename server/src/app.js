@@ -9,6 +9,8 @@ const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
 
 const swaggerDocs = require("./doc/swaggerDocs");
 const errorHandler = require("./middleware/errorHandler");
+const db = require("./db");
+const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
 
 const app = express();
 
@@ -21,16 +23,26 @@ app.use(morgan(config.mode));
 app.use(express.json());
 
 /**
+ * database connection
+ */
+db.sequelize
+  .sync(/* {force: true} */)
+  .then(() => {
+    global.console.log("...connected to DB!");
+  })
+  .catch((error) => global.console.log(error));
+
+/**
  * routes
  */
-app.use("/api/queue", queueRouter);
+app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
-app.get("/", (req, res) => {
-  res.send(
-    `<h1>Miracle! It works... Database: resolutions - ${process.env.RESOLUTIONS}, ` +
-      `queue - ${process.env.QUEUE}</h1>`
-  );
-});
+
+/**
+ * API face
+ */
+app.get("/", (req, res) => res.send(IT_WORKS));
+app.get("*", (req, res) => res.send(PAGE_NOT_FOUND));
 
 app.use(errorHandler);
 

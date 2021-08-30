@@ -1,50 +1,82 @@
 const queueService = require("../../src/components/queue/queueService");
+const { Patient } = require("../../src/db");
+
+/**
+ * mocking funcs
+ */
+const storage = (queueService.storage = jest.fn());
+storage.addToList = jest.fn();
+storage.getFirstFromList = jest.fn();
+storage.getNextFromList = jest.fn();
+Patient.findOrCreate = jest.fn();
+
+/**
+ *  vars
+ */
+const test = { id: 1, name: "mia" };
 
 beforeEach(() => jest.clearAllMocks());
 
+async function catchBlockTest(method, fn) {
+  jest.spyOn(storage, method).mockImplementation(async () => {
+    throw new Error("Some error");
+  });
+  await expect(fn()).rejects.toThrowError();
+  storage[method].mockRestore();
+}
+
+/**
+ * TEST
+ */
 describe("'QueueService' class", () => {
-  const queueStorage = (queueService.storage = jest.fn());
-  queueStorage.getFirstFromList = jest.fn();
-  queueStorage.popFromList = jest.fn();
-  queueStorage.addToList = jest.fn();
+  it("'findOrCreate' method", async () => {
+    storage.addToList.mockResolvedValue();
+    Patient.findOrCreate.mockResolvedValue([test]);
 
-  it("'getCurrentPerson' method", async () => {
-    queueStorage.getFirstFromList.mockResolvedValue("mia");
-    const result = await queueService.getCurrentPerson();
+    expect(await queueService.addToQueue("mia")).toEqual(test);
+    expect(storage.addToList).toHaveBeenCalledTimes(1);
+    expect(storage.addToList).toHaveBeenCalledWith(test);
+    expect(Patient.findOrCreate).toHaveBeenCalledTimes(1);
+    expect(Patient.findOrCreate).toHaveBeenCalledWith({
+      where: { name: "mia" },
+    });
 
-    expect(result).toEqual({ key: "mia" });
-    expect(queueStorage.getFirstFromList).toHaveBeenCalledTimes(1);
-    expect(queueStorage.getFirstFromList).toHaveBeenCalledWith();
-    expect(await queueStorage.getFirstFromList()).toBe("mia");
-
-    queueStorage.getFirstFromList.mockResolvedValue(null);
-    const result2 = await queueService.getCurrentPerson();
-    expect(result2).toEqual(null);
+    await catchBlockTest("addToList", queueService.addToQueue);
   });
 
-  it("'getNextPerson' method", async () => {
-    queueStorage.getFirstFromList.mockResolvedValue("vincent");
-    const result = await queueService.getNextPerson();
+  it("'getCurrentPerson' method, if positive result", async () => {
+    storage.getFirstFromList.mockResolvedValue(test);
 
-    expect(result).toEqual({ key: "vincent" });
-    expect(queueStorage.getFirstFromList).toHaveBeenCalledTimes(1);
-    expect(queueStorage.getFirstFromList).toHaveBeenCalledWith();
-    expect(queueStorage.popFromList).toHaveBeenCalledTimes(1);
-    expect(queueStorage.popFromList).toHaveBeenCalledWith();
-    expect(await queueStorage.getFirstFromList()).toBe("vincent");
+    expect(await queueService.getCurrentPerson()).toEqual(test);
+    expect(storage.getFirstFromList).toHaveBeenCalledTimes(1);
+    expect(storage.getFirstFromList).toHaveBeenCalledWith();
 
-    queueStorage.getFirstFromList.mockResolvedValue(null);
-    const result2 = await queueService.getNextPerson();
-    expect(result2).toEqual(null);
+    await catchBlockTest("getFirstFromList", queueService.getCurrentPerson);
   });
 
-  it("'addToQueue' method", async () => {
-    queueStorage.addToList.mockResolvedValue();
-    const result = await queueService.addToQueue({ key: "vincent" });
+  it("'getCurrentPerson' method, if negative result", async () => {
+    storage.getFirstFromList.mockResolvedValue(null);
 
-    expect(result).toBeUndefined();
-    expect(queueStorage.addToList).toHaveBeenCalledTimes(1);
-    expect(queueStorage.addToList).toHaveBeenCalledWith("vincent");
-    expect(await queueStorage.addToList()).toBeUndefined();
+    expect(await queueService.getCurrentPerson()).toBeNull();
+    expect(storage.getFirstFromList).toHaveBeenCalledTimes(1);
+    expect(storage.getFirstFromList).toHaveBeenCalledWith();
+  });
+
+  it("'getNextPerson' method, if positive result", async () => {
+    storage.getNextFromList.mockResolvedValue(test);
+
+    expect(await queueService.getNextPerson()).toEqual(test);
+    expect(storage.getNextFromList).toHaveBeenCalledTimes(1);
+    expect(storage.getNextFromList).toHaveBeenCalledWith();
+
+    await catchBlockTest("getNextFromList", queueService.getNextPerson);
+  });
+
+  it("'getNextPerson' method, if negative result", async () => {
+    storage.getNextFromList.mockResolvedValue(null);
+
+    expect(await queueService.getNextPerson()).toBeNull();
+    expect(storage.getNextFromList).toHaveBeenCalledTimes(1);
+    expect(storage.getNextFromList).toHaveBeenCalledWith();
   });
 });

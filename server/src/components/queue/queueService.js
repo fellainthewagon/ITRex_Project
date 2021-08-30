@@ -1,31 +1,46 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
+const { Patient } = require("../../db");
 
 class QueueService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async getCurrentPerson() {
-    const key = await this.storage.getFirstFromList();
+  async addToQueue(name) {
+    try {
+      const [patient] = await Patient.findOrCreate({ where: { name } });
 
-    return key ? { key } : null;
+      await this.storage.addToList({
+        id: patient.id,
+        name: patient.name,
+      });
+
+      return { id: patient.id, name: patient.name };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getCurrentPerson() {
+    try {
+      const data = await this.storage.getFirstFromList();
+
+      return data || null;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async getNextPerson() {
-    await this.storage.popFromList();
-    const key = await this.storage.getFirstFromList();
+    try {
+      const data = await this.storage.getNextFromList();
 
-    return key ? { key } : null;
-  }
-
-  async addToQueue(data) {
-    await this.storage.addToList(data.key);
+      return data || null;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
-
-/**
- *  start point for setting type of storage => redis || memory
- */
 
 module.exports = new QueueService(Factory.create(config.queueStorage));

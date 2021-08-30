@@ -8,60 +8,61 @@ module.exports = class Redis {
       host: config.redis.host,
       port: config.redis.port,
     });
-    /*       .on("connect", () =>
-        global.console.log(
-          `Connected to Redis! | ${config.redis.host}:${config.redis.port}`
-        )
-      ); */
-    this.exception = DatabaseException;
-    this.listName = "clinicQueue";
+    this.DatabaseException = DatabaseException;
+    this.listName = "queue";
+    this.prefix = "resolution:";
   }
 
   async getFirstFromList() {
     try {
-      return this.client.lindexAsync(this.listName, 0);
+      const json = await this.client.lindexAsync(this.listName, 0);
+      return JSON.parse(json);
     } catch (error) {
-      throw new this.exception(error);
+      throw new this.DatabaseException(error);
     }
   }
 
-  async popFromList() {
+  async getNextFromList() {
     try {
       await this.client.lpopAsync(this.listName);
+      return this.getFirstFromList();
     } catch (error) {
-      throw new this.exception(error);
+      throw new this.DatabaseException(error);
     }
   }
 
   async addToList(data) {
     try {
-      await this.client.rpushAsync(this.listName, data);
+      const json = JSON.stringify(data);
+      await this.client.rpushAsync(this.listName, json);
     } catch (error) {
-      throw new this.exception(error);
+      throw new this.DatabaseException(error);
     }
   }
 
-  async create(name, data, ttl) {
+  async create(patientId, resolution, ttl) {
     try {
-      await this.client.setexAsync(name, ttl, data);
+      await this.client.setexAsync(this.prefix + patientId, ttl, resolution);
     } catch (error) {
-      throw new this.exception(error);
+      throw new this.DatabaseException(error);
     }
   }
 
-  async findByName(name) {
+  async findById(patientId) {
     try {
-      return this.client.getAsync(name);
+      const resolution = await this.client.getAsync(this.prefix + patientId);
+
+      return resolution ? { patientId, resolution } : null;
     } catch (error) {
-      throw new this.exception(error);
+      throw new this.DatabaseException(error);
     }
   }
 
-  async deleteByName(name) {
+  async deleteById(patientId) {
     try {
-      return this.client.delAsync(name);
+      return this.client.delAsync(this.prefix + patientId);
     } catch (error) {
-      throw new this.exception(error);
+      throw new this.DatabaseException(error);
     }
   }
 };

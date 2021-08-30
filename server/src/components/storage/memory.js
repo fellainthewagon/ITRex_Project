@@ -4,52 +4,50 @@ module.exports = class Memory {
     this.resolutions = [];
   }
 
-  getFirstFromList() {
+  async getFirstFromList() {
     return this.queue[0];
   }
 
-  popFromList() {
+  async getNextFromList() {
     this.queue.shift();
+    return this.queue[0];
   }
 
-  addToList(data) {
-    if (this.queue.some((item) => item === data)) {
-      this.queue = this.queue.filter((item) => item !== data);
-    }
+  async addToList(data) {
     this.queue.push(data);
   }
 
-  create(key, resolution, ttl) {
-    const patientResolution = {
-      data: { key, resolution },
-      timestamp: Date.now() + ttl,
-    };
-    this.resolutions.push(patientResolution);
-
-    setTimeout(() => this.remove(key), ttl * 1000);
+  async create(patientId, resolution, ttl) {
+    this.resolutions.push({
+      patientId,
+      resolution,
+      timestamp: Date.now() + ttl * 1000,
+    });
   }
 
-  findByName(name) {
-    const patient = this.search(name);
+  async findById(patientId) {
+    const data = await this.search(patientId.toString());
+    if (data.timestamp >= Date.now()) return data;
 
-    return patient ? patient.data.resolution : null;
+    this.remove(data.patientId);
+    return null;
   }
 
-  deleteByName(name) {
-    const patient = this.search(name);
+  async deleteById(patientId) {
+    const resolution = await this.search(patientId);
 
-    return patient ? this.remove(name) : null;
+    return resolution ? await this.remove(patientId) : null;
   }
 
-  search(name) {
+  async search(patientId) {
     return this.resolutions.length
-      ? this.resolutions.find((item) => item.data.key === name)
+      ? this.resolutions.find((item) => item.patientId === patientId)
       : null;
   }
 
-  remove(name) {
+  async remove(patientId) {
     this.resolutions = this.resolutions.filter(
-      (item) => item.data.key !== name
+      (item) => item.patientId !== patientId
     );
 
     return true;

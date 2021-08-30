@@ -11,7 +11,7 @@ class ResolutionsController {
   async addResolution(req, res, next) {
     try {
       await this.resolutionsService.add(
-        req.params.key,
+        req.params.id,
         req.body.resolution,
         config.app.ttl
       );
@@ -24,7 +24,7 @@ class ResolutionsController {
 
   async getResolution(req, res, next) {
     try {
-      const resolution = await this.resolutionsService.get(req.params.key);
+      const resolution = await this.resolutionsService.get(req.query.name);
 
       return resolution
         ? res.json(resolution)
@@ -38,7 +38,7 @@ class ResolutionsController {
 
   async deleteResolution(req, res, next) {
     try {
-      const isDeleted = await this.resolutionsService.delete(req.params.key);
+      const isDeleted = await this.resolutionsService.delete(req.params.id);
 
       return isDeleted
         ? res.status(StatusCodes.NO_CONTENT).send()

@@ -12,7 +12,27 @@ Clone the repo, install the dependencies and run.
 git clone https://github.com/fellainthewagon/ITRex_Project.git
 ```
 
-#### How to run App:
+### How to up App:
+
+1. Open your terminal in the root directory:
+
+```sh
+docker-compose up -d
+
+// then you need to create database and migrate with folowing commands:
+docker-compose exec api npx sequelize db:create
+docker-compose exec api npx sequelize db:migrate
+```
+
+2. Click http://localhost:5000
+
+### How to run API tests:
+
+```sh
+docker-compose exec api npm run test:coverage
+```
+
+#### How to run App on your local machine:
 
 Frontend:
 
@@ -35,17 +55,13 @@ npm start
 
 #### Storage type
 
-"In-Memory" (the RAM of your machine) storage set by default (`.env.example`).
-You can use different types of storage for different entities.
-For example, if you want to use "Redis" to store only "resolutions", run App with the following command:
+You can use different types of storage for different entities(change `.env.example`).
+The app provides the following repositories:
 
-```sh
-RESOLUTIONS=redis npm run dev
-```
+Queue: `memory` or `redis`
+Resolutions: `memory`, `redis` or `database`
 
-In this configuration above, the "queue" data will use the default storage - "In-Memory"
-
-> NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application.
+> NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application. Or run it with Docker.
 
 #### Time to live (TTL)
 
@@ -53,31 +69,6 @@ You can set TTL manually. In this case, the TTL will be equal to 1 hour:
 
 ```sh
 TTL=3600 npm run dev
-```
-
-#### How to run API tests:
-
-```sh
-cd server
-npm run test
-```
-
-#### How to up App:
-
-```sh
-cd project
-docker-compose up -d
-```
-
-Then click http://localhost:5000
-
-If you want to change the storage type, add values (redis/memory) to the `docker-compose.yml`.
-
-```
-    environment:
-      DEV_REDIS_HOST: redis
-      RESOLUTION: # redis || memory
-      QUEUE: # redis || memory
 ```
 
 #### API documentation:

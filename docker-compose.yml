@@ -1,8 +1,22 @@
-version: "3"
+version: "3.8"
 services:
+  mysqldb:
+    image: mysql
+    container_name: mysqldb
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: clinic
+      MYSQL_ROOT_PASSWORD: fella
+    ports:
+      - 3307:3306
+    networks:
+      - clinic
+    volumes:
+      - db:/var/lib/mysql
   redis:
     image: redis
     container_name: redis
+    restart: unless-stopped
     networks:
       - clinic
   api:
@@ -10,6 +24,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     container_name: api
+    restart: unless-stopped
     volumes:
       - ./server:/app
     ports:
@@ -17,21 +32,21 @@ services:
     networks:
       - clinic
     depends_on:
-      - redis
-    environment:
-      RESOLUTIONS: redis
-      QUEUE: redis
+      - mysqldb
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
     container_name: client
+    restart: unless-stopped
     ports:
       - "5000:5000"
     networks:
       - clinic
     depends_on:
       - api
+volumes:
+  db:
 networks:
   clinic:
     driver: bridge

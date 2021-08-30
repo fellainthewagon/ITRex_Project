@@ -6,7 +6,7 @@ const queueRouter = Router();
 
 /**
  * @swagger
- * /queue/current:
+ * /patients/queue/current:
  *   get:
  *     tags: [queue]
  *     description: Get first person from queue
@@ -21,6 +21,9 @@ const queueRouter = Router();
  *                  name:
  *                    type: string
  *                    example: "jules"
+ *                  id:
+ *                    type: integer
+ *                    example: 99
  */
 queueRouter.get("/current", async (req, res, next) => {
   await queueController.getCurrentPerson(req, res, next);
@@ -28,7 +31,7 @@ queueRouter.get("/current", async (req, res, next) => {
 
 /**
  * @swagger
- * /queue/next:
+ * /patients/queue/next:
  *   get:
  *     tags: [queue]
  *     description: Get next person from queue
@@ -43,6 +46,9 @@ queueRouter.get("/current", async (req, res, next) => {
  *                  name:
  *                    type: string
  *                    example: "butch"
+ *                  id:
+ *                    type: integer
+ *                    example: 100
  */
 queueRouter.get("/next", async (req, res, next) => {
   await queueController.getNextPerson(req, res, next);
@@ -50,7 +56,7 @@ queueRouter.get("/next", async (req, res, next) => {
 
 /**
  * @swagger
- * /queue:
+ * /patients/queue:
  *   post:
  *     tags: [queue]
  *     description: Add person to queue
@@ -61,15 +67,23 @@ queueRouter.get("/next", async (req, res, next) => {
  *           schema:
  *             type: object
  *             properties:
- *               key:
+ *               name:
  *                 type: string
- *                 example: "vincent"
+ *                 example: "butch"
  *     responses:
  *       '201':
  *         description: It means person added to queue (created)
  *         content:
  *           application/json:
- *             example: {message: "Person added to Queue"}
+ *             schema:
+ *               type: object
+ *               properties:
+ *                  name:
+ *                    type: string
+ *                    example: "butch"
+ *                  id:
+ *                    type: integer
+ *                    example: 100
  *       '400':
  *         description: It means request body invalid
  *         content:
