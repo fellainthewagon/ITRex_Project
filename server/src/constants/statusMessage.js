@@ -7,4 +7,8 @@ module.exports = {
   INVALID_BODY: "Invalid body",
   DATABASE_ERROR: "An error occurred in the database",
   UNSUPPORTED_TYPE: "This type of storage is not supported!",
+  PAGE_NOT_FOUND:
+    `<h1>Error!</h1>` +
+    `<h2>404. Not Found.</h2>` +
+    `<p>This page is not implemented.</p>`,
 };
