@@ -7,16 +7,16 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      patient_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       resolution: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       expire_timestamp: {
         type: DataTypes.BIGINT,
-        allowNull: false,
-      },
-      patientId: {
-        type: DataTypes.INTEGER,
         allowNull: false,
       },
       createdAt: { type: DataTypes.DATE, allowNull: false },

@@ -1,9 +1,9 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Patient extends Model {}
+  class User extends Model {}
 
-  Patient.init(
+  User.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,32 +11,32 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      // user_id: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: false,
-      // },
-      name: {
+      email: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Patient must have a name" },
+          notNull: { msg: "User must have a email" },
         },
         unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {
       indexes: [
         {
-          name: "name",
+          email: "email",
           unique: true,
-          fields: ["name"],
+          fields: ["email"],
         },
       ],
       sequelize,
-      tableName: "patients",
-      modelName: "Patient",
+      tableName: "users",
+      modelName: "User",
     }
   );
 
-  return Patient;
+  return User;
 };

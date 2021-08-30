@@ -39,6 +39,8 @@ services:
       dockerfile: Dockerfile
     container_name: client
     restart: unless-stopped
+    volumes:
+      - ./client:/client
     ports:
       - "5000:5000"
     networks:

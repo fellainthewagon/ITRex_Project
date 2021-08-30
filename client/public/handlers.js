@@ -95,11 +95,11 @@ class Handlers {
       const search = formatter(findInputQueue.value || findInputDoctor.value);
       clearInputs();
 
-      const { patientId, resolution, message } = await this.resolution.find(
+      const { patient_id, resolution, message } = await this.resolution.find(
         search
       );
 
-      this.patientId = patientId || null;
+      this.patientId = patient_id || null;
       showResolution.forEach((item) => {
         item.innerText = resolution || message;
       });
