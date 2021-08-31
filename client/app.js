@@ -8,4 +8,24 @@ app.get("/", (req, res) => {
   res.sendFile("index.html");
 });
 
+app.get("/profile", (req, res) => {
+  res.sendFile(__dirname + "/public/profile.html");
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(__dirname + "/public/register.html");
+});
+
+app.post("/register", (req, res) => {
+  res.redirect("/login");
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(__dirname + "/public/login.html");
+});
+
+app.post("/login", (req, res) => {
+  res.redirect("/profile");
+});
+
 app.listen(5000, () => console.log("server has been started"));

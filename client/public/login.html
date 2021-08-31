@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <title>Login</title>
+  </head>
+  <style>
+    body {
+      background-color: #e3f7fa;
+    }
+
+    .login {
+      display: flex;
+      justify-content: center;
+      margin-top: 15rem;
+    }
+  </style>
+
+  <body>
+    <div class="login">
+      <form class="form-horizontal login-form" action="" method="POST">
+        <fieldset>
+          <div id="legend">
+            <legend class="">LogIn</legend>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="email">E-mail</label>
+            <div class="controls">
+              <input
+                type="text"
+                id="email"
+                name="email"
+                class="input-xlarge"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="input-xlarge"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="controls">
+              <button class="btn btn-success">Login</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <script type="module" src="./login.js"></script>
+  </body>
+</html>

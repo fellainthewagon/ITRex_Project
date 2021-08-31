@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/profile.css" />
+    <title>Profile</title>
+  </head>
+  <body>
+    <div class="queue">
+      <header>
+        <div class="title">
+          <h2>Profile</h2>
+        </div>
+        <div class="line"></div>
+      </header>
+
+      <section>
+        <div>
+          <h5>Current patient:</h5>
+          <div class="current-patient"></div>
+        </div>
+        <div>
+          <h5>Form</h5>
+          <form class="add-patient" method="POST">
+            <input
+              id="add-patient"
+              name="key"
+              type="text"
+              placeholder="patient"
+              required
+            />
+            <button>Add</button>
+          </form>
+        </div>
+      </section>
+      <div class="line"></div>
+
+      <section>
+        <div>
+          <h5>Search</h5>
+          <form class="find-resolution">
+            <input
+              id="find-patient-queue"
+              type="text"
+              name="patient"
+              placeholder="search"
+              required
+            />
+          </form>
+        </div>
+        <div>
+          <h5>Resolution:</h5>
+          <div class="show-resolution"></div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

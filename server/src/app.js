@@ -37,6 +37,14 @@ db.sequelize
  */
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
+app.use("/api/register", (req, res) => {
+  console.log(req.body);
+  res.send();
+});
+app.use("/api/login", (req, res) => {
+  console.log(req.body);
+  res.send();
+});
 
 /**
  * API face

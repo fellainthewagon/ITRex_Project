@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <title>Register</title>
+  </head>
+  <style>
+    body {
+      background-color: #e3f7fa;
+    }
+
+    .register {
+      display: flex;
+      justify-content: center;
+      margin-top: 10rem;
+    }
+  </style>
+
+  <body>
+    <div class="register">
+      <form class="form-horizontal register-form" action="" method="POST">
+        <fieldset>
+          <div id="legend">
+            <legend class="">Register</legend>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="name">Name</label>
+            <div class="controls">
+              <input type="text" id="name" class="input-xlarge" required />
+              <p class="help-block">
+                Name can contain any letters or numbers, without spaces
+              </p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="email">E-mail</label>
+            <div class="controls">
+              <input type="text" id="email" class="input-xlarge" required />
+              <p class="help-block">Please provide your E-mail</p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="password">Password</label>
+            <div class="controls">
+              <input
+                type="password"
+                id="password"
+                class="input-xlarge"
+                required
+              />
+              <p class="help-block">Password should be at least 4 characters</p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="password_confirm"
+              >Confirm password</label
+            >
+            <div class="controls">
+              <input
+                type="password"
+                id="password_confirm"
+                class="input-xlarge"
+                required
+              />
+              <p class="help-block confirm-message">Please confirm password</p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="controls">
+              <button class="btn btn-success">Register</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <script type="module" src="./register.js"></script>
+  </body>
+</html>
