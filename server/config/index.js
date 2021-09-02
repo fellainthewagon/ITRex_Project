@@ -11,6 +11,8 @@ const config = {
   redis: { host, port },
   resolutionsStorage: process.env.RESOLUTIONS_STORAGE || "memory",
   queueStorage: process.env.QUEUE_STORAGE || "memory",
+  secret: process.env.JWT_SECRET || "anif6gd9h2bh",
+  expiresIn: process.env.ACCESS_TOKEN_AGE || "12h",
 };
 
 module.exports = config;

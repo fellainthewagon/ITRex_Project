@@ -7,6 +7,11 @@ module.exports = {
   INVALID_BODY: "Invalid body",
   DATABASE_ERROR: "An error occurred in the database",
   UNSUPPORTED_TYPE: "This type of storage is not supported!",
+  USER_NO_EXIST: "User with this email address does not exist",
+  USER_EXIST: "A user with this email address already exists",
+  TOKEN_REQUIRED: "A token is required for authentication",
+  NOT_AUTH: "You are not authorized",
+  WRONG_PASSWORD: "Wrong password",
   IT_WORKS: `<h1>Miracle! It works!</h1>`,
   PAGE_NOT_FOUND:
     `<h1>Error!</h1>` +

@@ -1,7 +1,7 @@
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable(
-      "patients",
+      "patient",
       {
         id: {
           type: DataTypes.INTEGER,
@@ -9,14 +9,20 @@ module.exports = {
           autoIncrement: true,
           primaryKey: true,
         },
-        user_id: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        },
         name: {
           type: DataTypes.STRING,
           allowNull: false,
           unique: "name",
+        },
+        user_id: {
+          type: DataTypes.INTEGER,
+          references: {
+            model: {
+              tableName: "user",
+            },
+            key: "id",
+          },
+          allowNull: false,
         },
         createdAt: { type: DataTypes.DATE, allowNull: false },
         updatedAt: { type: DataTypes.DATE, allowNull: false },
@@ -33,6 +39,6 @@ module.exports = {
   },
 
   down: async (queryInterface, DataTypes) => {
-    queryInterface.dropTable("patients");
+    queryInterface.dropTable("patient");
   },
 };

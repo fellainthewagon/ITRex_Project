@@ -6,126 +6,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css/style.css" />
-    <title>Clinic</title>
+    <title>Doctor</title>
   </head>
+  <style>
+    body {
+      background-color: #e3f7fa;
+      margin: 5rem 5rem;
+    }
+    form {
+      width: 20rem;
+    }
+    header {
+      margin-bottom: 3rem;
+    }
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .search-show {
+      display: flex;
+      justify-content: space-between;
+    }
+    .current-next {
+      display: flex;
+      justify-content: space-between;
+      margin-left: 1rem;
+      margin-bottom: 7rem;
+    }
+    .resolution-area {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6rem;
+    }
+    #current-patient {
+      margin-left: 1rem;
+      font-size: larger;
+    }
+  </style>
+
   <body>
-    <div class="super">
-      <div class="queue">
-        <header>
-          <div class="title">
-            <h2>Queue</h2>
-          </div>
-          <div class="line"></div>
-        </header>
+    <header>
+      <div class="title">
+        <h2>Cabinet</h2>
+      </div>
+    </header>
 
-        <section>
+    <section>
+      <div class="current-next">
+        <div class="row">
           <div>
             <h5>Current patient:</h5>
             <div class="current-patient"></div>
           </div>
-          <div>
-            <h5>Form</h5>
-            <form class="add-patient" method="POST">
-              <input
-                id="add-patient"
-                name="key"
-                type="text"
-                placeholder="patient"
-                required
-              />
-              <button>Add</button>
-            </form>
-          </div>
-        </section>
-        <div class="line"></div>
+        </div>
 
-        <section>
-          <div>
-            <h5>Search</h5>
-            <form class="find-resolution">
-              <input
-                id="find-patient-queue"
-                type="text"
-                name="patient"
-                placeholder="search"
-                required
-              />
-            </form>
-          </div>
-          <div>
-            <h5>Resolution:</h5>
-            <div class="show-resolution"></div>
-          </div>
-        </section>
+        <div class="form-inline">
+          <button class="next-patient btn btn-success">Next patient</button>
+        </div>
       </div>
-      <div class="doctor">
-        <header>
-          <div class="title">
-            <h2>Cabinet</h2>
-          </div>
-          <div class="line"></div>
-        </header>
 
-        <section>
-          <div>
-            <h5>Current patient:</h5>
-            <div class="current-patient"></div>
-          </div>
-          <div class="next_patient">
-            <h5>Next patient</h5>
-            <button id="next-btn">Next</button>
-          </div>
-        </section>
-        <div class="line"></div>
+      <div class="resolution-area">
+        <div>
+          <form class="set-resolution">
+            <div class="form-group">
+              <label>Resolution</label>
+              <textarea id="resolution" rows="2" cols="100"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Set</button>
+          </form>
+        </div>
+        <div></div>
+      </div>
 
-        <section>
-          <h5>Set appointment resolution</h5>
-          <div>
-            <form class="add-resolution" method="POST">
-              <textarea
-                id="resolution"
-                name="patient"
-                rows="3"
-                cols="15"
-                required
-              ></textarea>
-              <button>Add</button>
-            </form>
-          </div>
-        </section>
-        <div class="line"></div>
-
-        <section>
-          <div>
-            <h5>Show resolution</h5>
-            <form class="find-resolution" method="GET">
+      <div class="search-show">
+        <div>
+          <form class="find-resolution">
+            <div class="form-group">
+              <label>Find resolution</label>
               <input
-                id="find-patient-doctor"
                 type="text"
-                name="name"
-                placeholder="patient"
+                class="form-control"
+                id="search-input"
+                placeholder="name"
                 required
               />
-              <button>Show</button>
-            </form>
-          </div>
-          <div class="resolution-body">
-            <div>
-              <h5>Resolution:</h5>
-              <div class="show-resolution"></div>
             </div>
-            <div>
-              <button id="delete-btn">Delete</button>
+            <button type="submit" class="btn btn-success">Search</button>
+          </form>
+        </div>
+
+        <div>
+          <div>
+            <h6>Resolution:</h6>
+            <div style="width: 350px" class="show-resolution">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
+              facilis, perferendis delectus consectetur mollitia quidem
+              laboriosam officiis saepe id est, repellendus cupiditate hic.
+              Corporis libero tempora expedita sit possimus neque.
             </div>
           </div>
-        </section>
-      </div>
-    </div>
+        </div>
 
-    <script type="module" src="./index.js"></script>
+        <div class="form-inline">
+          <button class="delete-resolution btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </section>
   </body>
+
+  <script type="module" src="./doc.js"></script>
 </html>

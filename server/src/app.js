@@ -11,6 +11,7 @@ const swaggerDocs = require("./doc/swaggerDocs");
 const errorHandler = require("./middleware/errorHandler");
 const db = require("./db");
 const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
+const authRouter = require("./components/auth/authRouter");
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use(express.json());
  * database connection
  */
 db.sequelize
-  .sync(/* {force: true} */)
+  .authenticate(/* {force: true} */)
   .then(() => {
     global.console.log("...connected to DB!");
   })
@@ -35,16 +36,10 @@ db.sequelize
 /**
  * routes
  */
+
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
-app.use("/api/register", (req, res) => {
-  console.log(req.body);
-  res.send();
-});
-app.use("/api/login", (req, res) => {
-  console.log(req.body);
-  res.send();
-});
+app.use("/api/auth", authRouter);
 
 /**
  * API face

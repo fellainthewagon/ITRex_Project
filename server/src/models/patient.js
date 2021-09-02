@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      // user_id: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: false,
-      // },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       ],
       sequelize,
-      tableName: "patients",
+      tableName: "patient",
       modelName: "Patient",
     }
   );

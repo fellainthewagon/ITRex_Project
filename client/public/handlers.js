@@ -1,24 +1,23 @@
 import resolution from "./services/resolution.js";
 import queue from "./services/queue.js";
 import displayError from "./error/displayError.js";
+import user from "./services/user.js";
 
-const showCurrentPatient = document.querySelectorAll(".current-patient");
-const showResolution = document.querySelectorAll(".show-resolution");
-const addPatientInput = document.querySelector("#add-patient");
+const showCurrentPatient = document.querySelector(".current-patient");
+const showResolution = document.querySelector(".show-resolution");
 const resolutionInput = document.querySelector("#resolution");
-const findInputQueue = document.querySelector("#find-patient-queue");
+const searchInputUser = document.querySelector("#search-input");
 const findInputDoctor = document.querySelector("#find-patient-doctor");
+
+const nameField = document.querySelector("#name");
+const emailField = document.querySelector("#email");
 
 function formatter(data) {
   return data.toLowerCase().trim();
 }
 
 function clearInputs() {
-  addPatientInput.value =
-    resolutionInput.value =
-    findInputDoctor.value =
-    findInputQueue.value =
-      "";
+  resolutionInput.value = findInputDoctor.value = searchInputUser.value = "";
 }
 class Handlers {
   constructor(resolution, queue, displayError) {
@@ -30,45 +29,43 @@ class Handlers {
     this.data;
   }
 
-  setupCurrentPatient = async () => {
+  getUser = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const { id, name, email } = await user.getUser(token);
+
+      nameField.innerText = name;
+      emailField.innerText = email;
+      this.patientId = id;
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
+
+  addToQueue = async () => {
+    try {
+      await this.queue.add(this.patientId, nameField.innerText);
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
+
+  currentPatient = async () => {
     try {
       this.data = this.data || (await this.queue.getCurrent());
 
-      showCurrentPatient.forEach((item) => {
-        item.innerText = this.data.name || this.data.message;
-      });
+      showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
     }
   };
 
-  getNextPatient = async () => {
+  nextPatient = async () => {
     try {
-      this.data = await this.queue.next();
+      this.data = await this.queue.getNext();
 
-      showCurrentPatient.forEach((item) => {
-        item.innerText = this.data.name || this.data.message;
-      });
-    } catch (error) {
-      this.displayError(error);
-    }
-  };
-
-  addPatientToQueue = async (e) => {
-    e.preventDefault();
-    try {
-      const name = formatter(addPatientInput.value);
-      const patient = await this.queue.add(name);
-
-      if (!this.data.name) {
-        this.data.name = patient.name;
-        this.data.id = patient.id;
-        showCurrentPatient.forEach((item) => {
-          item.innerText = this.data.name;
-        });
-      }
-
-      clearInputs();
+      showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
     }
@@ -92,7 +89,7 @@ class Handlers {
   findResolution = async (e) => {
     e.preventDefault();
     try {
-      const search = formatter(findInputQueue.value || findInputDoctor.value);
+      const search = formatter(searchInputUser.value);
       clearInputs();
 
       const { patient_id, resolution, message } = await this.resolution.find(
@@ -100,9 +97,7 @@ class Handlers {
       );
 
       this.patientId = patient_id || null;
-      showResolution.forEach((item) => {
-        item.innerText = resolution || message;
-      });
+      showResolution.innerText = resolution || message;
     } catch (error) {
       this.displayError(error);
     }

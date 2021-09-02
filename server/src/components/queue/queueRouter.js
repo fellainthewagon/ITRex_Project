@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const queueController = require("./queueController");
-const validate = require("../../middleware/validate");
+const { validateQueueData } = require("../../middleware/validators");
 
 const queueRouter = Router();
 
@@ -90,7 +90,7 @@ queueRouter.get("/next", async (req, res, next) => {
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
-queueRouter.post("/", validate.body, async (req, res, next) => {
+queueRouter.post("/", validateQueueData, async (req, res, next) => {
   await queueController.addPerson(req, res, next);
 });
 

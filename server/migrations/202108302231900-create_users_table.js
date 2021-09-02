@@ -1,7 +1,7 @@
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable(
-      "users",
+      "user",
       {
         id: {
           type: DataTypes.INTEGER,
@@ -33,6 +33,6 @@ module.exports = {
   },
 
   down: async (queryInterface, DataTypes) => {
-    queryInterface.dropTable("users");
+    queryInterface.dropTable("user");
   },
 };

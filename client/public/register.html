@@ -14,17 +14,22 @@
   </head>
   <style>
     body {
+      display: flex;
       background-color: #e3f7fa;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
     }
-
     .register {
       display: flex;
       justify-content: center;
-      margin-top: 10rem;
     }
   </style>
 
   <body>
+    <div style="color: red; display: none" class="fail-msg"></div>
+
     <div class="register">
       <form class="form-horizontal register-form" action="" method="POST">
         <fieldset>

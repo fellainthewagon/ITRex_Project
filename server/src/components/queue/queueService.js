@@ -1,22 +1,14 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
-const { Patient } = require("../../db");
 
 class QueueService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async addToQueue(name) {
+  async addToQueue(id, name) {
     try {
-      const [patient] = await Patient.findOrCreate({ where: { name } });
-
-      await this.storage.addToList({
-        id: patient.id,
-        name: patient.name,
-      });
-
-      return { id: patient.id, name: patient.name };
+      await this.storage.addToList({ id, name });
     } catch (error) {
       throw new Error(error);
     }

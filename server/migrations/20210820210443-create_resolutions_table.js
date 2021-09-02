@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, DataTypes) => {
-    queryInterface.createTable("resolutions", {
+    queryInterface.createTable("resolution", {
       id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -25,6 +25,6 @@ module.exports = {
   },
 
   down: async (queryInterface, DataTypes) => {
-    queryInterface.dropTable("resolutions");
+    queryInterface.dropTable("resolution");
   },
 };

@@ -15,21 +15,28 @@
   <style>
     body {
       background-color: #e3f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
     }
 
     .login {
       display: flex;
       justify-content: center;
-      margin-top: 15rem;
+      /* margin-top: 15rem; */
     }
   </style>
 
   <body>
+    <div style="color: red; display: none" class="fail-msg"></div>
+
     <div class="login">
       <form class="form-horizontal login-form" action="" method="POST">
         <fieldset>
           <div id="legend">
-            <legend class="">LogIn</legend>
+            <legend class="">Log In</legend>
           </div>
 
           <div class="control-group">

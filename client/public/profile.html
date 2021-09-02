@@ -6,62 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./css/profile.css" />
     <title>Profile</title>
   </head>
+  <style>
+    body {
+      background-color: #e3f7fa;
+      margin: 5rem 5rem;
+    }
+    form {
+      width: 20rem;
+    }
+    header {
+      margin-bottom: 6rem;
+    }
+    .search {
+      display: flex;
+      justify-content: space-around;
+    }
+    .profile-add {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 12rem;
+    }
+    #name {
+      font-size: large;
+      margin-left: 1rem;
+    }
+  </style>
+
   <body>
-    <div class="queue">
-      <header>
-        <div class="title">
-          <h2>Profile</h2>
-        </div>
-        <div class="line"></div>
-      </header>
+    <header>
+      <div class="title">
+        <h2>My Profile</h2>
+      </div>
+    </header>
 
-      <section>
+    <div class="profile-add">
+      <div class="row">
         <div>
-          <h5>Current patient:</h5>
-          <div class="current-patient"></div>
+          <h5>Profile data:</h5>
+          <div id="name"></div>
+          <div style="margin-left: 1rem;" id="email"></div>
         </div>
-        <div>
-          <h5>Form</h5>
-          <form class="add-patient" method="POST">
-            <input
-              id="add-patient"
-              name="key"
-              type="text"
-              placeholder="patient"
-              required
-            />
-            <button>Add</button>
-          </form>
-        </div>
-      </section>
-      <div class="line"></div>
+      </div>
 
-      <section>
-        <div>
-          <h5>Search</h5>
-          <form class="find-resolution">
-            <input
-              id="find-patient-queue"
-              type="text"
-              name="patient"
-              placeholder="search"
-              required
-            />
-          </form>
-        </div>
-        <div>
-          <h5>Resolution:</h5>
-          <div class="show-resolution"></div>
-        </div>
-      </section>
+      <div class="form-inline">
+        <div class="mr-4">Add to Queue</div>
+        <button class="add-patient btn btn-success">Add</button>
+      </div>
     </div>
 
-    <script type="module" src="./index.js"></script>
+    <div class="search">
+      <div>
+        <form class="find-resolution">
+          <div class="form-group">
+            <label ">Find your resolution</label>
+            <input
+              type="text"
+              class="form-control"
+              id="search-input"
+              placeholder="name"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success">Search</button>
+        </form>
+      </div>
+
+      <div>
+        <h6>Resolution:</h6>
+        <div class="show-resolution"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./profile.js"></script>
   </body>
 </html>
