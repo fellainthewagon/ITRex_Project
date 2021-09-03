@@ -25,14 +25,12 @@ class User {
   }
 
   async logout(token) {
-    const response = await fetch(this.url + "/auth/logout", {
+    await fetch(this.url + "/auth/logout", {
       method: "POST",
       headers: {
         "x-access-token": `Bearer ${token}`,
       },
     });
-
-    return response.json();
   }
 }
 

@@ -1,4 +1,4 @@
-import { setToken, setId } from "../utils/index.js";
+import { setUserDataToLS } from "../utils/index.js";
 import config from "../../config/config.js";
 const { host, protocol } = config;
 const port = 5000;
@@ -28,8 +28,8 @@ async function displayLoginResponse(response) {
     failMessage.innerText = data.message;
     failMessage.style.display = "block";
   } else if (response.status === 200) {
-    setId(data.user.id);
-    setToken(data.token);
+    setUserDataToLS(data.user.id, data.token);
+
     location.href = `${protocol}://${host}:${port}/profile`;
   }
 

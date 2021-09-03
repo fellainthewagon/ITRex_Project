@@ -4,10 +4,9 @@ import user from "./services/user.js";
 import displayError from "./helpers/displayError.js";
 import {
   formatter,
-  getToken,
-  setToken,
+  deleteUserDataFomLS,
   jumpToStartPage,
-  getId,
+  getUserDataFromLS,
 } from "./utils/index.js";
 
 const showCurrentPatient = document.querySelector(".current-patient");
@@ -29,8 +28,12 @@ class Handlers {
 
   getUser = async () => {
     try {
-      const token = getToken();
-      const userId = getId();
+      const { userId, token } = getUserDataFromLS();
+      if (!userId || !token) {
+        jumpToStartPage();
+        return;
+      }
+
       const response = await user.getUser(userId, token);
 
       if (response.status === 401) jumpToStartPage();
@@ -47,7 +50,7 @@ class Handlers {
 
   addToQueue = async () => {
     try {
-      const token = getToken();
+      const { token } = getUserDataFromLS();
 
       await this.queue.add(this.patientId, nameField.innerText, token);
     } catch (error) {
@@ -124,10 +127,11 @@ class Handlers {
   logout = async (e) => {
     e.preventDefault();
     try {
-      const token = getToken();
-      const data = await user.logout(token);
+      const { token } = getUserDataFromLS();
+      deleteUserDataFomLS();
 
-      setToken(data.token);
+      await user.logout(token);
+
       jumpToStartPage();
     } catch (error) {
       this.displayError(error);

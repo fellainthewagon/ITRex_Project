@@ -6,24 +6,30 @@ function formatter(data) {
   return data.toLowerCase().trim();
 }
 
-function getToken() {
-  return localStorage.getItem("accessToken");
+function getUserDataFromLS() {
+  const token = localStorage.getItem("accessToken");
+  const userId = localStorage.getItem("userId");
+  return { userId, token };
 }
 
-function setToken(token) {
-  return localStorage.setItem("accessToken", token);
+function setUserDataToLS(userId, token) {
+  localStorage.setItem("accessToken", token);
+  localStorage.setItem("userId", userId);
 }
 
-function getId() {
-  return localStorage.getItem("userId");
-}
-
-function setId(id) {
-  return localStorage.setItem("userId", id);
+function deleteUserDataFomLS() {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("userId");
 }
 
 function jumpToStartPage() {
   location.replace(`${protocol}://${host}:${port}`);
 }
 
-export { formatter, getToken, setToken, jumpToStartPage, setId, getId };
+export {
+  formatter,
+  getUserDataFromLS,
+  jumpToStartPage,
+  deleteUserDataFomLS,
+  setUserDataToLS,
+};
