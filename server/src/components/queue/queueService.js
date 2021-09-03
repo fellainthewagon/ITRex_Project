@@ -1,5 +1,6 @@
 const Factory = require("../storage/factory");
 const config = require("../../../config");
+const CatchError = require("../../errors/catchError");
 
 class QueueService {
   constructor(storageType) {
@@ -10,7 +11,7 @@ class QueueService {
     try {
       await this.storage.addToList(patient);
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 
@@ -20,7 +21,7 @@ class QueueService {
 
       return data || null;
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 
@@ -30,7 +31,7 @@ class QueueService {
 
       return data || null;
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 }

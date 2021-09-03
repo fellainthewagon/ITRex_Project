@@ -1,5 +1,4 @@
 const Database = require("../../src/components/storage/database");
-const DatabaseException = require("../../src/errors/databaseException");
 
 jest.mock("../../src/db");
 const db = require("../../src/db");
@@ -98,12 +97,5 @@ describe("'Database' storage class", () => {
     expect(await database.deleteById(99)).toBe(0);
 
     catchBlockTest("destroy", database.deleteById);
-  });
-
-  it("'DatabaseException' throwing", async () => {
-    dbFunction.destroy.mockResolvedValue(() => {
-      throw new DatabaseException();
-    });
-    expect(await database.deleteById(99)).toThrow(DatabaseException);
   });
 });

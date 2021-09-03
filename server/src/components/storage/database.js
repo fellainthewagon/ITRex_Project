@@ -1,10 +1,9 @@
-const DatabaseException = require("../../errors/databaseException");
 const { Resolution } = require("../../db");
+const ApiError = require("../../errors/apiError");
 
 module.exports = class Database {
   constructor() {
     this.Resolution = Resolution;
-    this.DatabaseException = DatabaseException;
   }
 
   async create(id, resolution, ttl) {
@@ -17,7 +16,7 @@ module.exports = class Database {
         expire_timestamp: timestamp,
       });
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -36,7 +35,7 @@ module.exports = class Database {
 
       return resolution.dataValues;
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -44,7 +43,7 @@ module.exports = class Database {
     try {
       return await this.Resolution.destroy({ where: { patient_id: id } });
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 };

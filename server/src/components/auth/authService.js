@@ -19,7 +19,7 @@ class AuthService {
 
       return { ...userDto };
     } catch (error) {
-      throw new CatchError(error.statusCode, error.message);
+      throw new CatchError(error.message);
     }
   }
 
@@ -33,7 +33,7 @@ class AuthService {
         token: jwt.sign({ ...userDto }, secret, { expiresIn }),
       };
     } catch (error) {
-      throw new CatchError(error.statusCode, error.message);
+      throw new CatchError(error.message);
     }
   }
 
@@ -43,7 +43,7 @@ class AuthService {
         expiresIn: "1s",
       });
     } catch (error) {
-      throw new CatchError(error.statusCode, error.message);
+      throw new CatchError(error.message);
     }
   }
 }

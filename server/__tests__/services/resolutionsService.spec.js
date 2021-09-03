@@ -1,5 +1,6 @@
 const resolutionsService = require("../../src/components/resolutions/resolutionsService");
 const { Patient } = require("../../src/db");
+const ResolutionDto = require("../../src/dtos/resolutionDto");
 
 /**
  * mocking funcs
@@ -43,12 +44,14 @@ describe("'ResolutionsService' class", () => {
     expect(storage.findById).toHaveBeenCalledTimes(0);
   });
 
-  const value = { patientId: 1, name: "mia", id: 99 };
+  const value = { patient_id: 1, name: "mia", id: 99 };
   it("'get' method, if the 'name' is in the DB and the 'patientId' in the storage", async () => {
     Patient.findOne.mockResolvedValue({ id: 1, name: "mia" });
     storage.findById.mockResolvedValue(value);
 
-    expect(await resolutionsService.get("mia")).toEqual(value);
+    const resolution = new ResolutionDto(value);
+
+    expect(await resolutionsService.get("mia")).toEqual(resolution);
     expect(storage.findById).toHaveBeenCalledTimes(1);
     expect(storage.findById).toHaveBeenCalledWith(1);
 

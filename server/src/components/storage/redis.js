@@ -1,5 +1,5 @@
 const config = require("../../../config");
-const DatabaseException = require("../../errors/databaseException");
+const ApiError = require("../../errors/apiError");
 const redis = require("../../redis");
 
 module.exports = class Redis {
@@ -8,7 +8,6 @@ module.exports = class Redis {
       host: config.redis.host,
       port: config.redis.port,
     });
-    this.DatabaseException = DatabaseException;
     this.listName = "queue";
     this.existPrefix = "q:";
     this.prefix = "resolution:";
@@ -20,7 +19,7 @@ module.exports = class Redis {
 
       return JSON.parse(json);
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -32,7 +31,7 @@ module.exports = class Redis {
 
       return this.getFirstFromList();
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -44,7 +43,7 @@ module.exports = class Redis {
       await this.client.rpushAsync(this.listName, json);
       await this.client.setAsync(this.existPrefix + data.id, data.id);
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -52,7 +51,7 @@ module.exports = class Redis {
     try {
       return this.client.getAsync(this.existPrefix + id);
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -60,7 +59,7 @@ module.exports = class Redis {
     try {
       await this.client.setexAsync(this.prefix + patientId, ttl, resolution);
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -68,9 +67,9 @@ module.exports = class Redis {
     try {
       const resolution = await this.client.getAsync(this.prefix + patientId);
 
-      return resolution ? { patientId, resolution } : null;
+      return resolution ? { patient_id: patientId, resolution } : null;
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 
@@ -78,7 +77,7 @@ module.exports = class Redis {
     try {
       return this.client.delAsync(this.prefix + patientId);
     } catch (error) {
-      throw new this.DatabaseException(error);
+      throw ApiError.DatabaseException(error.message, error);
     }
   }
 };

@@ -13,7 +13,7 @@ Date.now = jest.fn();
  *  vars
  */
 const data = {
-  patientId: "55",
+  patient_id: "55",
   resolution: "hello",
   timestamp: 1000,
 };

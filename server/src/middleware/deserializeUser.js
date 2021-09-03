@@ -5,7 +5,7 @@ const ApiError = require("../errors/apiError");
 
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers["x-access-token"].replace(/^Bearer\s/, "");
+    const token = req.headers["x-access-token"]?.replace(/^Bearer\s/, "");
 
     if (!token) {
       throw ApiError.Unauthorized(TOKEN_REQUIRED);

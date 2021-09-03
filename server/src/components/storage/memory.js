@@ -19,7 +19,7 @@ module.exports = class Memory {
 
   async create(patientId, resolution, ttl) {
     this.resolutions.push({
-      patientId,
+      patient_id: patientId,
       resolution,
       timestamp: Date.now() + ttl * 1000,
     });
@@ -29,7 +29,7 @@ module.exports = class Memory {
     const data = await this.search(patientId.toString());
     if (data.timestamp >= Date.now()) return data;
 
-    this.remove(data.patientId);
+    this.remove(data.patient_id);
     return null;
   }
 
@@ -41,13 +41,13 @@ module.exports = class Memory {
 
   async search(patientId) {
     return this.resolutions.length
-      ? this.resolutions.find((item) => item.patientId === patientId)
+      ? this.resolutions.find((item) => item.patient_id === patientId)
       : null;
   }
 
   async remove(patientId) {
     this.resolutions = this.resolutions.filter(
-      (item) => item.patientId !== patientId
+      (item) => item.patient_id !== patientId
     );
 
     return true;

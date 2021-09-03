@@ -1,5 +1,4 @@
 const Redis = require("../../src/components/storage/redis");
-const DatabaseException = require("../../src/errors/databaseException");
 
 const redis = new Redis();
 
@@ -124,7 +123,7 @@ describe("'Redis' storage class", () => {
   it("'findById' method", async () => {
     client.getAsync.mockResolvedValue("hello");
     expect(await redis.findById(99)).toEqual({
-      patientId: 99,
+      patient_id: 99,
       resolution: "hello",
     });
     expect(client.getAsync).toHaveBeenCalledTimes(1);
@@ -146,12 +145,5 @@ describe("'Redis' storage class", () => {
     expect(await redis.deleteById(99)).toBeNull();
 
     await catchBlockTest("delAsync", redis.deleteById);
-  });
-
-  it("'DatabaseException' throwing", async () => {
-    client.delAsync.mockResolvedValue(() => {
-      throw new DatabaseException();
-    });
-    expect(await redis.deleteById()).toThrow(DatabaseException);
   });
 });
