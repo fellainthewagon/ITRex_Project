@@ -9,7 +9,7 @@ class ResolutionsService {
 
   async add(patientId, resolution, ttl) {
     try {
-      await this.storage.create(patientId, resolution, ttl);
+      await this.storage.createResolution(patientId, resolution, ttl);
     } catch (error) {
       throw new Error(error);
     }
@@ -20,7 +20,7 @@ class ResolutionsService {
       const patient = await Patient.findOne({ where: { name } });
       if (!patient) return null;
 
-      const data = await this.storage.findById(patient.id);
+      const data = await this.storage.findResolutionById(patient.id);
 
       return data || null;
     } catch (error) {
@@ -30,7 +30,7 @@ class ResolutionsService {
 
   async delete(patientId) {
     try {
-      const isDeleted = await this.storage.deleteById(patientId);
+      const isDeleted = await this.storage.deleteResolutionById(patientId);
 
       return isDeleted || null;
     } catch (error) {

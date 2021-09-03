@@ -9,6 +9,12 @@ module.exports = {
       },
       patient_id: {
         type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: "patient",
+          },
+          key: "id",
+        },
         allowNull: false,
       },
       resolution: {

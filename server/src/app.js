@@ -6,15 +6,15 @@ const config = require("../config");
 
 const queueRouter = require("./components/queue/queueRouter");
 const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
+const authRouter = require("./components/auth/authRouter");
+const userRouter = require("./components/user/userRouter");
 
 const swaggerDocs = require("./doc/swaggerDocs");
-const errorHandler = require("./middleware/errorHandler");
+const apiErrorsHandler = require("./middleware/apiErrorsHandler");
 const db = require("./db");
 const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
-const authRouter = require("./components/auth/authRouter");
 
 const app = express();
-
 /**
  * middleware
  */
@@ -40,6 +40,7 @@ db.sequelize
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 /**
  * API face
@@ -47,6 +48,6 @@ app.use("/api/auth", authRouter);
 app.get("/", (req, res) => res.send(IT_WORKS));
 app.get("*", (req, res) => res.send(PAGE_NOT_FOUND));
 
-app.use(errorHandler);
+app.use(apiErrorsHandler);
 
 module.exports = app;

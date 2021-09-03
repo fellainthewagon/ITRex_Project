@@ -1,49 +1,47 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const userService = require("../user/userService");
+const CatchError = require("../../errors/catchError");
+const UserDto = require("../../dtos/userDto");
 const { secret, expiresIn } = require("../../../config");
-
-const userStorage = require("../storage/userStorage");
-const patientStorage = require("../storage/patientStorage");
+const { Patient, User } = require("../../db");
 
 class AuthService {
-  constructor(userRepo, patientRepo) {
-    this.userStorage = userRepo;
-    this.patientStorage = patientRepo;
-  }
-
-  async getUser(req) {
-    const { userId } = req.user;
-
-    const user = await this.userStorage.findById(userId);
-    if (!user) return null;
-
-    const { patient } = user;
-
-    return { id: patient.id, name: patient.name, email: user.email };
-  }
-
   async registration(body) {
     try {
       const { name, email, password } = body;
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await this.userStorage.create(email, hashedPassword);
+      const user = await User.create({ email, password: hashedPassword });
 
-      const patient = await this.patientStorage.create(name, user.id);
+      await Patient.create({ name, user_id: user.id });
+      const userDto = new UserDto(user);
 
-      return { id: patient.id, name: patient.name };
+      return { ...userDto };
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.statusCode, error.message);
     }
   }
 
-  async login(userId) {
+  async login(body) {
     try {
-      return jwt.sign({ userId }, secret, { expiresIn });
+      const user = await userService.checkCredential(body);
+      const userDto = new UserDto(user);
+
+      return {
+        user: { ...userDto },
+        token: jwt.sign({ ...userDto }, secret, { expiresIn }),
+      };
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.statusCode, error.message);
     }
+  }
+
+  async logout() {
+    return jwt.sign({}, secret, {
+      expiresIn: "1s",
+    });
   }
 }
 
-module.exports = new AuthService(userStorage, patientStorage);
+module.exports = new AuthService();

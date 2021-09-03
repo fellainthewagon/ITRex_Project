@@ -1,4 +1,6 @@
 import user from "./services/user.js";
+import displayError from "./helpers/displayError.js";
+import { displayRegisterResponse } from "./helpers/displayResponse.js";
 
 const form = document.querySelector(".register-form");
 const name = document.querySelector("#name");
@@ -6,7 +8,6 @@ const email = document.querySelector("#email");
 const password = document.querySelector("#password");
 const passwordConfirm = document.querySelector("#password_confirm");
 const confimMessage = document.querySelector(".confirm-message");
-const errMessage = document.querySelector(".fail-msg");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -26,23 +27,8 @@ form.addEventListener("submit", async (e) => {
   try {
     const response = await user.sendData(data, "register");
 
-    await displayResult(response);
+    await displayRegisterResponse(response);
   } catch (error) {
-    console.log(error);
+    displayError(error);
   }
 });
-
-async function displayResult(response) {
-  const data = await response.json();
-
-  if (response.status === 409) {
-    errMessage.innerText = data.message;
-    errMessage.style.display = "block";
-  } else {
-    window.location.href = "http://localhost:5000/login";
-  }
-
-  setTimeout(() => {
-    errMessage.style.display = "none";
-  }, 4000);
-}

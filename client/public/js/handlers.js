@@ -1,24 +1,16 @@
 import resolution from "./services/resolution.js";
 import queue from "./services/queue.js";
-import displayError from "./error/displayError.js";
 import user from "./services/user.js";
+import displayError from "./helpers/displayError.js";
+import { formatter, getToken, setToken } from "./utils/index.js";
 
 const showCurrentPatient = document.querySelector(".current-patient");
 const showResolution = document.querySelector(".show-resolution");
 const resolutionInput = document.querySelector("#resolution");
-const searchInputUser = document.querySelector("#search-input");
-const findInputDoctor = document.querySelector("#find-patient-doctor");
-
+const searchInput = document.querySelector("#search-input");
 const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
 
-function formatter(data) {
-  return data.toLowerCase().trim();
-}
-
-function clearInputs() {
-  resolutionInput.value = findInputDoctor.value = searchInputUser.value = "";
-}
 class Handlers {
   constructor(resolution, queue, displayError) {
     this.resolution = resolution;
@@ -31,9 +23,14 @@ class Handlers {
 
   getUser = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = getToken();
+      const response = await user.getUser(token);
 
-      const { id, name, email } = await user.getUser(token);
+      if (response.status === 401) {
+        window.location.href = "http://localhost:5000";
+      }
+
+      const { id, name, email } = await response.json();
 
       nameField.innerText = name;
       emailField.innerText = email;
@@ -45,7 +42,9 @@ class Handlers {
 
   addToQueue = async () => {
     try {
-      await this.queue.add(this.patientId, nameField.innerText);
+      const token = getToken();
+
+      await this.queue.add(this.patientId, nameField.innerText, token);
     } catch (error) {
       this.displayError(error);
     }
@@ -77,10 +76,11 @@ class Handlers {
       const { name } = await this.queue.getCurrent();
       if (!name) return;
 
-      const resolution = formatter(resolutionInput.value);
+      const resolution = resolutionInput.value;
+
       await this.resolution.add(this.data.id, { resolution });
 
-      clearInputs();
+      resolutionInput.value = "";
     } catch (error) {
       this.displayError(error);
     }
@@ -89,8 +89,8 @@ class Handlers {
   findResolution = async (e) => {
     e.preventDefault();
     try {
-      const search = formatter(searchInputUser.value);
-      clearInputs();
+      const search = formatter(searchInput.value);
+      searchInput.value = "";
 
       const { patient_id, resolution, message } = await this.resolution.find(
         search
@@ -110,9 +110,20 @@ class Handlers {
       this.name = null;
 
       if (response.status >= 400) return;
-      showResolution.forEach((item) => {
-        item.innerText = "Resolution deleted";
-      });
+      showResolution.innerText = "Resolution deleted";
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
+
+  logout = async (e) => {
+    e.preventDefault();
+    try {
+      const token = getToken();
+      const data = await user.logout(token);
+
+      setToken(data.token);
+      window.location.href = "http://localhost:5000";
     } catch (error) {
       this.displayError(error);
     }

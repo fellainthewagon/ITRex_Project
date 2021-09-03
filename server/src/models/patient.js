@@ -18,17 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Patient must have a name" },
-        },
-        unique: true,
+        // unique: true,
       },
     },
     {
       indexes: [
         {
           name: "name",
-          unique: true,
+          // unique: true,
           fields: ["name"],
         },
       ],

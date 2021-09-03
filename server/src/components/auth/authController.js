@@ -5,16 +5,6 @@ class AuthController {
     this.authService = service;
   }
 
-  async getUser(req, res, next) {
-    try {
-      const data = await this.authService.getUser(req);
-
-      return res.json(data);
-    } catch (error) {
-      return next(error);
-    }
-  }
-
   async register(req, res, next) {
     try {
       const user = await this.authService.registration(req.body);
@@ -27,15 +17,23 @@ class AuthController {
 
   async login(req, res, next) {
     try {
-      const token = await this.authService.login(req.body.userId);
-      // res.setHeader("x-access-token", token);
-      return res.json({ token });
+      const user = await this.authService.login(req.body);
+
+      return res.json(user);
     } catch (error) {
       return next(error);
     }
   }
 
-  async logout(req, res, next) {}
+  async logout(req, res, next) {
+    try {
+      const fakeToken = await this.authService.logout();
+
+      return res.json({ token: fakeToken });
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 module.exports = new AuthController(authService);

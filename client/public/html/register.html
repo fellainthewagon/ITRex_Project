@@ -10,45 +10,47 @@
       rel="stylesheet"
       id="bootstrap-css"
     />
-    <title>Login</title>
+    <title>Register</title>
   </head>
   <style>
     body {
-      background-color: #e3f7fa;
       display: flex;
+      background-color: #e3f7fa;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       height: 100vh;
     }
-
-    .login {
+    .register {
       display: flex;
       justify-content: center;
-      /* margin-top: 15rem; */
     }
   </style>
 
   <body>
     <div style="color: red; display: none" class="fail-msg"></div>
 
-    <div class="login">
-      <form class="form-horizontal login-form" action="" method="POST">
+    <div class="register">
+      <form class="form-horizontal register-form" action="" method="POST">
         <fieldset>
           <div id="legend">
-            <legend class="">Log In</legend>
+            <legend class="">Register</legend>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="name">Name</label>
+            <div class="controls">
+              <input type="text" id="name" class="input-xlarge" required />
+              <p class="help-block">
+                Name must be at least 2 characters without spaces
+              </p>
+            </div>
           </div>
 
           <div class="control-group">
             <label class="control-label" for="email">E-mail</label>
             <div class="controls">
-              <input
-                type="text"
-                id="email"
-                name="email"
-                class="input-xlarge"
-                required
-              />
+              <input type="text" id="email" class="input-xlarge" required />
+              <p class="help-block">Please provide your E-mail</p>
             </div>
           </div>
 
@@ -58,22 +60,37 @@
               <input
                 type="password"
                 id="password"
-                name="password"
                 class="input-xlarge"
                 required
               />
+              <p class="help-block">Password should be at least 6 characters</p>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="password_confirm"
+              >Confirm password</label
+            >
+            <div class="controls">
+              <input
+                type="password"
+                id="password_confirm"
+                class="input-xlarge"
+                required
+              />
+              <p class="help-block confirm-message">Please confirm password</p>
             </div>
           </div>
 
           <div class="control-group">
             <div class="controls">
-              <button class="btn btn-success">Login</button>
+              <button class="btn btn-success">Register</button>
             </div>
           </div>
         </fieldset>
       </form>
     </div>
 
-    <script type="module" src="./login.js"></script>
+    <script type="module" src="../js/register.js"></script>
   </body>
 </html>

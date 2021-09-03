@@ -25,7 +25,9 @@
     form {
       width: 20rem;
     }
-    header {
+    .head {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 6rem;
     }
     .search {
@@ -44,11 +46,15 @@
   </style>
 
   <body>
-    <header>
+
+    <div class="head">
       <div class="title">
         <h2>My Profile</h2>
       </div>
-    </header>
+      <div>
+        <a class="logout" href=""><h5>LogOut</h5></a>
+      </div>
+    </div>
 
     <div class="profile-add">
       <div class="row">
@@ -88,6 +94,6 @@
       </div>
     </div>
 
-    <script type="module" src="./profile.js"></script>
+    <script type="module" src="../js/profile.js"></script>
   </body>
 </html>

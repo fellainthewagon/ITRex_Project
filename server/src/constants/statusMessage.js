@@ -3,8 +3,12 @@ module.exports = {
   PERSON_CREATED: "Person added to Queue",
   RESOLUTION_NOT_FOUND: "Resolution not found",
   INVALID_PARAMS: "Parameter is not valid",
+  INVALID_DATA: "Not valid data",
   INVALID_QUERY: "Query is not valid",
   INVALID_BODY: "Invalid body",
+  INVALID_CREDENTIAL: "Invalid credential",
+  INVALID_REGISTER_DATA:
+    "Invalid registration data. Please follow the recommendations",
   DATABASE_ERROR: "An error occurred in the database",
   UNSUPPORTED_TYPE: "This type of storage is not supported!",
   USER_NO_EXIST: "User with this email address does not exist",

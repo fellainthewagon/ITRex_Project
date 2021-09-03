@@ -1,15 +1,16 @@
-import config from "../config/config.js";
+import config from "../../config/config.js";
 
 class Queue {
   constructor({ protocol, host, port } = config) {
     this.url = `${protocol}://${host}:${port}/api/patients/queue`;
   }
 
-  async add(id, name) {
+  async add(id, name, token) {
     await fetch(this.url + "/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token": `Bearer ${token}`,
       },
       body: JSON.stringify({ id, name }),
     });

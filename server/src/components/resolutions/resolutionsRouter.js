@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const resolutionsController = require("./resolutionsController");
-const { params, query } = require("../../middleware/validators");
+const {
+  validateParams,
+  validateQueryParams,
+  validateAddResolution,
+} = require("../../middleware/validators");
 
 const resolutionsRouter = Router();
 
@@ -39,8 +43,7 @@ const resolutionsRouter = Router();
  */
 resolutionsRouter.patch(
   "/:id/resolution",
-  params,
-  // validate.body,
+  validateAddResolution,
   async (req, res, next) => {
     await resolutionsController.addResolution(req, res, next);
   }
@@ -77,9 +80,13 @@ resolutionsRouter.patch(
  *           application/json:
  *             example: {message: "Resolution not found"}
  */
-resolutionsRouter.get("/resolution", query, async (req, res, next) => {
-  await resolutionsController.getResolution(req, res, next);
-});
+resolutionsRouter.get(
+  "/resolution",
+  validateQueryParams,
+  async (req, res, next) => {
+    await resolutionsController.getResolution(req, res, next);
+  }
+);
 
 /**
  * @swagger
@@ -109,8 +116,12 @@ resolutionsRouter.get("/resolution", query, async (req, res, next) => {
  *           application/json:
  *             example: {message: "Resolution not found"}
  */
-resolutionsRouter.delete("/:id/resolution", params, async (req, res, next) => {
-  await resolutionsController.deleteResolution(req, res, next);
-});
+resolutionsRouter.delete(
+  "/:id/resolution",
+  validateParams,
+  async (req, res, next) => {
+    await resolutionsController.deleteResolution(req, res, next);
+  }
+);
 
 module.exports = resolutionsRouter;
