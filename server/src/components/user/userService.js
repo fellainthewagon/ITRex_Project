@@ -9,10 +9,8 @@ const ApiError = require("../../errors/apiError");
 const CatchError = require("../../errors/catchError");
 
 class UserService {
-  async getUser(req) {
+  async getUser(id) {
     try {
-      const { id } = req.user;
-
       const user = (await User.findByPk(id, { include: "patient" }))?.get({
         plain: true,
       });
@@ -27,14 +25,14 @@ class UserService {
     }
   }
 
-  async checkCredential(body) {
+  async checkCredentialAndGetUser(body) {
     try {
       const { email, password } = body;
 
       const user = await User.findOne({ where: { email }, raw: true });
       if (!user) throw ApiError.Unauthorized(USER_NO_EXIST);
 
-      const correct = bcrypt.compareSync(password, user.password);
+      const correct = await bcrypt.compare(password, user.password);
       if (!correct) throw ApiError.Unauthorized(WRONG_PASSWORD);
 
       return user;

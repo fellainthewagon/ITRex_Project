@@ -4,10 +4,12 @@ module.exports = {
       "user",
       {
         id: {
-          type: DataTypes.INTEGER,
           allowNull: false,
-          autoIncrement: true,
+          type: DataTypes.UUID,
           primaryKey: true,
+          validate: {
+            notNull: true,
+          },
         },
         email: {
           type: DataTypes.STRING,

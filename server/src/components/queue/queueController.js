@@ -9,8 +9,7 @@ class QueueController {
 
   async addPerson(req, res, next) {
     try {
-      const { id, name } = req.body;
-      await this.queueService.addToQueue(id, name);
+      await this.queueService.addToQueue(req.body);
 
       return res.status(CREATED).send();
     } catch (error) {

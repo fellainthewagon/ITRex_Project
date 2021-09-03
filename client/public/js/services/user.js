@@ -5,8 +5,8 @@ class User {
     this.url = `${protocol}://${host}:${port}/api`;
   }
 
-  async getUser(token) {
-    return fetch(this.url + "/user", {
+  async getUser(id, token) {
+    return fetch(this.url + `/user/${id}`, {
       method: "GET",
       headers: {
         "x-access-token": `Bearer ${token}`,

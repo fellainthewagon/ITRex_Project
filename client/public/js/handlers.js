@@ -2,7 +2,13 @@ import resolution from "./services/resolution.js";
 import queue from "./services/queue.js";
 import user from "./services/user.js";
 import displayError from "./helpers/displayError.js";
-import { formatter, getToken, setToken } from "./utils/index.js";
+import {
+  formatter,
+  getToken,
+  setToken,
+  jumpToStartPage,
+  getId,
+} from "./utils/index.js";
 
 const showCurrentPatient = document.querySelector(".current-patient");
 const showResolution = document.querySelector(".show-resolution");
@@ -24,11 +30,10 @@ class Handlers {
   getUser = async () => {
     try {
       const token = getToken();
-      const response = await user.getUser(token);
+      const userId = getId();
+      const response = await user.getUser(userId, token);
 
-      if (response.status === 401) {
-        window.location.href = "http://localhost:5000";
-      }
+      if (response.status === 401) jumpToStartPage();
 
       const { id, name, email } = await response.json();
 
@@ -123,7 +128,7 @@ class Handlers {
       const data = await user.logout(token);
 
       setToken(data.token);
-      window.location.href = "http://localhost:5000";
+      jumpToStartPage();
     } catch (error) {
       this.displayError(error);
     }

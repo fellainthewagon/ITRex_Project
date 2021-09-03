@@ -4,7 +4,7 @@ const deserializeUser = require("../../middleware/deserializeUser");
 
 const userRouter = Router();
 
-userRouter.get("/", deserializeUser, async (req, res, next) => {
+userRouter.get("/:id", deserializeUser, async (req, res, next) => {
   await userController.getUser(req, res, next);
 });
 

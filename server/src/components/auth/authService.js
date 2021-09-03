@@ -25,7 +25,7 @@ class AuthService {
 
   async login(body) {
     try {
-      const user = await userService.checkCredential(body);
+      const user = await userService.checkCredentialAndGetUser(body);
       const userDto = new UserDto(user);
 
       return {
@@ -38,9 +38,13 @@ class AuthService {
   }
 
   async logout() {
-    return jwt.sign({}, secret, {
-      expiresIn: "1s",
-    });
+    try {
+      return jwt.sign({}, "fake secret", {
+        expiresIn: "1s",
+      });
+    } catch (error) {
+      throw new CatchError(error.statusCode, error.message);
+    }
   }
 }
 

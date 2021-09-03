@@ -19,7 +19,7 @@ Date.now = jest.fn();
  *  vars
  */
 const rawValue = {
-  patientId: 99,
+  patient_id: 99,
   resolution: "hello",
   expire_timestamp: 1000,
 };
@@ -30,7 +30,7 @@ const fullValue = {
   destroy: jest.fn(),
 };
 
-const condition = { where: { patientId: 99 } };
+const condition = { where: { patient_id: 99 } };
 
 const TTL = 30;
 

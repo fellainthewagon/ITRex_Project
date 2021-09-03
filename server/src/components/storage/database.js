@@ -7,7 +7,7 @@ module.exports = class Database {
     this.DatabaseException = DatabaseException;
   }
 
-  async createResolution(id, resolution, ttl) {
+  async create(id, resolution, ttl) {
     try {
       const timestamp = Date.now() + ttl * 1000;
 
@@ -21,7 +21,7 @@ module.exports = class Database {
     }
   }
 
-  async findResolutionById(id) {
+  async findById(id) {
     try {
       const resolution = await this.Resolution.findOne({
         where: { patient_id: id },
@@ -40,7 +40,7 @@ module.exports = class Database {
     }
   }
 
-  async deleteResolutionById(id) {
+  async deleteById(id) {
     try {
       return await this.Resolution.destroy({ where: { patient_id: id } });
     } catch (error) {

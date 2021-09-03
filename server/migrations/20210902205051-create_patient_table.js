@@ -15,7 +15,7 @@ module.exports = {
           // unique: "name",
         },
         user_id: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.UUID,
           references: {
             model: {
               tableName: "user",

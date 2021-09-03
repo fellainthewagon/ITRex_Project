@@ -17,7 +17,7 @@ module.exports = class Memory {
     this.queue.push(data);
   }
 
-  async createResolution(patientId, resolution, ttl) {
+  async create(patientId, resolution, ttl) {
     this.resolutions.push({
       patientId,
       resolution,
@@ -25,7 +25,7 @@ module.exports = class Memory {
     });
   }
 
-  async findResolutionById(patientId) {
+  async findById(patientId) {
     const data = await this.search(patientId.toString());
     if (data.timestamp >= Date.now()) return data;
 
@@ -33,7 +33,7 @@ module.exports = class Memory {
     return null;
   }
 
-  async deleteResolutionById(patientId) {
+  async deleteById(patientId) {
     const resolution = await this.search(patientId);
 
     return resolution ? this.remove(patientId) : null;

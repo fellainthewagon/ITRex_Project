@@ -6,9 +6,9 @@ class QueueService {
     this.storage = storageType;
   }
 
-  async addToQueue(id, name) {
+  async addToQueue(patient) {
     try {
-      await this.storage.addToList({ id, name });
+      await this.storage.addToList(patient);
     } catch (error) {
       throw new Error(error);
     }

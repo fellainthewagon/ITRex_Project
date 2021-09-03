@@ -56,7 +56,7 @@ module.exports = class Redis {
     }
   }
 
-  async createResolution(patientId, resolution, ttl) {
+  async create(patientId, resolution, ttl) {
     try {
       await this.client.setexAsync(this.prefix + patientId, ttl, resolution);
     } catch (error) {
@@ -64,7 +64,7 @@ module.exports = class Redis {
     }
   }
 
-  async findResolutionById(patientId) {
+  async findById(patientId) {
     try {
       const resolution = await this.client.getAsync(this.prefix + patientId);
 
@@ -74,7 +74,7 @@ module.exports = class Redis {
     }
   }
 
-  async deleteResolutionById(patientId) {
+  async deleteById(patientId) {
     try {
       return this.client.delAsync(this.prefix + patientId);
     } catch (error) {
