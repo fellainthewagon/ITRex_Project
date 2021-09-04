@@ -77,32 +77,32 @@ describe("'UserService' class", () => {
     expect(await userService.getUser(id)).toBeNull();
   });
 
-  it("'checkCredentialAndGetUser' method, if 'user' exist and 'password' is valid", async () => {
+  it("'checkCredential' method, if 'user' exist and 'password' is valid", async () => {
     User.findOne.mockResolvedValue(user);
 
-    expect(await userService.checkCredentialAndGetUser(reqBody)).toEqual(user);
+    expect(await userService.checkCredential(reqBody)).toEqual(user);
     expect(User.findOne).toHaveBeenCalledWith({
       where: { email: reqBody.email },
       raw: true,
     });
     expect(User.findOne).toHaveBeenCalledTimes(1);
 
-    await catchBlockTest("findOne", userService.checkCredentialAndGetUser);
+    await catchBlockTest("findOne", userService.checkCredential);
   });
 
-  it("'checkCredentialAndGetUser' method, if 'user' doesn't exist or invalid 'password'", async () => {
+  it("'checkCredential' method, if 'user' doesn't exist or invalid 'password'", async () => {
     User.findOne.mockResolvedValue(null);
-    await expect(
-      userService.checkCredentialAndGetUser(reqBody)
-    ).rejects.toThrowError(USER_NO_EXIST);
+    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
+      USER_NO_EXIST
+    );
 
     User.findOne.mockResolvedValue(user);
     user.password = "invalid password";
-    await expect(
-      userService.checkCredentialAndGetUser(reqBody)
-    ).rejects.toThrowError(WRONG_PASSWORD);
-    await expect(
-      userService.checkCredentialAndGetUser(reqBody)
-    ).rejects.toThrowError(CatchError);
+    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
+      WRONG_PASSWORD
+    );
+    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
+      CatchError
+    );
   });
 });

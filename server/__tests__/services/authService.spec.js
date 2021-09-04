@@ -4,16 +4,16 @@ const authService = require("../../src/components/auth/authService");
 const userService = require("../../src/components/user/userService");
 const { User, Patient } = require("../../src/db");
 const UserDto = require("../../src/dtos/userDto");
-const CatchError = require("../../src/errors/catchError");
-const { secret, expiresIn } = require("../../config");
+const tokenService = require("../../src/components/token/tokenService");
 
 /**
  * mocking funcs
  */
 User.create = jest.fn();
 Patient.create = jest.fn();
-userService.checkCredentialAndGetUser = jest.fn();
+userService.checkCredential = jest.fn();
 bcrypt.hash = jest.fn();
+tokenService.generateTokens = jest.fn();
 jwt.sign = jest.fn();
 
 /**
@@ -67,25 +67,23 @@ describe("'AuthService' class", () => {
   });
 
   it("'login' method", async () => {
-    userService.checkCredentialAndGetUser.mockResolvedValue(user);
-    jwt.sign.mockReturnValue("access token");
+    userService.checkCredential.mockResolvedValue(user);
+    tokenService.generateTokens.mockReturnValue({
+      accessToken: "access token",
+      refreshToken: "refresh token",
+    });
 
     expect(await authService.login(reqBody)).toEqual({
       user: { ...userDto },
-      token: "access token",
+      accessToken: "access token",
+      refreshToken: "refresh token",
     });
-    expect(userService.checkCredentialAndGetUser).toHaveBeenCalledWith(reqBody);
-    expect(userService.checkCredentialAndGetUser).toHaveBeenCalledTimes(1);
-    expect(jwt.sign).toHaveBeenCalledWith({ ...userDto }, secret, {
-      expiresIn,
-    });
-    expect(jwt.sign).toHaveBeenCalledTimes(1);
+    expect(userService.checkCredential).toHaveBeenCalledWith(reqBody);
+    expect(userService.checkCredential).toHaveBeenCalledTimes(1);
+    expect(tokenService.generateTokens).toHaveBeenCalledWith({ ...userDto });
+    expect(tokenService.generateTokens).toHaveBeenCalledTimes(1);
 
-    await catchBlockTest(
-      "checkCredentialAndGetUser",
-      authService.login,
-      userService
-    );
+    await catchBlockTest("checkCredential", authService.login, userService);
   });
 
   it("'logout' method", async () => {

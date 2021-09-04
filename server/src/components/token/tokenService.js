@@ -1,10 +1,19 @@
 const jwt = require("jsonwebtoken");
-const { secret, expiresIn } = require("../../../config");
+const {
+  accessSecret,
+  refreshSecret,
+  accessTokenTTL,
+  refreshTokenTTL,
+} = require("../../../config");
 
 class TokenService {
   generateTokens(data) {
-    const refreshToken = jwt.sign(data, "secret", { expiresIn: "30d" });
-    const accessToken = jwt.sign(data, secret, { expiresIn });
+    const refreshToken = jwt.sign(data, refreshSecret, {
+      expiresIn: refreshTokenTTL,
+    });
+    const accessToken = jwt.sign(data, accessSecret, {
+      expiresIn: accessTokenTTL,
+    });
 
     return { refreshToken, accessToken };
   }
@@ -22,10 +31,15 @@ class TokenService {
   }
 
   generateNewAccessToken(refreshToken) {
-    const payload = this.verify(refreshToken, "secret");
+    const { payload } = this.verify(refreshToken, refreshSecret);
     if (!payload) return null;
 
-    return { payload, token: jwt.sign(payload, secret, { expiresIn }) };
+    return {
+      payload,
+      accessToken: jwt.sign(payload, accessSecret, {
+        expiresIn: accessTokenTTL,
+      }),
+    };
   }
 }
 

@@ -69,6 +69,7 @@ class Handlers {
 
   nextPatient = async () => {
     try {
+      if (!this.data.name) return;
       this.data = await this.queue.getNext();
 
       showCurrentPatient.innerText = this.data.name || this.data.message;

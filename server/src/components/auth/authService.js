@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const userService = require("../user/userService");
 const CatchError = require("../../errors/catchError");
 const UserDto = require("../../dtos/userDto");
-const { secret, expiresIn } = require("../../../config");
 const { Patient, User } = require("../../db");
 const tokenService = require("../token/tokenService");
 
@@ -26,7 +25,7 @@ class AuthService {
 
   async login(body) {
     try {
-      const user = await userService.checkCredentialAndGetUser(body);
+      const user = await userService.checkCredential(body);
       const userDto = new UserDto(user);
 
       const tokens = tokenService.generateTokens({ ...userDto });
@@ -38,13 +37,9 @@ class AuthService {
   }
 
   async logout() {
-    try {
-      return jwt.sign({}, "fake secret", {
-        expiresIn: "1s",
-      });
-    } catch (error) {
-      throw new CatchError(error.message);
-    }
+    return jwt.sign({}, "fake secret", {
+      expiresIn: "1s",
+    });
   }
 }
 

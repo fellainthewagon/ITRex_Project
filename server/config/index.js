@@ -8,11 +8,16 @@ const config = {
     host: process.env.HOST || "0.0.0.0",
     ttl: parseInt(process.env.TTL, 10) || 30,
   },
+  clientUrl: "http://localhost:5000",
   redis: { host, port },
   resolutionsStorage: process.env.RESOLUTIONS_STORAGE || "memory",
   queueStorage: process.env.QUEUE_STORAGE || "memory",
-  secret: process.env.JWT_SECRET || "anif6gd9h2bh",
-  expiresIn: process.env.ACCESS_TOKEN_AGE || "12h",
+  accessTokenTTL: process.env.ACCESS_TOKEN_AGE || "3h",
+  refreshTokenTTL: process.env.REFRESH_TOKEN_AGE || "30d",
+  accessSecret:
+    process.env.JWT_ACCESS_SECRET || "1CncgarOhEmEeux5SYpCC4NtpL8RU9sc",
+  refreshSecret:
+    process.env.JWT_REFRESH_SECRET || "TANiV1EhCjozaP2RdwmpADyAeYt9LU3g;",
 };
 
 module.exports = config;

@@ -25,7 +25,7 @@ class UserService {
     }
   }
 
-  async checkCredentialAndGetUser(body) {
+  async checkCredential(body) {
     try {
       const { email, password } = body;
 

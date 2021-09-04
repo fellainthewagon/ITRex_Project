@@ -33,6 +33,7 @@ class AuthController {
   async logout(req, res, next) {
     try {
       const fakeToken = await this.authService.logout();
+      res.clearCookie("refreshToken");
 
       return res.json({ token: fakeToken });
     } catch (error) {
