@@ -28,13 +28,13 @@ class Handlers {
 
   getUser = async () => {
     try {
-      const { userId, token } = getUserDataFromLS();
-      if (!userId || !token) {
+      const userId = getUserDataFromLS();
+      if (!userId) {
         jumpToStartPage();
         return;
       }
 
-      const response = await user.getUser(userId, token);
+      const response = await user.getUser(userId);
       if (response.status === 401) jumpToStartPage();
 
       const { id, name, email } = await response.json();
@@ -49,9 +49,7 @@ class Handlers {
 
   addToQueue = async () => {
     try {
-      const { token } = getUserDataFromLS();
-
-      await this.queue.add(this.patientId, nameField.innerText, token);
+      await this.queue.add(this.patientId, nameField.innerText);
     } catch (error) {
       this.displayError(error);
     }
@@ -81,11 +79,13 @@ class Handlers {
   addResolution = async (e) => {
     e.preventDefault();
     try {
+      if (!this.data.name) return;
       const { name } = await this.queue.getCurrent();
       if (!name) return;
 
       const resolution = resolutionInput.value;
 
+      if (!this.data.id) return;
       await this.resolution.add(this.data.id, { resolution });
 
       resolutionInput.value = "";
@@ -127,10 +127,8 @@ class Handlers {
   logout = async (e) => {
     e.preventDefault();
     try {
-      const { token } = getUserDataFromLS();
       deleteUserDataFomLS();
-
-      await user.logout(token);
+      await user.logout();
 
       jumpToStartPage();
     } catch (error) {

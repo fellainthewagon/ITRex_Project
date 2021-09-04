@@ -8,7 +8,9 @@ const {
 
 class TokenService {
   generateTokens(data) {
-    const refreshToken = jwt.sign(data, refreshSecret, {
+    const { id } = data;
+
+    const refreshToken = jwt.sign({ id }, refreshSecret, {
       expiresIn: refreshTokenTTL,
     });
     const accessToken = jwt.sign(data, accessSecret, {
@@ -34,9 +36,11 @@ class TokenService {
     const { payload } = this.verify(refreshToken, refreshSecret);
     if (!payload) return null;
 
+    const { id } = payload;
+
     return {
       payload,
-      accessToken: jwt.sign(payload, accessSecret, {
+      accessToken: jwt.sign({ id }, accessSecret, {
         expiresIn: accessTokenTTL,
       }),
     };

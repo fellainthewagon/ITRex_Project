@@ -5,13 +5,10 @@ class User {
     this.url = `${protocol}://${host}:${port}/api`;
   }
 
-  async getUser(id, token) {
+  async getUser(id) {
     return fetch(this.url + `/user/${id}`, {
       method: "GET",
       credentials: "include",
-      headers: {
-        "x-access-token": `Bearer ${token}`,
-      },
     });
   }
 
@@ -26,12 +23,10 @@ class User {
     });
   }
 
-  async logout(token) {
+  async logout() {
     await fetch(this.url + "/auth/logout", {
       method: "POST",
-      headers: {
-        "x-access-token": `Bearer ${token}`,
-      },
+      credentials: "include",
     });
   }
 }

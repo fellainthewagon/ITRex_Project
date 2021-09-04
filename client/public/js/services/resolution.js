@@ -8,6 +8,7 @@ class Resolution {
   async add(id, value) {
     await fetch(this.url + id + "/resolution", {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -20,13 +21,17 @@ class Resolution {
       name: value,
     });
 
-    const response = await fetch(this.url + "resolution?" + params);
+    const response = await fetch(this.url + "resolution?" + params, {
+      method: "GET",
+      credentials: "include",
+    });
     return response.json();
   }
 
   async delete(id) {
     return fetch(this.url + id + "/resolution", {
       method: "DELETE",
+      credentials: "include",
     });
   }
 }

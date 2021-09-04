@@ -35,9 +35,14 @@ describe("'TokenService' class", () => {
       accessToken: "access token",
     });
 
-    expect(jwt.sign).toHaveBeenNthCalledWith(1, data, refreshSecret, {
-      expiresIn: refreshTokenTTL,
-    });
+    expect(jwt.sign).toHaveBeenNthCalledWith(
+      1,
+      { id: data.id },
+      refreshSecret,
+      {
+        expiresIn: refreshTokenTTL,
+      }
+    );
     expect(jwt.sign).toHaveBeenNthCalledWith(2, data, accessSecret, {
       expiresIn: accessTokenTTL,
     });
@@ -85,7 +90,7 @@ describe("'TokenService' class", () => {
       refreshSecret
     );
     expect(tokenService.verify).toHaveBeenCalledTimes(1);
-    expect(jwt.sign).toHaveBeenCalledWith(data, accessSecret, {
+    expect(jwt.sign).toHaveBeenCalledWith({ id: data.id }, accessSecret, {
       expiresIn: accessTokenTTL,
     });
     expect(jwt.sign).toHaveBeenCalledTimes(1);

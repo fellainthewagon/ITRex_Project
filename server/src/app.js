@@ -15,6 +15,7 @@ const apiErrorsHandler = require("./middleware/apiErrorsHandler");
 const db = require("./db");
 const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
 const { clientUrl } = require("../config");
+const deserializeUser = require("./middleware/deserializeUser");
 
 const app = express();
 
@@ -40,10 +41,10 @@ db.sequelize
 /**
  * routes
  */
-
+app.use("/api/auth", authRouter);
+app.use("/api/", deserializeUser);
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
-app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 
 /**

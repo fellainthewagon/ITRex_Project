@@ -5,12 +5,28 @@ const { TOKEN_REQUIRED, NOT_AUTH } = require("../constants/statusMessage");
 
 module.exports = (req, res, next) => {
   try {
-    const accessToken = req.headers["x-access-token"]?.replace(/^Bearer\s/, "");
+    const { accessToken } = req.cookies;
     if (!accessToken) throw ApiError.Unauthorized(TOKEN_REQUIRED);
 
-    const { payload } = tokenService.verify(accessToken, accessSecret);
+    const { payload, expired } = tokenService.verify(accessToken, accessSecret);
     if (payload) {
       req.user = payload;
+      return next();
+    }
+
+    // if "accessT" expired and we have "refreshT", generate NEW accessT if fefreshT is valid
+    const { refreshToken } = req.cookies;
+
+    if (expired && refreshToken) {
+      const data = tokenService.generateNewAccessToken(refreshToken);
+      if (!data) throw ApiError.Unauthorized(NOT_AUTH);
+
+      res.cookie("accessToken", data.accessToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      req.user = data.payload;
       return next();
     }
 
@@ -19,14 +35,3 @@ module.exports = (req, res, next) => {
     return next(error);
   }
 };
-
-// const { refreshToken } = req.cookies;
-
-// if (expired && refreshToken) {
-//   const data = tokenService.generateNewAccessToken(refreshToken);
-//   if (!data) throw ApiError.Unauthorized(NOT_AUTH);
-
-//   res.setHeader("x-access-token", data.accessToken);
-//   req.user = data.payload;
-//   return next();
-// }

@@ -7,18 +7,14 @@ function formatter(data) {
 }
 
 function getUserDataFromLS() {
-  const token = localStorage.getItem("accessToken");
-  const userId = localStorage.getItem("userId");
-  return { userId, token };
+  return localStorage.getItem("userId");
 }
 
-function setUserDataToLS(userId, token) {
-  localStorage.setItem("accessToken", token);
+function setUserDataToLS(userId) {
   localStorage.setItem("userId", userId);
 }
 
 function deleteUserDataFomLS() {
-  localStorage.removeItem("accessToken");
   localStorage.removeItem("userId");
 }
 
