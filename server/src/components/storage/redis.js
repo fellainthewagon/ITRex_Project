@@ -26,6 +26,8 @@ module.exports = class Redis {
   async getNextFromList() {
     try {
       const json = await this.client.lpopAsync(this.listName);
+      if (!json) return null;
+
       const data = JSON.parse(json);
       await this.client.delAsync(this.existPrefix + data.id);
 

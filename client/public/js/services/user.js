@@ -8,6 +8,7 @@ class User {
   async getUser(id, token) {
     return fetch(this.url + `/user/${id}`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "x-access-token": `Bearer ${token}`,
       },
@@ -17,6 +18,7 @@ class User {
   async sendData(data, method) {
     return fetch(this.url + "/auth/" + method, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

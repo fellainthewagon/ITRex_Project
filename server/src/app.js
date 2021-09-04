@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
@@ -15,10 +16,12 @@ const db = require("./db");
 const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
 
 const app = express();
+
 /**
  * middleware
  */
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: "http://localhost:5000" }));
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(morgan(config.mode));
 app.use(express.json());

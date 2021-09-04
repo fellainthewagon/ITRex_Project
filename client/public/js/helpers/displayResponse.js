@@ -28,7 +28,7 @@ async function displayLoginResponse(response) {
     failMessage.innerText = data.message;
     failMessage.style.display = "block";
   } else if (response.status === 200) {
-    setUserDataToLS(data.user.id, data.token);
+    setUserDataToLS(data.user.id, data.accessToken);
 
     location.href = `${protocol}://${host}:${port}/profile`;
   }

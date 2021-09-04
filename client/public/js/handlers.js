@@ -35,7 +35,6 @@ class Handlers {
       }
 
       const response = await user.getUser(userId, token);
-
       if (response.status === 401) jumpToStartPage();
 
       const { id, name, email } = await response.json();

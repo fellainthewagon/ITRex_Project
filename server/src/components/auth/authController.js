@@ -19,6 +19,11 @@ class AuthController {
     try {
       const user = await this.authService.login(req.body);
 
+      res.cookie("refreshToken", user.refreshToken, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+
       return res.json(user);
     } catch (error) {
       return next(error);

@@ -5,6 +5,7 @@ const CatchError = require("../../errors/catchError");
 const UserDto = require("../../dtos/userDto");
 const { secret, expiresIn } = require("../../../config");
 const { Patient, User } = require("../../db");
+const tokenService = require("../token/tokenService");
 
 class AuthService {
   async registration(body) {
@@ -28,10 +29,9 @@ class AuthService {
       const user = await userService.checkCredentialAndGetUser(body);
       const userDto = new UserDto(user);
 
-      return {
-        user: { ...userDto },
-        token: jwt.sign({ ...userDto }, secret, { expiresIn }),
-      };
+      const tokens = tokenService.generateTokens({ ...userDto });
+
+      return { user: { ...userDto }, ...tokens };
     } catch (error) {
       throw new CatchError(error.message);
     }

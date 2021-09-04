@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const deserializeUser = require("../../middleware/deserializeUser");
 const checkExistUser = require("../../middleware/checkExistUser");
 const authController = require("./authController");
 const {
@@ -22,7 +21,7 @@ authRouter.post("/login", validateLoginData, async (req, res, next) => {
   await authController.login(req, res, next);
 });
 
-authRouter.post("/logout", deserializeUser, async (req, res, next) => {
+authRouter.post("/logout", async (req, res, next) => {
   await authController.logout(req, res, next);
 });
 

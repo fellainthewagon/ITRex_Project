@@ -8,6 +8,7 @@ class Queue {
   async add(id, name, token) {
     await fetch(this.url + "/", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": `Bearer ${token}`,
