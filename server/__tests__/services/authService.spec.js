@@ -10,7 +10,7 @@ const tokenService = require("../../src/components/token/tokenService");
  * mocking funcs
  */
 User.create = jest.fn();
-Patient.create = jest.fn();
+Patient.findOrCreate = jest.fn();
 userService.checkCredential = jest.fn();
 bcrypt.hash = jest.fn();
 tokenService.generateTokens = jest.fn();
@@ -60,8 +60,11 @@ describe("'AuthService' class", () => {
     expect(User.create).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
-    expect(Patient.create).toHaveBeenCalledWith({ name, user_id: user.id });
-    expect(Patient.create).toHaveBeenCalledTimes(1);
+    expect(Patient.findOrCreate).toHaveBeenCalledWith({
+      where: { name },
+      defaults: { user_id: user.id },
+    });
+    expect(Patient.findOrCreate).toHaveBeenCalledTimes(1);
 
     await catchBlockTest("create", authService.registration, User);
   });

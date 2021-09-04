@@ -14,7 +14,10 @@ class AuthService {
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await User.create({ email, password: hashedPassword });
 
-      await Patient.create({ name, user_id: user.id });
+      await Patient.findOrCreate({
+        where: { name },
+        defaults: { user_id: user.id },
+      });
       const userDto = new UserDto(user);
 
       return { ...userDto };

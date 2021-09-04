@@ -12,7 +12,7 @@ module.exports = {
         name: {
           type: DataTypes.STRING,
           allowNull: false,
-          // unique: "name",
+          unique: "name",
         },
         user_id: {
           type: DataTypes.UUID,
@@ -26,15 +26,15 @@ module.exports = {
         },
         createdAt: { type: DataTypes.DATE, allowNull: false },
         updatedAt: { type: DataTypes.DATE, allowNull: false },
+      },
+      {
+        uniqueKeys: {
+          name: {
+            customIndex: true,
+            fields: ["name"],
+          },
+        },
       }
-      // {
-      //   uniqueKeys: {
-      //     name: {
-      //       customIndex: true,
-      //       fields: ["name"],
-      //     },
-      //   },
-      // }
     );
   },
 
