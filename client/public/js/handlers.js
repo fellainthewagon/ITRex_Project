@@ -22,7 +22,8 @@ class Handlers {
     this.queue = queue;
     this.displayError = displayError;
 
-    this.patientId;
+    this.patientUserId;
+    this.findPatientId;
     this.data;
   }
 
@@ -41,7 +42,7 @@ class Handlers {
 
       nameField.innerText = name;
       emailField.innerText = email;
-      this.patientId = id;
+      this.patientUserId = id;
     } catch (error) {
       this.displayError(error);
     }
@@ -49,7 +50,7 @@ class Handlers {
 
   addToQueue = async () => {
     try {
-      await this.queue.add(this.patientId, nameField.innerText);
+      await this.queue.add(this.patientUserId, nameField.innerText);
     } catch (error) {
       this.displayError(error);
     }
@@ -104,7 +105,7 @@ class Handlers {
         search
       );
 
-      this.patientId = patient_id || null;
+      this.findPatientId = patient_id || null;
       showResolution.innerText = resolution || message;
     } catch (error) {
       this.displayError(error);
@@ -113,8 +114,8 @@ class Handlers {
 
   deleteResolution = async () => {
     try {
-      if (!this.patientId) return;
-      const response = await this.resolution.delete(this.patientId);
+      if (!this.findPatientId) return;
+      const response = await this.resolution.delete(this.findPatientId);
       this.name = null;
 
       if (response.status >= 400) return;
