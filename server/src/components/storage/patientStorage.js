@@ -1,10 +1,10 @@
 const { Patient } = require("../../db");
 
 class PatientStorage {
-  async findOrCreate(name, user) {
+  async findOrCreate(name, id) {
     await Patient.findOrCreate({
       where: { name },
-      defaults: { user_id: user.id },
+      defaults: { user_id: id },
     });
   }
 

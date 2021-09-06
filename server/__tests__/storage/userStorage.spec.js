@@ -1,18 +1,13 @@
 const userStorage = require("../../src/components/storage/userStorage");
-const userService = require("../../src/components/user/userService");
-const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../src/constants");
-const ProfileDto = require("../../src/dtos/profileDto");
-const CatchError = require("../../src/errors/catchError");
 
 /**
  * mocking funcs
  */
-userStorage.findByPk = jest.fn();
-// userStorage.findByPk.get = jest.fn();
-userStorage.findOne = jest.fn();
+jest.mock("../../src/db");
+const db = require("../../src/db");
 
 const objectUser = {};
-// objectUser.get = jest.fn();
+objectUser.get = jest.fn();
 
 /**
  * vars
@@ -31,9 +26,9 @@ const userPatient = {
     updatedAt: "2021-09-03T01:54:41.000Z",
   },
 };
-const { patient, id } = userPatient;
-const profileDto = new ProfileDto(patient, userPatient);
-const reqBody = { email: "mia@mail.ru", password: "123123" };
+const email = "mia@mail.ru";
+const password = "$2a$10$b626iZTDFvDRshqi2lcDa.KuZrJzNysn2eIhvKcjmu/LFWDFkqjsS";
+const id = "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3";
 const user = {
   id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
   email: "mia@mail.ru",
@@ -44,64 +39,39 @@ const user = {
 
 beforeEach(() => jest.clearAllMocks());
 
-async function catchBlockTest(method, fn) {
-  jest.spyOn(userStorage, method).mockImplementation(async () => {
-    throw new Error("Some error");
-  });
-  await expect(fn()).rejects.toThrowError();
-  userStorage[method].mockRestore();
-}
-
 /**
  * TEST
  */
-describe("'UserService' class", () => {
-  it("'getUser' method, if 'user' is exist", async () => {
-    userStorage.findByPk.mockResolvedValue(objectUser);
-    // objectUser.get.mockReturnValue(userPatient);
+describe("'UserStorage' class", () => {
+  it("'create' method", async () => {
+    db.User.create.mockResolvedValue(user);
 
-    expect(await userService.getUser(id)).toEqual({ ...profileDto });
-    expect(userStorage.findByPk).toHaveBeenCalledWith(id, {
+    expect(await userStorage.create(email, password)).toEqual(user);
+    expect(db.User.create).toHaveBeenCalledWith({ email, password });
+    expect(db.User.create).toHaveBeenCalledTimes(1);
+  });
+
+  it("'findByPk' method, if 'user' is exist", async () => {
+    db.User.findByPk.mockResolvedValue(objectUser);
+    objectUser.get.mockReturnValue(userPatient);
+
+    expect(await userStorage.findByPk(id)).toEqual(userPatient);
+    expect(db.User.findByPk).toHaveBeenCalledWith(id, {
       include: "patient",
     });
-    expect(userStorage.findByPk).toHaveBeenCalledTimes(1);
+    expect(db.User.findByPk).toHaveBeenCalledTimes(1);
     expect(objectUser.get).toHaveBeenCalledWith({ plain: true });
     expect(objectUser.get).toHaveBeenCalledTimes(1);
-
-    await catchBlockTest("findByPk", userService.getUser);
   });
 
-  it("'getUser' method, if 'user' doesn't exist", async () => {
-    userStorage.findByPk.mockResolvedValue(null);
-    expect(await userService.getUser(id)).toBeNull();
-  });
+  it("'findOne' method", async () => {
+    db.User.findOne.mockResolvedValue(user);
 
-  it("'checkCredential' method, if 'user' exist and 'password' is valid", async () => {
-    userStorage.findOne.mockResolvedValue(user);
-
-    expect(await userService.checkCredential(reqBody)).toEqual(user);
-    expect(userStorage.findOne).toHaveBeenCalledWith({
-      where: { email: reqBody.email },
+    expect(await userStorage.findOne(email)).toEqual(user);
+    expect(db.User.findOne).toHaveBeenCalledWith({
+      where: { email },
       raw: true,
     });
-    expect(userStorage.findOne).toHaveBeenCalledTimes(1);
-
-    await catchBlockTest("findOne", userService.checkCredential);
-  });
-
-  it("'checkCredential' method, if 'user' doesn't exist or invalid 'password'", async () => {
-    userStorage.findOne.mockResolvedValue(null);
-    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
-      USER_NO_EXIST
-    );
-
-    userStorage.findOne.mockResolvedValue(user);
-    user.password = "invalid password";
-    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
-      WRONG_PASSWORD
-    );
-    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
-      CatchError
-    );
+    expect(db.User.findOne).toHaveBeenCalledTimes(1);
   });
 });

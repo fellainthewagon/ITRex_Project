@@ -58,7 +58,7 @@ describe("'AuthService' class", () => {
     expect(userStorage.create).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
-    expect(patientStorage.findOrCreate).toHaveBeenCalledWith(name, user);
+    expect(patientStorage.findOrCreate).toHaveBeenCalledWith(name, user.id);
     expect(patientStorage.findOrCreate).toHaveBeenCalledTimes(1);
 
     await catchBlockTest("create", authService.registration, userStorage);

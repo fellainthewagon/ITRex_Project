@@ -15,7 +15,7 @@ class AuthService {
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await userStorage.create(email, hashedPassword);
 
-      await patientStorage.findOrCreate(name, user);
+      await patientStorage.findOrCreate(name, user.id);
       const userDto = new UserDto(user);
 
       return { ...userDto };
