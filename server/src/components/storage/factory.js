@@ -1,20 +1,28 @@
-const { UNSUPPORTED_TYPE } = require("../../constants/statusMessage");
-const Database = require("./database");
-const Memory = require("./memory");
-const Redis = require("./redis");
+const QueueRedis = require("./queueStorage/queueRedis");
+const QueueMemory = require("./queueStorage/queueMemory");
+const ResolutionRedis = require("./resolutionStorage/resolutionRedis");
+const ResolutionMemory = require("./resolutionStorage/resolutionMemory");
+const ResolutionDatabase = require("./resolutionStorage/resolutionDatabase");
+const { UNSUPPORTED_TYPE } = require("../../constants");
 
 module.exports = class Factory {
   static create(storageType) {
     try {
       switch (storageType) {
-        case "redis":
-          return new Redis();
+        case "queueRedis":
+          return new QueueRedis();
 
-        case "memory":
-          return new Memory();
+        case "queueMemory":
+          return new QueueMemory();
 
-        case "database":
-          return new Database();
+        case "resolutionRedis":
+          return new ResolutionRedis();
+
+        case "resolutionMemory":
+          return new ResolutionMemory();
+
+        case "resolutionDatabase":
+          return new ResolutionDatabase();
 
         default:
           throw UNSUPPORTED_TYPE;

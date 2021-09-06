@@ -1,8 +1,5 @@
 const bcrypt = require("bcryptjs");
-const {
-  USER_NO_EXIST,
-  WRONG_PASSWORD,
-} = require("../../constants/statusMessage");
+const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../constants");
 const { User } = require("../../db");
 const ProfileDto = require("../../dtos/profileDto");
 const ApiError = require("../../errors/apiError");

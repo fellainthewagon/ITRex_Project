@@ -12,7 +12,7 @@ const {
   INVALID_CREDENTIAL,
   INVALID_REGISTER_DATA,
   INVALID_PARAMS,
-} = require("../constants/statusMessage");
+} = require("../constants");
 const ApiError = require("../errors/apiError");
 
 module.exports.validateQueryParams = (req, res, next) => {

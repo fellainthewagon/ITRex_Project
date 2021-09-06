@@ -1,7 +1,6 @@
 import { setUserDataToLS } from "../utils/index.js";
 import config from "../../config/config.js";
-const { host, protocol } = config;
-const port = 5000;
+const { host, protocol, clientPort } = config;
 
 const errMessage = document.querySelector(".fail-msg");
 const failMessage = document.querySelector(".fail-msg");
@@ -13,7 +12,7 @@ async function displayRegisterResponse(response) {
     errMessage.innerText = data.message;
     errMessage.style.display = "block";
   } else {
-    location.href = `${protocol}://${host}:${port}/login`;
+    location.href = `${protocol}://${host}:${clientPort}/login`;
   }
 
   setTimeout(() => {
@@ -31,7 +30,7 @@ async function displayLoginResponse(response) {
   } else if (response.status === 200) {
     setUserDataToLS(data.id);
 
-    location.href = `${protocol}://${host}:${port}/profile`;
+    location.href = `${protocol}://${host}:${clientPort}/profile`;
   }
 
   setTimeout(() => {

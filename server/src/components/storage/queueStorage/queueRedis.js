@@ -1,8 +1,8 @@
-const config = require("../../../config");
-const ApiError = require("../../errors/apiError");
-const redis = require("../../redis");
+const config = require("../../../../config");
+const ApiError = require("../../../errors/apiError");
+const redis = require("../../../redis");
 
-module.exports = class Redis {
+module.exports = class QueueRedis {
   constructor() {
     this.client = redis.createClient({
       host: config.redis.host,
@@ -10,7 +10,6 @@ module.exports = class Redis {
     });
     this.listName = "queue";
     this.existPrefix = "q:";
-    this.prefix = "resolution:";
   }
 
   async getFirstFromList() {
@@ -52,32 +51,6 @@ module.exports = class Redis {
   async inQueue(id) {
     try {
       return this.client.getAsync(this.existPrefix + id);
-    } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
-    }
-  }
-
-  async create(patientId, resolution, ttl) {
-    try {
-      await this.client.setexAsync(this.prefix + patientId, ttl, resolution);
-    } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
-    }
-  }
-
-  async findById(patientId) {
-    try {
-      const resolution = await this.client.getAsync(this.prefix + patientId);
-
-      return resolution ? { patient_id: patientId, resolution } : null;
-    } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
-    }
-  }
-
-  async deleteById(patientId) {
-    try {
-      return this.client.delAsync(this.prefix + patientId);
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
     }

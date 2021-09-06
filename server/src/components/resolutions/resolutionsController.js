@@ -1,5 +1,5 @@
 const StatusCodes = require("http-status-codes");
-const { RESOLUTION_NOT_FOUND } = require("../../constants/statusMessage");
+const { RESOLUTION_NOT_FOUND } = require("../../constants");
 const config = require("../../../config");
 const resolutionsService = require("./resolutionsService");
 

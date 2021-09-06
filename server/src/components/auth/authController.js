@@ -1,3 +1,9 @@
+const {
+  accessTokenName,
+  refreshTokenName,
+  maxAgeRefresh,
+  maxAgeAccess,
+} = require("../../../config");
 const authService = require("./authService");
 
 class AuthController {
@@ -19,13 +25,13 @@ class AuthController {
     try {
       const data = await this.authService.login(req.body);
 
-      res.cookie("refreshToken", data.refreshToken, {
+      res.cookie(refreshTokenName, data.refreshToken, {
         httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        maxAge: maxAgeRefresh,
       });
-      res.cookie("accessToken", data.accessToken, {
+      res.cookie(accessTokenName, data.accessToken, {
         httpOnly: true,
-        maxAge: 60 * 60 * 1000,
+        maxAge: maxAgeAccess,
       });
 
       return res.json(data.user);
@@ -37,8 +43,8 @@ class AuthController {
   async logout(req, res, next) {
     try {
       const fakeToken = await this.authService.logout();
-      res.clearCookie("refreshToken");
-      res.clearCookie("accessToken");
+      res.clearCookie(refreshTokenName);
+      res.clearCookie(accessTokenName);
 
       return res.json({ token: fakeToken });
     } catch (error) {

@@ -54,7 +54,7 @@ describe("'TokenService' class", () => {
 
     expect(tokenService.verify("token", "tokenSecret")).toEqual({
       payload: data,
-      expired: false,
+      error: false,
     });
 
     expect(jwt.verify).toHaveBeenCalledWith("token", "tokenSecret");
@@ -69,7 +69,7 @@ describe("'TokenService' class", () => {
 
     expect(tokenService.verify("token", "tokenSecret")).toEqual({
       payload: null,
-      expired: error.message === "jwt expired",
+      error: error.name,
     });
 
     expect(jwt.verify).toHaveBeenCalledWith("token", "tokenSecret");

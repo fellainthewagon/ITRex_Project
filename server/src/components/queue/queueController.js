@@ -1,5 +1,5 @@
 const { CREATED } = require("http-status-codes");
-const { QUEUE_EMPTY } = require("../../constants/statusMessage");
+const { QUEUE_EMPTY } = require("../../constants");
 const queueService = require("./queueService");
 
 class QueueController {

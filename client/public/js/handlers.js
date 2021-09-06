@@ -15,6 +15,7 @@ const resolutionInput = document.querySelector("#resolution");
 const searchInput = document.querySelector("#search-input");
 const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
+const addedMessage = document.querySelector(".added-message");
 
 class Handlers {
   constructor(resolution, queue, displayError) {
@@ -50,7 +51,18 @@ class Handlers {
 
   addToQueue = async () => {
     try {
-      await this.queue.add(this.patientUserId, nameField.innerText);
+      const response = await this.queue.add(
+        this.patientUserId,
+        nameField.innerText
+      );
+      if (response.status === 201) {
+        addedMessage.innerText = "You have been added to the queue!";
+        addedMessage.style.display = "block";
+
+        setTimeout(() => {
+          addedMessage.style.display = "none";
+        }, 4000);
+      }
     } catch (error) {
       this.displayError(error);
     }
@@ -87,7 +99,10 @@ class Handlers {
       const resolution = resolutionInput.value;
 
       if (!this.data.id) return;
-      await this.resolution.add(this.data.id, { resolution });
+      const response = await this.resolution.add(this.data.id, { resolution });
+      if (response.status === 204) {
+        alert("Resolution added!");
+      }
 
       resolutionInput.value = "";
     } catch (error) {

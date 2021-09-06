@@ -1,7 +1,7 @@
-const { Resolution } = require("../../db");
-const ApiError = require("../../errors/apiError");
+const { Resolution } = require("../../../db");
+const ApiError = require("../../../errors/apiError");
 
-module.exports = class Database {
+module.exports = class ResolutionDatabase {
   constructor() {
     this.Resolution = Resolution;
   }

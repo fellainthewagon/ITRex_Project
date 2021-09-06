@@ -1,5 +1,5 @@
 const { CONFLICT } = require("http-status-codes");
-const { USER_EXIST } = require("../constants/statusMessage");
+const { USER_EXIST } = require("../constants");
 const { User } = require("../db");
 
 module.exports = async (req, res, next) => {

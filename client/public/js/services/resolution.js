@@ -6,7 +6,7 @@ class Resolution {
   }
 
   async add(id, value) {
-    await fetch(this.url + id + "/resolution", {
+    return fetch(this.url + id + "/resolution", {
       method: "PATCH",
       credentials: "include",
       headers: {

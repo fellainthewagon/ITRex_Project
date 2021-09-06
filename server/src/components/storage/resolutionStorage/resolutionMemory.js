@@ -1,33 +1,19 @@
-module.exports = class Memory {
+module.exports = class ResolutionMemory {
   constructor() {
-    this.queue = [];
     this.resolutions = [];
-  }
-
-  async getFirstFromList() {
-    return this.queue[0];
-  }
-
-  async getNextFromList() {
-    this.queue.shift();
-    return this.queue[0];
-  }
-
-  async addToList(data) {
-    this.queue.push(data);
   }
 
   async create(patientId, resolution, ttl) {
     this.resolutions.push({
       patient_id: patientId,
       resolution,
-      timestamp: Date.now() + ttl * 1000,
+      expire_timestamp: Date.now() + ttl * 1000,
     });
   }
 
   async findById(patientId) {
     const data = await this.search(patientId.toString());
-    if (data.timestamp >= Date.now()) return data;
+    if (data.expire_timestamp >= Date.now()) return data;
 
     this.remove(data.patient_id);
     return null;

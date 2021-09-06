@@ -1,6 +1,5 @@
 import config from "../../config/config.js";
-const { host, protocol } = config;
-const port = 5000;
+const { host, protocol, clientPort } = config;
 
 function formatter(data) {
   return data.toLowerCase().trim();
@@ -19,7 +18,7 @@ function deleteUserDataFomLS() {
 }
 
 function jumpToStartPage() {
-  location.replace(`${protocol}://${host}:${port}`);
+  location.replace(`${protocol}://${host}:${clientPort}`);
 }
 
 export {

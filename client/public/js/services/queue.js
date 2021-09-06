@@ -6,7 +6,7 @@ class Queue {
   }
 
   async add(id, name) {
-    await fetch(this.url + "/", {
+    return fetch(this.url + "/", {
       method: "POST",
       credentials: "include",
       headers: {

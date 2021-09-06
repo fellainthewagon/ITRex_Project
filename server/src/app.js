@@ -13,7 +13,7 @@ const userRouter = require("./components/user/userRouter");
 const swaggerDocs = require("./doc/swaggerDocs");
 const apiErrorsHandler = require("./middleware/apiErrorsHandler");
 const db = require("./db");
-const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants/statusMessage");
+const { PAGE_NOT_FOUND, IT_WORKS } = require("./constants");
 const { clientUrl } = require("../config");
 const deserializeUser = require("./middleware/deserializeUser");
 

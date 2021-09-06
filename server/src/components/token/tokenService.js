@@ -23,11 +23,11 @@ class TokenService {
   verify(token, tokenSecret) {
     try {
       const payload = jwt.verify(token, tokenSecret);
-      return { payload, expired: false };
+      return { payload, error: false };
     } catch (error) {
       return {
         payload: null,
-        expired: error.message === "jwt expired",
+        error: error.name,
       };
     }
   }

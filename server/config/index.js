@@ -14,10 +14,12 @@ const config = {
   queueStorage: process.env.QUEUE_STORAGE || "memory",
   accessTokenTTL: process.env.ACCESS_TOKEN_AGE || "3h",
   refreshTokenTTL: process.env.REFRESH_TOKEN_AGE || "30d",
-  accessSecret:
-    process.env.JWT_ACCESS_SECRET || "1CncgarOhEmEeux5SYpCC4NtpL8RU9sc",
-  refreshSecret:
-    process.env.JWT_REFRESH_SECRET || "TANiV1EhCjozaP2RdwmpADyAeYt9LU3g;",
+  accessSecret: process.env.JWT_ACCESS_SECRET || "",
+  refreshSecret: process.env.JWT_REFRESH_SECRET || "",
+  refreshTokenName: "refreshToken",
+  accessTokenName: "accessToken",
+  maxAgeRefresh: 30 * 24 * 60 * 60 * 1000,
+  maxAgeAccess: 60 * 60 * 1000,
 };
 
 module.exports = config;
