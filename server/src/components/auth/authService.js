@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userService = require("../user/userService");
-const CatchError = require("../../errors/catchError");
-const UserDto = require("../../dtos/userDto");
-const { Patient, User } = require("../../db");
 const tokenService = require("../token/tokenService");
+const userStorage = require("../storage/userStorage");
+const patientStorage = require("../storage/patientStorage");
+const UserDto = require("../../dtos/userDto");
+const CatchError = require("../../errors/catchError");
 
 class AuthService {
   async registration(body) {
@@ -12,12 +13,9 @@ class AuthService {
       const { name, email, password } = body;
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({ email, password: hashedPassword });
+      const user = await userStorage.create(email, hashedPassword);
 
-      await Patient.findOrCreate({
-        where: { name },
-        defaults: { user_id: user.id },
-      });
+      await patientStorage.findOrCreate(name, user);
       const userDto = new UserDto(user);
 
       return { ...userDto };

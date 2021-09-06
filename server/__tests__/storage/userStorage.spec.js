@@ -8,7 +8,11 @@ const CatchError = require("../../src/errors/catchError");
  * mocking funcs
  */
 userStorage.findByPk = jest.fn();
+// userStorage.findByPk.get = jest.fn();
 userStorage.findOne = jest.fn();
+
+const objectUser = {};
+// objectUser.get = jest.fn();
 
 /**
  * vars
@@ -53,11 +57,16 @@ async function catchBlockTest(method, fn) {
  */
 describe("'UserService' class", () => {
   it("'getUser' method, if 'user' is exist", async () => {
-    userStorage.findByPk.mockResolvedValue(userPatient);
+    userStorage.findByPk.mockResolvedValue(objectUser);
+    // objectUser.get.mockReturnValue(userPatient);
 
     expect(await userService.getUser(id)).toEqual({ ...profileDto });
-    expect(userStorage.findByPk).toHaveBeenCalledWith(id);
+    expect(userStorage.findByPk).toHaveBeenCalledWith(id, {
+      include: "patient",
+    });
     expect(userStorage.findByPk).toHaveBeenCalledTimes(1);
+    expect(objectUser.get).toHaveBeenCalledWith({ plain: true });
+    expect(objectUser.get).toHaveBeenCalledTimes(1);
 
     await catchBlockTest("findByPk", userService.getUser);
   });
@@ -71,7 +80,10 @@ describe("'UserService' class", () => {
     userStorage.findOne.mockResolvedValue(user);
 
     expect(await userService.checkCredential(reqBody)).toEqual(user);
-    expect(userStorage.findOne).toHaveBeenCalledWith(reqBody.email);
+    expect(userStorage.findOne).toHaveBeenCalledWith({
+      where: { email: reqBody.email },
+      raw: true,
+    });
     expect(userStorage.findOne).toHaveBeenCalledTimes(1);
 
     await catchBlockTest("findOne", userService.checkCredential);

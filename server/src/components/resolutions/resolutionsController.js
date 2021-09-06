@@ -1,16 +1,12 @@
 const StatusCodes = require("http-status-codes");
 const { RESOLUTION_NOT_FOUND } = require("../../constants");
 const config = require("../../../config");
-const resolutionsService = require("./resolutionsService");
+const { resolutionsService } = require("./resolutionsService");
 
 class ResolutionsController {
-  constructor(service) {
-    this.resolutionsService = service;
-  }
-
   async addResolution(req, res, next) {
     try {
-      await this.resolutionsService.add(
+      await resolutionsService.add(
         req.params.id,
         req.body.resolution,
         config.app.ttl
@@ -24,7 +20,7 @@ class ResolutionsController {
 
   async getResolution(req, res, next) {
     try {
-      const resolution = await this.resolutionsService.get(req.query.name);
+      const resolution = await resolutionsService.get(req.query.name);
 
       return resolution
         ? res.json(resolution)
@@ -38,7 +34,7 @@ class ResolutionsController {
 
   async deleteResolution(req, res, next) {
     try {
-      const isDeleted = await this.resolutionsService.delete(req.params.id);
+      const isDeleted = await resolutionsService.delete(req.params.id);
 
       return isDeleted
         ? res.status(StatusCodes.NO_CONTENT).send()
@@ -51,4 +47,4 @@ class ResolutionsController {
   }
 }
 
-module.exports = new ResolutionsController(resolutionsService);
+module.exports = new ResolutionsController();

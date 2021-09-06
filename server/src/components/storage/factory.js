@@ -2,7 +2,7 @@ const QueueRedis = require("./queueStorage/queueRedis");
 const QueueMemory = require("./queueStorage/queueMemory");
 const ResolutionRedis = require("./resolutionStorage/resolutionRedis");
 const ResolutionMemory = require("./resolutionStorage/resolutionMemory");
-const ResolutionDatabase = require("./resolutionStorage/resolutionDatabase");
+const ResolutionStorage = require("./resolutionStorage/resolutionStorage");
 const { UNSUPPORTED_TYPE } = require("../../constants");
 
 module.exports = class Factory {
@@ -22,7 +22,7 @@ module.exports = class Factory {
           return new ResolutionMemory();
 
         case "resolutionDatabase":
-          return new ResolutionDatabase();
+          return new ResolutionStorage();
 
         default:
           throw UNSUPPORTED_TYPE;

@@ -1,16 +1,12 @@
 const { Resolution } = require("../../../db");
 const ApiError = require("../../../errors/apiError");
 
-module.exports = class ResolutionDatabase {
-  constructor() {
-    this.Resolution = Resolution;
-  }
-
+module.exports = class ResolutionStorage {
   async create(id, resolution, ttl) {
     try {
       const timestamp = Date.now() + ttl * 1000;
 
-      await this.Resolution.create({
+      await Resolution.create({
         patient_id: id,
         resolution,
         expire_timestamp: timestamp,
@@ -22,7 +18,7 @@ module.exports = class ResolutionDatabase {
 
   async findById(id) {
     try {
-      const resolution = await this.Resolution.findOne({
+      const resolution = await Resolution.findOne({
         where: { patient_id: id },
       });
 
@@ -41,7 +37,7 @@ module.exports = class ResolutionDatabase {
 
   async deleteById(id) {
     try {
-      return await this.Resolution.destroy({ where: { patient_id: id } });
+      return await Resolution.destroy({ where: { patient_id: id } });
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
     }

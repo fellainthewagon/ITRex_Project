@@ -16,6 +16,9 @@ const searchInput = document.querySelector("#search-input");
 const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
 const addedMessage = document.querySelector(".added-message");
+const addedResolutionMessage = document.querySelector(
+  ".added-resolution-message"
+);
 
 class Handlers {
   constructor(resolution, queue, displayError) {
@@ -99,9 +102,16 @@ class Handlers {
       const resolution = resolutionInput.value;
 
       if (!this.data.id) return;
+
       const response = await this.resolution.add(this.data.id, { resolution });
+
       if (response.status === 204) {
-        alert("Resolution added!");
+        addedResolutionMessage.innerText = "Resolution added!";
+        addedResolutionMessage.style.display = "block";
+
+        setTimeout(() => {
+          addedResolutionMessage.style.display = "none";
+        }, 4000);
       }
 
       resolutionInput.value = "";

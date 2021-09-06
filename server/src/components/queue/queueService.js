@@ -36,4 +36,5 @@ class QueueService {
   }
 }
 
-module.exports = new QueueService(Factory.create(config.queueStorage));
+const queueService = new QueueService(Factory.create(config.queueStorage));
+module.exports = { queueService, QueueService };

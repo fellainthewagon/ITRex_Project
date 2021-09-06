@@ -1,4 +1,8 @@
-const queueService = require("../../src/components/queue/queueService");
+const config = require("../../config");
+const { QueueService } = require("../../src/components/queue/queueService");
+const Factory = require("../../src/components/storage/factory");
+
+const queueService = new QueueService(Factory.create(config.queueStorage));
 
 /**
  * mocking funcs

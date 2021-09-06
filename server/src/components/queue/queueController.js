@@ -1,15 +1,11 @@
 const { CREATED } = require("http-status-codes");
 const { QUEUE_EMPTY } = require("../../constants");
-const queueService = require("./queueService");
+const { queueService } = require("./queueService");
 
 class QueueController {
-  constructor(service) {
-    this.queueService = service;
-  }
-
   async addPerson(req, res, next) {
     try {
-      await this.queueService.addToQueue(req.body);
+      await queueService.addToQueue(req.body);
 
       return res.status(CREATED).send();
     } catch (error) {
@@ -19,7 +15,7 @@ class QueueController {
 
   async getCurrentPerson(req, res, next) {
     try {
-      const person = await this.queueService.getCurrentPerson();
+      const person = await queueService.getCurrentPerson();
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
     } catch (error) {
@@ -29,7 +25,7 @@ class QueueController {
 
   async getNextPerson(req, res, next) {
     try {
-      const person = await this.queueService.getNextPerson();
+      const person = await queueService.getNextPerson();
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
     } catch (error) {
@@ -38,4 +34,4 @@ class QueueController {
   }
 }
 
-module.exports = new QueueController(queueService);
+module.exports = new QueueController();

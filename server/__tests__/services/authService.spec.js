@@ -2,15 +2,16 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const authService = require("../../src/components/auth/authService");
 const userService = require("../../src/components/user/userService");
-const { User, Patient } = require("../../src/db");
 const UserDto = require("../../src/dtos/userDto");
 const tokenService = require("../../src/components/token/tokenService");
+const userStorage = require("../../src/components/storage/userStorage");
+const patientStorage = require("../../src/components/storage/patientStorage");
 
 /**
  * mocking funcs
  */
-User.create = jest.fn();
-Patient.findOrCreate = jest.fn();
+userStorage.create = jest.fn();
+patientStorage.findOrCreate = jest.fn();
 userService.checkCredential = jest.fn();
 bcrypt.hash = jest.fn();
 tokenService.generateTokens = jest.fn();
@@ -48,25 +49,19 @@ async function catchBlockTest(method, fn, rootFn) {
 describe("'AuthService' class", () => {
   it("'registration' method", async () => {
     bcrypt.hash.mockResolvedValue(hashedPassword);
-    User.create.mockResolvedValue(user);
+    userStorage.create.mockResolvedValue(user);
 
     expect(await authService.registration(registerData)).toEqual({
       ...userDto,
     });
-    expect(User.create).toHaveBeenCalledWith({
-      email,
-      password: hashedPassword,
-    });
-    expect(User.create).toHaveBeenCalledTimes(1);
+    expect(userStorage.create).toHaveBeenCalledWith(email, hashedPassword);
+    expect(userStorage.create).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
-    expect(Patient.findOrCreate).toHaveBeenCalledWith({
-      where: { name },
-      defaults: { user_id: user.id },
-    });
-    expect(Patient.findOrCreate).toHaveBeenCalledTimes(1);
+    expect(patientStorage.findOrCreate).toHaveBeenCalledWith(name, user);
+    expect(patientStorage.findOrCreate).toHaveBeenCalledTimes(1);
 
-    await catchBlockTest("create", authService.registration, User);
+    await catchBlockTest("create", authService.registration, userStorage);
   });
 
   it("'login' method", async () => {

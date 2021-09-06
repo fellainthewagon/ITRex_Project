@@ -1,13 +1,9 @@
 const userService = require("./userService");
 
 class UserController {
-  constructor(service) {
-    this.userService = service;
-  }
-
   async getUser(req, res, next) {
     try {
-      const data = await this.userService.getUser(req.params.id);
+      const data = await userService.getUser(req.params.id);
 
       return res.json(data);
     } catch (error) {
@@ -16,4 +12,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController(userService);
+module.exports = new UserController();

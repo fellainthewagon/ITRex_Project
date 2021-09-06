@@ -7,13 +7,9 @@ const {
 const authService = require("./authService");
 
 class AuthController {
-  constructor(service) {
-    this.authService = service;
-  }
-
   async register(req, res, next) {
     try {
-      const user = await this.authService.registration(req.body);
+      const user = await authService.registration(req.body);
 
       return res.json(user);
     } catch (error) {
@@ -23,7 +19,7 @@ class AuthController {
 
   async login(req, res, next) {
     try {
-      const data = await this.authService.login(req.body);
+      const data = await authService.login(req.body);
 
       res.cookie(refreshTokenName, data.refreshToken, {
         httpOnly: true,
@@ -42,7 +38,7 @@ class AuthController {
 
   async logout(req, res, next) {
     try {
-      const fakeToken = await this.authService.logout();
+      const fakeToken = await authService.logout();
       res.clearCookie(refreshTokenName);
       res.clearCookie(accessTokenName);
 
@@ -53,4 +49,4 @@ class AuthController {
   }
 }
 
-module.exports = new AuthController(authService);
+module.exports = new AuthController();

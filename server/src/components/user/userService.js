@@ -1,16 +1,14 @@
 const bcrypt = require("bcryptjs");
 const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../constants");
-const { User } = require("../../db");
 const ProfileDto = require("../../dtos/profileDto");
 const ApiError = require("../../errors/apiError");
 const CatchError = require("../../errors/catchError");
+const userStorage = require("../storage/userStorage");
 
 class UserService {
   async getUser(id) {
     try {
-      const user = (await User.findByPk(id, { include: "patient" }))?.get({
-        plain: true,
-      });
+      const user = await userStorage.findByPk(id);
       if (!user) return null;
 
       const { patient } = user;
@@ -26,7 +24,7 @@ class UserService {
     try {
       const { email, password } = body;
 
-      const user = await User.findOne({ where: { email }, raw: true });
+      const user = await userStorage.findOne(email);
       if (!user) throw ApiError.Unauthorized(USER_NO_EXIST);
 
       const correct = await bcrypt.compare(password, user.password);
