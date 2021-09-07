@@ -64,6 +64,31 @@
           </div>
 
           <div class="control-group">
+            <label class="control-label" for="dob">DoB</label>
+            <div class="controls">
+              <input type="date" id="dob" class="input-xlarge" required />
+              <p class="help-block">Please provide your Day of Birth</p>
+            </div>
+          </div>
+
+          <div
+            style="display: flex; justify-content: center"
+            class="control-group"
+          >
+            <label style="margin: 0 1.3rem" for="dob">Gender</label>
+            <select
+              style="width: 17.5rem"
+              class="control-group"
+              id="gender"
+              required
+            >
+              <option selected>Choose...</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+            </select>
+          </div>
+
+          <div class="control-group">
             <label class="control-label" for="password">Password</label>
             <div class="controls">
               <input

@@ -23,13 +23,21 @@ const userPatient = {
     id: 1,
     user_id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
     name: "mia",
+    dob: "1972-01-09T00:00:00.000Z",
+    gender: "female",
     createdAt: "2021-09-03T01:54:41.000Z",
     updatedAt: "2021-09-03T01:54:41.000Z",
   },
 };
 const { patient, id } = userPatient;
 const profileDto = new ProfileDto(patient, userPatient);
-const reqBody = { email: "mia@mail.ru", password: "123123" };
+const reqBody = {
+  email: "mia@mail.ru",
+  password: "123123",
+  dob: "1972-01-09T00:00:00.000Z",
+  gender: "female",
+  name: "mia",
+};
 const user = {
   id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
   email: "mia@mail.ru",

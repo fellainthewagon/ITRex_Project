@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      dob: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      gender: {
+        type: DataTypes.ENUM("male", "female"),
+        allowNull: false,
+      },
     },
     {
       indexes: [

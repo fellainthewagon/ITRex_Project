@@ -15,6 +15,7 @@ const resolutionInput = document.querySelector("#resolution");
 const searchInput = document.querySelector("#search-input");
 const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
+const dobField = document.querySelector("#dob");
 const addedMessage = document.querySelector(".added-message");
 const addedResolutionMessage = document.querySelector(
   ".added-resolution-message"
@@ -26,7 +27,7 @@ class Handlers {
     this.queue = queue;
     this.displayError = displayError;
 
-    this.patientUserId;
+    this.profile = {};
     this.findPatientId;
     this.data;
   }
@@ -42,11 +43,12 @@ class Handlers {
       const response = await user.getUser(userId);
       if (response.status === 401) jumpToStartPage();
 
-      const { id, name, email } = await response.json();
+      const profile = await response.json();
 
-      nameField.innerText = name;
-      emailField.innerText = email;
-      this.patientUserId = id;
+      nameField.innerText = profile.name;
+      emailField.innerText = profile.email;
+      dobField.innerText = profile.dob.split("T")[0];
+      this.profile = profile;
     } catch (error) {
       this.displayError(error);
     }
@@ -55,7 +57,7 @@ class Handlers {
   addToQueue = async () => {
     try {
       const response = await this.queue.add(
-        this.patientUserId,
+        this.profile.id,
         nameField.innerText
       );
       if (response.status === 201) {

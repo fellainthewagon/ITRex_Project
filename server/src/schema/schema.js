@@ -39,6 +39,8 @@ const registerSchema = {
   type: "object",
   properties: {
     name: { type: "string", minLength: 2 },
+    dob: { type: "string", format: "date" },
+    gender: { type: "string" },
     email: { type: "string", format: "email" },
     password: { type: "string", minLength: 6 },
   },

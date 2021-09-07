@@ -60,7 +60,7 @@ describe("'QueueRedis' class", () => {
       queueRedis.existPrefix + delData.id
     );
 
-    client.lindexAsync.mockResolvedValue(null);
+    client.lpopAsync.mockResolvedValue(null);
     expect(await queueRedis.getNextFromList()).toBeNull();
 
     await catchBlockTest("lpopAsync", queueRedis.getNextFromList);

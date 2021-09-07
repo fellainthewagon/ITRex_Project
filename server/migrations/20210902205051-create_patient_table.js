@@ -9,11 +9,6 @@ module.exports = {
           autoIncrement: true,
           primaryKey: true,
         },
-        name: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          unique: "name",
-        },
         user_id: {
           type: DataTypes.UUID,
           references: {
@@ -22,6 +17,19 @@ module.exports = {
             },
             key: "id",
           },
+          allowNull: false,
+        },
+        name: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: "name",
+        },
+        dob: {
+          type: DataTypes.DATE,
+          allowNull: false,
+        },
+        gender: {
+          type: DataTypes.ENUM("male", "female"),
           allowNull: false,
         },
         createdAt: { type: DataTypes.DATE, allowNull: false },

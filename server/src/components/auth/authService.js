@@ -10,12 +10,12 @@ const CatchError = require("../../errors/catchError");
 class AuthService {
   async registration(body) {
     try {
-      const { name, email, password } = body;
+      const { email, password } = body;
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await userStorage.create(email, hashedPassword);
 
-      await patientStorage.findOrCreate(name, user.id);
+      await patientStorage.findOrCreate(body, user.id);
       const userDto = new UserDto(user);
 
       return { ...userDto };
