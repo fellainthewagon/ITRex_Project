@@ -1,24 +1,15 @@
-const Factory = require("../storage/factory");
-const config = require("../../../config");
-const { Patient } = require("../../db");
+const CatchError = require("../../errors/catchError");
 
-class QueueService {
+module.exports = class QueueService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async addToQueue(name) {
+  async addToQueue(patient) {
     try {
-      const [patient] = await Patient.findOrCreate({ where: { name } });
-
-      await this.storage.addToList({
-        id: patient.id,
-        name: patient.name,
-      });
-
-      return { id: patient.id, name: patient.name };
+      await this.storage.addToList(patient);
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 
@@ -28,7 +19,7 @@ class QueueService {
 
       return data || null;
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 
@@ -38,9 +29,7 @@ class QueueService {
 
       return data || null;
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
-}
-
-module.exports = new QueueService(Factory.create(config.queueStorage));
+};

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Doctor</title>
+  </head>
+  <style>
+    body {
+      background-color: #e3f7fa;
+      margin: 5rem 5rem;
+    }
+    form {
+      width: 20rem;
+    }
+    header {
+      margin-bottom: 3rem;
+    }
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .search-show {
+      display: flex;
+      justify-content: space-between;
+    }
+    .current-next {
+      display: flex;
+      justify-content: space-between;
+      margin-left: 1rem;
+      margin-bottom: 7rem;
+    }
+    .resolution-area {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6rem;
+    }
+    #current-patient {
+      margin-left: 1rem;
+      font-size: larger;
+    }
+    .block-add-resolution {
+      display: flex;
+      flex-direction: column;
+    }
+    .added-resolution-message {
+      color: green;
+      display: none;
+      margin: 0 auto 2rem;
+    }
+  </style>
+
+  <body>
+    <header>
+      <div class="title">
+        <h2>Cabinet</h2>
+      </div>
+    </header>
+
+    <div class="block-add-resolution">
+      <div class="added-resolution-message">Added!</div>
+    </div>
+
+    <section>
+      <div class="current-next">
+        <div class="row">
+          <div>
+            <h5>Current patient:</h5>
+            <div class="current-patient"></div>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <button class="next-patient btn btn-success">Next patient</button>
+        </div>
+      </div>
+
+      <div class="resolution-area">
+        <div>
+          <form class="set-resolution">
+            <div class="form-group">
+              <label>Resolution</label>
+              <textarea id="resolution" rows="2" cols="100"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Set</button>
+          </form>
+        </div>
+        <div></div>
+      </div>
+
+      <div class="search-show">
+        <div>
+          <form class="find-resolution">
+            <div class="form-group">
+              <label>Find resolution</label>
+              <input
+                type="text"
+                class="form-control"
+                id="search-input"
+                placeholder="name"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-success">Search</button>
+          </form>
+        </div>
+
+        <div>
+          <div>
+            <h6>Resolution:</h6>
+            <div style="width: 350px" class="show-resolution"></div>
+          </div>
+        </div>
+
+        <div class="form-inline">
+          <button class="delete-resolution btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </section>
+  </body>
+
+  <script type="module" src="../js/pages/doctor.js"></script>
+</html>

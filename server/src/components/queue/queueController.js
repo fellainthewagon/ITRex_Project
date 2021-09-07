@@ -1,10 +1,24 @@
-const StatusCodes = require("http-status-codes");
-const { QUEUE_EMPTY } = require("../../constants/statusMessage");
-const queueService = require("./queueService");
+const { CREATED } = require("http-status-codes");
+const QueueService = require("./queueService");
+const QueueFactory = require("./queueRepositories/queueFactory");
+const config = require("../../../config");
+const { QUEUE_EMPTY } = require("../../constants");
 
 class QueueController {
-  constructor(service) {
-    this.queueService = service;
+  constructor() {
+    this.queueService = new QueueService(
+      QueueFactory.create(config.queueStorage)
+    );
+  }
+
+  async addPerson(req, res, next) {
+    try {
+      await this.queueService.addToQueue(req.body);
+
+      return res.status(CREATED).send();
+    } catch (error) {
+      return next(error);
+    }
   }
 
   async getCurrentPerson(req, res, next) {
@@ -26,16 +40,6 @@ class QueueController {
       return next(error);
     }
   }
-
-  async addPerson(req, res, next) {
-    try {
-      const patient = await this.queueService.addToQueue(req.body.name);
-
-      return res.status(StatusCodes.CREATED).json(patient);
-    } catch (error) {
-      return next(error);
-    }
-  }
 }
 
-module.exports = new QueueController(queueService);
+module.exports = new QueueController();

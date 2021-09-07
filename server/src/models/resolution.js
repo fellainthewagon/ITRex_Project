@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      patient_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       resolution: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -22,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      tableName: "resolutions",
+      tableName: "resolution",
       modelName: "Resolution",
     }
   );

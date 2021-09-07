@@ -11,13 +11,22 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
+      user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          notNull: { msg: "Patient must have a name" },
-        },
         unique: true,
+      },
+      dob: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      gender: {
+        type: DataTypes.ENUM("male", "female"),
+        allowNull: false,
       },
     },
     {
@@ -29,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       ],
       sequelize,
-      tableName: "patients",
+      tableName: "patient",
       modelName: "Patient",
     }
   );

@@ -1,5 +1,10 @@
-const resolutionsService = require("../../src/components/resolutions/resolutionsService");
-const { Patient } = require("../../src/db");
+const ResolutionsService = require("../../src/components/resolutions/resolutionsService");
+const patientStorage = require("../../src/components/repositories/patientStorage");
+/**
+ * vars
+ */
+const resolutionsService = new ResolutionsService();
+const ResolutionDto = require("../../src/dtos/resolutionDto");
 
 /**
  * mocking funcs
@@ -8,7 +13,7 @@ const storage = (resolutionsService.storage = jest.fn());
 storage.create = jest.fn();
 storage.findById = jest.fn();
 storage.deleteById = jest.fn();
-Patient.findOne = jest.fn();
+patientStorage.findOne = jest.fn();
 
 beforeEach(() => jest.clearAllMocks());
 
@@ -35,20 +40,22 @@ describe("'ResolutionsService' class", () => {
   });
 
   it("'get' method, if 'name' doesn't exist in DB", async () => {
-    Patient.findOne.mockResolvedValue(null);
+    patientStorage.findOne.mockResolvedValue(null);
 
     expect(await resolutionsService.get("mia")).toBeNull();
-    expect(Patient.findOne).toHaveBeenCalledWith({ where: { name: "mia" } });
-    expect(Patient.findOne).toHaveBeenCalledTimes(1);
+    expect(patientStorage.findOne).toHaveBeenCalledWith("mia");
+    expect(patientStorage.findOne).toHaveBeenCalledTimes(1);
     expect(storage.findById).toHaveBeenCalledTimes(0);
   });
 
-  const value = { patientId: 1, name: "mia", id: 99 };
+  const value = { patient_id: 1, name: "mia", id: 99 };
   it("'get' method, if the 'name' is in the DB and the 'patientId' in the storage", async () => {
-    Patient.findOne.mockResolvedValue({ id: 1, name: "mia" });
+    patientStorage.findOne.mockResolvedValue({ id: 1, name: "mia" });
     storage.findById.mockResolvedValue(value);
 
-    expect(await resolutionsService.get("mia")).toEqual(value);
+    const resolution = new ResolutionDto(value);
+
+    expect(await resolutionsService.get("mia")).toEqual(resolution);
     expect(storage.findById).toHaveBeenCalledTimes(1);
     expect(storage.findById).toHaveBeenCalledWith(1);
 

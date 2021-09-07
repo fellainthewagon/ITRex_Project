@@ -1,5 +1,6 @@
-const queueService = require("../../src/components/queue/queueService");
-const { Patient } = require("../../src/db");
+const QueueService = require("../../src/components/queue/queueService");
+
+const queueService = new QueueService();
 
 /**
  * mocking funcs
@@ -8,7 +9,6 @@ const storage = (queueService.storage = jest.fn());
 storage.addToList = jest.fn();
 storage.getFirstFromList = jest.fn();
 storage.getNextFromList = jest.fn();
-Patient.findOrCreate = jest.fn();
 
 /**
  *  vars
@@ -29,17 +29,12 @@ async function catchBlockTest(method, fn) {
  * TEST
  */
 describe("'QueueService' class", () => {
-  it("'findOrCreate' method", async () => {
+  it("'addToQueue' method", async () => {
     storage.addToList.mockResolvedValue();
-    Patient.findOrCreate.mockResolvedValue([test]);
 
-    expect(await queueService.addToQueue("mia")).toEqual(test);
+    expect(await queueService.addToQueue(test)).toBeUndefined();
     expect(storage.addToList).toHaveBeenCalledTimes(1);
     expect(storage.addToList).toHaveBeenCalledWith(test);
-    expect(Patient.findOrCreate).toHaveBeenCalledTimes(1);
-    expect(Patient.findOrCreate).toHaveBeenCalledWith({
-      where: { name: "mia" },
-    });
 
     await catchBlockTest("addToList", queueService.addToQueue);
   });

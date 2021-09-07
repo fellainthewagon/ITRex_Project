@@ -1,11 +1,14 @@
 const StatusCodes = require("http-status-codes");
-const { RESOLUTION_NOT_FOUND } = require("../../constants/statusMessage");
+const ResolutionsService = require("./resolutionsService");
+const ResolutionFactory = require("./resolutionRepositories/resolutionFactory");
 const config = require("../../../config");
-const resolutionsService = require("./resolutionsService");
+const { RESOLUTION_NOT_FOUND } = require("../../constants");
 
 class ResolutionsController {
-  constructor(service) {
-    this.resolutionsService = service;
+  constructor() {
+    this.resolutionsService = new ResolutionsService(
+      ResolutionFactory.create(config.resolutionsStorage)
+    );
   }
 
   async addResolution(req, res, next) {
@@ -51,4 +54,4 @@ class ResolutionsController {
   }
 }
 
-module.exports = new ResolutionsController(resolutionsService);
+module.exports = new ResolutionsController();

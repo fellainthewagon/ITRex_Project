@@ -1,8 +1,8 @@
-const Factory = require("../storage/factory");
-const config = require("../../../config");
-const { Patient } = require("../../db");
+const patientStorage = require("../repositories/patientStorage");
+const ResolutionDto = require("../../dtos/resolutionDto");
+const CatchError = require("../../errors/catchError");
 
-class ResolutionsService {
+module.exports = class ResolutionsService {
   constructor(storageType) {
     this.storage = storageType;
   }
@@ -11,20 +11,23 @@ class ResolutionsService {
     try {
       await this.storage.create(patientId, resolution, ttl);
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 
   async get(name) {
     try {
-      const patient = await Patient.findOne({ where: { name } });
+      const patient = await patientStorage.findOne(name);
       if (!patient) return null;
 
       const data = await this.storage.findById(patient.id);
+      if (!data) return null;
 
-      return data || null;
+      const resolution = new ResolutionDto(data);
+
+      return resolution;
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
 
@@ -34,11 +37,7 @@ class ResolutionsService {
 
       return isDeleted || null;
     } catch (error) {
-      throw new Error(error);
+      throw new CatchError(error.message);
     }
   }
-}
-
-module.exports = new ResolutionsService(
-  Factory.create(config.resolutionsStorage)
-);
+};
