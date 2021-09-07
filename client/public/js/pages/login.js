@@ -1,7 +1,7 @@
-import user from "./services/user.js";
-import { displayLoginResponse } from "./helpers/displayResponse.js";
-import displayError from "./helpers/displayError.js";
-import { formatter } from "./utils/index.js";
+import user from "../services/user.js";
+import { displayLoginResponse } from "../helpers/displayResponse.js";
+import displayError from "../helpers/displayError.js";
+import { formatter } from "../utils/index.js";
 
 const form = document.querySelector(".login-form");
 const email = document.querySelector("#email");

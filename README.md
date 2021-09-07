@@ -25,6 +25,7 @@ docker-compose exec api npx sequelize db:migrate
 ```
 
 2. Click http://localhost:5000
+3. You can develop inside containers
 
 ### How to run API tests:
 
@@ -59,7 +60,7 @@ You can use different types of storage for different entities(change `.env.examp
 The app provides the following repositories:
 
 Queue: `memory` or `redis`
-Resolutions: `memory`, `redis` or `database`
+Resolutions: `memory`, `redis` or `storage`
 
 > NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application. Or run it with Docker.
 
@@ -69,12 +70,6 @@ You can set TTL manually. In this case, the TTL will be equal to 1 hour:
 
 ```sh
 TTL=3600 npm run dev
-```
-
-#### API documentation:
-
-```sh
-http://localhost:3000/api-docs
 ```
 
 ## Description

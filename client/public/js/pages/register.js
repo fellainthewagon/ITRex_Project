@@ -1,7 +1,7 @@
-import user from "./services/user.js";
-import displayError from "./helpers/displayError.js";
-import { displayRegisterResponse } from "./helpers/displayResponse.js";
-import { formatter } from "./utils/index.js";
+import user from "../services/user.js";
+import displayError from "../helpers/displayError.js";
+import { displayRegisterResponse } from "../helpers/displayResponse.js";
+import { formatter } from "../utils/index.js";
 
 const form = document.querySelector(".register-form");
 const name = document.querySelector("#name");
