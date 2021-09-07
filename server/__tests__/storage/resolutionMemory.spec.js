@@ -1,4 +1,4 @@
-const ResolutionMemory = require("../../src/components/storage/resolutionStorage/resolutionMemory");
+const ResolutionMemory = require("../../src/components/resolutions/resolutionRepositories/resolutionMemory");
 
 const resolutionMemory = new ResolutionMemory();
 

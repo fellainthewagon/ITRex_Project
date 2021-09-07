@@ -1,16 +1,9 @@
-const config = require("../../config");
-const {
-  ResolutionsService,
-} = require("../../src/components/resolutions/resolutionsService");
-const Factory = require("../../src/components/storage/factory");
-const patientStorage = require("../../src/components/storage/patientStorage");
-
+const ResolutionsService = require("../../src/components/resolutions/resolutionsService");
+const patientStorage = require("../../src/components/repositories/patientStorage");
 /**
  * vars
  */
-const resolutionsService = new ResolutionsService(
-  Factory.create(config.resolutionsStorage)
-);
+const resolutionsService = new ResolutionsService();
 const ResolutionDto = require("../../src/dtos/resolutionDto");
 
 /**

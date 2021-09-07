@@ -1,4 +1,4 @@
-const ResolutionStorage = require("../../src/components/storage/resolutionStorage/resolutionStorage");
+const ResolutionStorage = require("../../src/components/resolutions/resolutionRepositories/resolutionStorage");
 
 const resolutionStorage = new ResolutionStorage();
 

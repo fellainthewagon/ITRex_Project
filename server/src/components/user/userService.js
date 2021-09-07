@@ -3,7 +3,7 @@ const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../constants");
 const ProfileDto = require("../../dtos/profileDto");
 const ApiError = require("../../errors/apiError");
 const CatchError = require("../../errors/catchError");
-const userStorage = require("../storage/userStorage");
+const userStorage = require("../repositories/userStorage");
 
 class UserService {
   async getUser(id) {

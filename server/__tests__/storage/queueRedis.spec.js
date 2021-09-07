@@ -1,4 +1,4 @@
-const QueueRedis = require("../../src/components/storage/queueStorage/queueRedis");
+const QueueRedis = require("../../src/components/queue/queueRepositories/queueRedis");
 
 const queueRedis = new QueueRedis();
 

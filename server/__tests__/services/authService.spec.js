@@ -4,8 +4,8 @@ const authService = require("../../src/components/auth/authService");
 const userService = require("../../src/components/user/userService");
 const UserDto = require("../../src/dtos/userDto");
 const tokenService = require("../../src/components/token/tokenService");
-const userStorage = require("../../src/components/storage/userStorage");
-const patientStorage = require("../../src/components/storage/patientStorage");
+const userStorage = require("../../src/components/repositories/userStorage");
+const patientStorage = require("../../src/components/repositories/patientStorage");
 
 /**
  * mocking funcs

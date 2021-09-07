@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userService = require("../user/userService");
 const tokenService = require("../token/tokenService");
-const userStorage = require("../storage/userStorage");
-const patientStorage = require("../storage/patientStorage");
+const userStorage = require("../repositories/userStorage");
+const patientStorage = require("../repositories/patientStorage");
 const UserDto = require("../../dtos/userDto");
 const CatchError = require("../../errors/catchError");
 

@@ -1,10 +1,8 @@
-const Factory = require("../storage/factory");
-const patientStorage = require("../storage/patientStorage");
+const patientStorage = require("../repositories/patientStorage");
 const ResolutionDto = require("../../dtos/resolutionDto");
 const CatchError = require("../../errors/catchError");
-const config = require("../../../config");
 
-class ResolutionsService {
+module.exports = class ResolutionsService {
   constructor(storageType) {
     this.storage = storageType;
   }
@@ -42,9 +40,4 @@ class ResolutionsService {
       throw new CatchError(error.message);
     }
   }
-}
-
-const resolutionsService = new ResolutionsService(
-  Factory.create(config.resolutionsStorage)
-);
-module.exports = { resolutionsService, ResolutionsService };
+};

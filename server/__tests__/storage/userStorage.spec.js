@@ -1,4 +1,4 @@
-const userStorage = require("../../src/components/storage/userStorage");
+const userStorage = require("../../src/components/repositories/userStorage");
 
 /**
  * mocking funcs

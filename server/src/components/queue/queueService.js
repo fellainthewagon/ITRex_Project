@@ -1,8 +1,6 @@
-const Factory = require("../storage/factory");
-const config = require("../../../config");
 const CatchError = require("../../errors/catchError");
 
-class QueueService {
+module.exports = class QueueService {
   constructor(storageType) {
     this.storage = storageType;
   }
@@ -34,7 +32,4 @@ class QueueService {
       throw new CatchError(error.message);
     }
   }
-}
-
-const queueService = new QueueService(Factory.create(config.queueStorage));
-module.exports = { queueService, QueueService };
+};

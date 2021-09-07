@@ -1,4 +1,4 @@
-const ResolutionRedis = require("../../src/components/storage/resolutionStorage/resolutionRedis");
+const ResolutionRedis = require("../../src/components/resolutions/resolutionRepositories/resolutionRedis");
 
 const resolutionRedis = new ResolutionRedis();
 

@@ -1,4 +1,4 @@
-const userStorage = require("../../src/components/storage/userStorage");
+const userStorage = require("../../src/components/repositories/userStorage");
 const userService = require("../../src/components/user/userService");
 const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../src/constants");
 const ProfileDto = require("../../src/dtos/profileDto");

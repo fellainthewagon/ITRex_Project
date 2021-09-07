@@ -1,4 +1,4 @@
-const QueueMemory = require("../../src/components/storage/queueStorage/queueMemory");
+const QueueMemory = require("../../src/components/queue/queueRepositories/queueMemory");
 
 const queueMemory = new QueueMemory();
 /**

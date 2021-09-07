@@ -1,10 +1,10 @@
 const { CONFLICT } = require("http-status-codes");
+const userStorage = require("../components/repositories/userStorage");
 const { USER_EXIST } = require("../constants");
-const { User } = require("../db");
 
 module.exports = async (req, res, next) => {
   const { email } = req.body;
-  const isExist = await User.findOne({ where: { email } });
+  const isExist = await userStorage.findOne(email);
 
   if (isExist) return res.status(CONFLICT).json({ message: USER_EXIST });
 
