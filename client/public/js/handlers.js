@@ -42,9 +42,7 @@ class Handlers {
 
       const response = await user.getUser(userId);
       if (response.status === 401) jumpToStartPage();
-
       const profile = await response.json();
-
       nameField.innerText = profile.name;
       emailField.innerText = profile.email;
       dobField.innerText = profile.dob.split("T")[0];
@@ -54,11 +52,12 @@ class Handlers {
     }
   };
 
-  addToQueue = async () => {
+  addToQueue = async (specialization) => {
     try {
       const response = await this.queue.add(
         this.profile.id,
-        nameField.innerText
+        nameField.innerText,
+        specialization
       );
       if (response.status === 201) {
         addedMessage.innerText = "You have been added to the queue!";
@@ -75,8 +74,8 @@ class Handlers {
 
   currentPatient = async () => {
     try {
-      this.data = this.data || (await this.queue.getCurrent());
-
+      const doctorId = localStorage.getItem("doctorId");
+      this.data = this.data || (await this.queue.getCurrent(doctorId));
       showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
@@ -86,8 +85,8 @@ class Handlers {
   nextPatient = async () => {
     try {
       if (!this.data.name) return;
-      this.data = await this.queue.getNext();
-
+      const doctorId = localStorage.getItem("doctorId");
+      this.data = await this.queue.getNext(doctorId);
       showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
@@ -98,7 +97,8 @@ class Handlers {
     e.preventDefault();
     try {
       if (!this.data.name) return;
-      const { name } = await this.queue.getCurrent();
+      const doctorId = localStorage.getItem("doctorId");
+      const { name } = await this.queue.getCurrent(doctorId);
       if (!name) return;
 
       const resolution = resolutionInput.value;

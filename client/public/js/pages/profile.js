@@ -1,10 +1,14 @@
 import handlers from "../handlers.js";
 
 const findResolutionForm = document.querySelector(".find-resolution");
-const addPatientBtn = document.querySelector(".add-patient");
+const addPatientForm = document.querySelector(".add-form");
 const logout = document.querySelector(".logout");
 
 document.addEventListener("DOMContentLoaded", handlers.getUser);
-addPatientBtn.addEventListener("click", handlers.addToQueue);
+addPatientForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const specialization = e.target.elements.specialization.value;
+  handlers.addToQueue(specialization);
+});
 findResolutionForm.addEventListener("submit", handlers.findResolution);
 logout.addEventListener("click", handlers.logout);

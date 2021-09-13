@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userService = require("../user/userService");
+const doctorService = require("../doctor/doctorService");
 const tokenService = require("../token/tokenService");
 const userStorage = require("../repositories/userStorage");
 const patientStorage = require("../repositories/patientStorage");
@@ -14,8 +15,7 @@ class AuthService {
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await userStorage.create(email, hashedPassword);
-
-      await patientStorage.findOrCreate(body, user.id);
+      await patientStorage.findOrCreate(body, user.user_id);
       const userDto = new UserDto(user);
 
       return { ...userDto };
@@ -28,7 +28,10 @@ class AuthService {
     try {
       const user = await userService.checkCredential(body);
       const userDto = new UserDto(user);
-
+      if (user.role === "doctor") {
+        const doctor = await doctorService.getDoctorId(user.user_id);
+        userDto.doctor_id = doctor.doctor_id;
+      }
       const tokens = tokenService.generateTokens({ ...userDto });
 
       return { user: { ...userDto }, ...tokens };

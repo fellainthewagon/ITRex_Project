@@ -20,7 +20,6 @@ class AuthController {
   async login(req, res, next) {
     try {
       const data = await authService.login(req.body);
-
       res.cookie(refreshTokenName, data.refreshToken, {
         httpOnly: true,
         maxAge: maxAgeRefresh,

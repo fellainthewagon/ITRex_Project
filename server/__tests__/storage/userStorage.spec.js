@@ -29,6 +29,7 @@ const userPatient = {
 const email = "mia@mail.ru";
 const password = "$2a$10$b626iZTDFvDRshqi2lcDa.KuZrJzNysn2eIhvKcjmu/LFWDFkqjsS";
 const id = "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3";
+const role = 'patient';
 const user = {
   id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
   email: "mia@mail.ru",
@@ -47,7 +48,7 @@ describe("'UserStorage' class", () => {
     db.User.create.mockResolvedValue(user);
 
     expect(await userStorage.create(email, password)).toEqual(user);
-    expect(db.User.create).toHaveBeenCalledWith({ email, password });
+    expect(db.User.create).toHaveBeenCalledWith({ email, password, role:role});
     expect(db.User.create).toHaveBeenCalledTimes(1);
   });
 

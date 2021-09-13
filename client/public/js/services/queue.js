@@ -5,27 +5,27 @@ class Queue {
     this.url = `${protocol}://${host}:${port}/api/patients/queue`;
   }
 
-  async add(id, name) {
+  async add(id, name, specialization) {
     return fetch(this.url + "/", {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, name }),
+      body: JSON.stringify({ id, name, specialization }),
     });
   }
 
-  async getCurrent() {
-    const response = await fetch(this.url + "/current", {
+  async getCurrent(doctorId) {
+    const response = await fetch(this.url + `/current/${doctorId}`, {
       method: "GET",
       credentials: "include",
     });
     return response.json();
   }
 
-  async getNext() {
-    const response = await fetch(this.url + "/next", {
+  async getNext(doctorId) {
+    const response = await fetch(this.url + `/next/${doctorId}`, {
       method: "GET",
       credentials: "include",
     });

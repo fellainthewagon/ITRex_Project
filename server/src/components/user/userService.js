@@ -13,7 +13,6 @@ class UserService {
 
       const { patient } = user;
       const profileDto = new ProfileDto(patient, user);
-
       return { ...profileDto };
     } catch (error) {
       throw new CatchError(error.message);
@@ -25,6 +24,7 @@ class UserService {
       const { email, password } = body;
 
       const user = await userStorage.findOne(email);
+
       if (!user) throw ApiError.Unauthorized(USER_NO_EXIST);
 
       const correct = await bcrypt.compare(password, user.password);

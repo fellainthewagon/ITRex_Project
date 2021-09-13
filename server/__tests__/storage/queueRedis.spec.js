@@ -16,7 +16,7 @@ client.delAsync = jest.fn();
 /**
  *  vars
  */
-const data = { id: 99, name: "mia" };
+const data = { id: 99, name: "mia", specialization: "dentist" };
 const delData = { id: 98, name: "vin" };
 const json = JSON.stringify(data);
 const delJson = JSON.stringify(delData);
@@ -37,9 +37,9 @@ async function catchBlockTest(method, fn) {
 describe("'QueueRedis' class", () => {
   it("'getFirstFromList' method", async () => {
     client.lindexAsync.mockResolvedValue(json);
-    expect(await queueRedis.getFirstFromList()).toEqual(data);
+    expect(await queueRedis.getFirstFromList(data.specialization)).toEqual(data);
     expect(client.lindexAsync).toHaveBeenCalledTimes(1);
-    expect(client.lindexAsync).toHaveBeenCalledWith(queueRedis.listName, 0);
+    expect(client.lindexAsync).toHaveBeenCalledWith(`${queueRedis.listName}:${data.specialization}`, 0);
 
     client.lindexAsync.mockResolvedValue(null);
     expect(await queueRedis.getFirstFromList()).toBeNull();
@@ -52,9 +52,9 @@ describe("'QueueRedis' class", () => {
     client.lindexAsync.mockResolvedValue(json);
     client.delAsync.mockResolvedValue();
 
-    expect(await queueRedis.getNextFromList()).toEqual(data);
+    expect(await queueRedis.getNextFromList(data.specialization)).toEqual(data);
     expect(client.lpopAsync).toHaveBeenCalledTimes(1);
-    expect(client.lpopAsync).toHaveBeenCalledWith(queueRedis.listName);
+    expect(client.lpopAsync).toHaveBeenCalledWith(`${queueRedis.listName}:${data.specialization}`);
     expect(client.delAsync).toHaveBeenCalledTimes(1);
     expect(client.delAsync).toHaveBeenCalledWith(
       queueRedis.existPrefix + delData.id
@@ -71,7 +71,7 @@ describe("'QueueRedis' class", () => {
 
     expect(await queueRedis.addToList(data)).toBeUndefined();
     expect(client.rpushAsync).toHaveBeenCalledTimes(1);
-    expect(client.rpushAsync).toHaveBeenCalledWith(queueRedis.listName, json);
+    expect(client.rpushAsync).toHaveBeenCalledWith(`${queueRedis.listName}:${data.specialization}`, json);
     expect(client.setAsync).toHaveBeenCalledTimes(1);
     expect(client.setAsync).toHaveBeenCalledWith(
       queueRedis.existPrefix + data.id,

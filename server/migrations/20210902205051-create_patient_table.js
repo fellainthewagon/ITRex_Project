@@ -15,7 +15,7 @@ module.exports = {
             model: {
               tableName: "user",
             },
-            key: "id",
+            key: "user_id",
           },
           allowNull: false,
         },

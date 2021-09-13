@@ -9,7 +9,7 @@
   "license": "ISC",
   "description": "Clinic",
   "scripts": {
-    "dev": "nodemon app"
+    "dev": "nodemon --legacy-watch app"
   },
   "dependencies": {
     "cors": "^2.8.5",

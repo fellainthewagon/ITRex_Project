@@ -28,9 +28,13 @@ async function displayLoginResponse(response) {
 
     failMessage.style.display = "block";
   } else if (response.status === 200) {
-    setUserDataToLS(data.id);
-
-    location.href = `${protocol}://${host}:${clientPort}/profile`;
+    setUserDataToLS(data.id, data?.doctor_id);
+    if (data.role === "doctor") {
+      location.href = `${protocol}://${host}:${clientPort}/doctor`;
+    }
+    if (data.role === "patient") {
+      location.href = `${protocol}://${host}:${clientPort}/profile`;
+    }
   }
 
   setTimeout(() => {
