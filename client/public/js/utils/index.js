@@ -9,6 +9,10 @@ function getUserDataFromLS() {
   return localStorage.getItem("userId");
 }
 
+function getDoctorDataFromLS() {
+  return localStorage.getItem("doctorId");
+}
+
 function setUserDataToLS(userId, doctorId) {
   localStorage.setItem("userId", userId);
   if (doctorId) {
@@ -31,4 +35,5 @@ export {
   jumpToStartPage,
   deleteUserDataFomLS,
   setUserDataToLS,
+  getDoctorDataFromLS
 };

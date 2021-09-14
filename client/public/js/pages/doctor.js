@@ -7,6 +7,7 @@ const deletePatientBtn = document.querySelector(".delete-resolution");
 const logout = document.querySelector(".logout");
 
 document.addEventListener("DOMContentLoaded", handlers.currentPatient);
+document.addEventListener("DOMContentLoaded", handlers.getDoctor);
 nextPatientBtn.addEventListener("click", handlers.nextPatient);
 addResolutionForm.addEventListener("submit", handlers.addResolution);
 deletePatientBtn.addEventListener("click", handlers.deleteResolution);

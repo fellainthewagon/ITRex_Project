@@ -1,6 +1,7 @@
 import resolution from "./services/resolution.js";
 import queue from "./services/queue.js";
 import user from "./services/user.js";
+import doctor from "./services/doctor.js";
 import displayError from "./helpers/displayError.js";
 import {
   formatter,
@@ -17,9 +18,12 @@ const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
 const dobField = document.querySelector("#dob");
 const addedMessage = document.querySelector(".added-message");
+
 const addedResolutionMessage = document.querySelector(
   ".added-resolution-message"
 );
+const specialization = document.querySelector(".specialization");
+const doctorName = document.querySelector(".doctor-name");
 
 class Handlers {
   constructor(resolution, queue, displayError) {
@@ -39,7 +43,6 @@ class Handlers {
         jumpToStartPage();
         return;
       }
-
       const response = await user.getUser(userId);
       if (response.status === 401) jumpToStartPage();
       const profile = await response.json();
@@ -47,6 +50,23 @@ class Handlers {
       emailField.innerText = profile.email;
       dobField.innerText = profile.dob.split("T")[0];
       this.profile = profile;
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
+
+  getDoctor = async () => {
+    try {
+      const userId = getUserDataFromLS();
+      if (!userId) {
+        jumpToStartPage();
+        return;
+      }
+      const response = await doctor.getDoctor(userId);
+      if (response.status === 401) jumpToStartPage();
+      const res = await response.json();
+      doctorName.innerText = res.name;
+      specialization.innerText = res.specialization.specialization;
     } catch (error) {
       this.displayError(error);
     }
