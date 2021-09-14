@@ -40,11 +40,13 @@ db.Patient.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
 db.User.hasOne(db.Doctor, { foreignKey: "user_id", as: "doctor" });
 db.Doctor.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
 
-db.Specialization.belongsToMany(db.Doctor, {
-  through: "doctor_id",
+db.Doctor.hasOne(db.Specialization, {
+  foreignKey: "doctor_id",
+  as: "specialization",
 });
-db.Doctor.belongsToMany(db.Specialization, {
-  through: "doctor_id",
+db.Specialization.hasMany(db.Doctor, {
+  foreignKey: "doctor_id",
+  as: "doctor",
 });
 
 db.Sequelize = Sequelize;

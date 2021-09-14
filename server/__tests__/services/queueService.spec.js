@@ -13,7 +13,7 @@ storage.getNextFromList = jest.fn();
 /**
  *  vars
  */
-const test = { id: 1, name: "mia", specialization:'dentist' };
+const test = { id: 1, name: "mia", specialization: "dentist" };
 
 beforeEach(() => jest.clearAllMocks());
 

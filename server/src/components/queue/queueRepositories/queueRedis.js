@@ -42,21 +42,12 @@ module.exports = class QueueRedis {
 
   async addToList(data) {
     try {
-      if (await this.inQueue(data.id)) return;
       const json = JSON.stringify(data);
       await this.client.rpushAsync(
         `${this.listName}:${data.specialization}`,
         json
       );
       await this.client.setAsync(this.existPrefix + data.id, data.id);
-    } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
-    }
-  }
-
-  async inQueue(id) {
-    try {
-      return this.client.getAsync(this.existPrefix + id);
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
     }

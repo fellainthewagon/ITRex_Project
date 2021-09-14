@@ -10,7 +10,6 @@ class UserService {
     try {
       const user = await userStorage.findByPk(id);
       if (!user) return null;
-
       const { patient } = user;
       const profileDto = new ProfileDto(patient, user);
       return { ...profileDto };

@@ -39,7 +39,7 @@ module.exports.validateAddResolution = (req, res, next) => {
   next();
 };
 
-module.exports.validateQueueData = (req, res, next) => { 
+module.exports.validateQueueData = (req, res, next) => {
   if (!addPatientToQueueValidator(req.body)) {
     throw ApiError.BadRequest(INVALID_BODY);
   }
