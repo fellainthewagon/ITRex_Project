@@ -9,12 +9,6 @@ module.exports = {
       specialization: DataTypes.STRING,
       doctor_id: {
         type: DataTypes.INTEGER,
-        references: {
-          model: {
-            tableName: "doctor",
-          },
-          key: "doctor_id",
-        },
         allowNull: false,
       },
       createdAt: { type: DataTypes.DATE, allowNull: false },

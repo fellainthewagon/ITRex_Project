@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Doctor.init(
     {
-      doctor_id: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
