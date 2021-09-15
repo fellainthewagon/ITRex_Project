@@ -43,7 +43,7 @@ db.sequelize
  * routes
  */
 app.use("/api/auth", authRouter);
-app.use("/api/", deserializeUser);
+// app.use("/api/", deserializeUser);
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
 app.use("/api/user", userRouter);

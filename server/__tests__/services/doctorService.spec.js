@@ -17,7 +17,7 @@ describe("'doctorService' class", () => {
 
 describe("'doctorService' class", () => {
   it("'getDoctorSpecialization' method", async () => {
-    const doctorSpecialization = await doctorService.getDoctorSpecialization(
+    const doctorSpecialization = await doctorService.getDoctorSpecializationByUserId(
       id
     );
     expect(doctorStorage.findSpecialization).toHaveBeenCalledTimes(1);

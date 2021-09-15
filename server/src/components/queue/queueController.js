@@ -26,7 +26,7 @@ class QueueController {
     try {
       const doctorSpecialization =
         await specializationService.getSpecializationByDoctorId(req.params.id);
-
+      console.log(doctorSpecialization)
       const person = await this.queueService.getCurrentPerson(
         doctorSpecialization.specialization
       );

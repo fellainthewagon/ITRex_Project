@@ -60,7 +60,7 @@ describe("'AuthService' class", () => {
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
     expect(patientStorage.findOrCreate).toHaveBeenCalledWith(
       registerData,
-      user.user_id
+      user.id
     );
     expect(patientStorage.findOrCreate).toHaveBeenCalledTimes(1);
 
