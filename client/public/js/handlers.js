@@ -8,16 +8,21 @@ import {
   deleteUserDataFomLS,
   jumpToStartPage,
   getUserDataFromLS,
+  addResolutionsToPage,
+  getDoctorIdFromLS,
+  showPopup,
 } from "./utils/index.js";
 
 const showCurrentPatient = document.querySelector(".current-patient");
-const showResolution = document.querySelector(".show-resolution");
 const resolutionInput = document.querySelector("#resolution");
 const searchInput = document.querySelector("#search-input");
 const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
 const dobField = document.querySelector("#dob");
 const addedMessage = document.querySelector(".added-message");
+const resolutionsWrapper = document.querySelector(".resolutions-wrapper");
+const popup = document.querySelector(".popup");
+const popupWrapper = document.querySelector(".popupwrapper");
 
 const addedResolutionMessage = document.querySelector(
   ".added-resolution-message"
@@ -117,7 +122,7 @@ class Handlers {
     e.preventDefault();
     try {
       if (!this.data.name) return;
-      const doctorId = localStorage.getItem("doctorId");
+      const doctorId = getDoctorIdFromLS();
       const { name } = await this.queue.getCurrent(doctorId);
       if (!name) return;
 
@@ -125,7 +130,9 @@ class Handlers {
 
       if (!this.data.id) return;
 
-      const response = await this.resolution.add(this.data.id, { resolution });
+      const response = await this.resolution.add(this.data.id, {
+        resolution,
+      });
 
       if (response.status === 204) {
         addedResolutionMessage.innerText = "Resolution added!";
@@ -147,13 +154,33 @@ class Handlers {
     try {
       const search = formatter(searchInput.value);
       searchInput.value = "";
+      const res = await this.resolution.find(search);
+      if (res.message || res.length === 0) {
+        resolutionsWrapper.innerHTML = res.message || "Resolution not found";
+        return;
+      }
+      resolutionsWrapper.innerHTML = "";
+      res.forEach((resolution) => {
+        addResolutionsToPage(resolutionsWrapper, resolution);
+      });
+      this.findPatientId = res[0].patient_id || null;
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
 
-      const { patient_id, resolution, message } = await this.resolution.find(
-        search
-      );
-
-      this.findPatientId = patient_id || null;
-      showResolution.innerText = resolution || message;
+  findResolutionForPatient = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await this.resolution.find();
+      if (res.message || res.length === 0) {
+        resolutionsWrapper.innerHTML = res.message || "Resolution not found";
+        return;
+      }
+      resolutionsWrapper.innerHTML = "";
+      res.forEach((resolution) => {
+        addResolutionsToPage(resolutionsWrapper, resolution);
+      });
     } catch (error) {
       this.displayError(error);
     }
@@ -164,9 +191,13 @@ class Handlers {
       if (!this.findPatientId) return;
       const response = await this.resolution.delete(this.findPatientId);
       this.name = null;
-
-      if (response.status >= 400) return;
-      showResolution.innerText = "Resolution deleted";
+      const deleted = "Resolutions deleted";
+      const noToDelete = "No your resolutions for delete";
+      if (response.status >= 400) {
+        showPopup(popupWrapper, popup, noToDelete);
+        return;
+      }
+      showPopup(popupWrapper, popup, deleted);   
     } catch (error) {
       this.displayError(error);
     }

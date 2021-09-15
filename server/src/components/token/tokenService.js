@@ -8,9 +8,9 @@ const {
 
 class TokenService {
   generateTokens(data) {
-    const { id } = data;
+    const { id, role } = data;
 
-    const refreshToken = jwt.sign({ id }, refreshSecret, {
+    const refreshToken = jwt.sign({ id, role }, refreshSecret, {
       expiresIn: refreshTokenTTL,
     });
     const accessToken = jwt.sign(data, accessSecret, {
@@ -34,13 +34,14 @@ class TokenService {
 
   generateNewAccessToken(refreshToken) {
     const { payload } = this.verify(refreshToken, refreshSecret);
+
     if (!payload) return null;
 
-    const { id } = payload;
+    const { id, role } = payload;
 
     return {
       payload,
-      accessToken: jwt.sign({ id }, accessSecret, {
+      accessToken: jwt.sign({ id, role }, accessSecret, {
         expiresIn: accessTokenTTL,
       }),
     };

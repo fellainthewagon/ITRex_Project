@@ -1,7 +1,7 @@
 module.exports = {
   up: async (queryInterface, DataTypes) => {
     await queryInterface.createTable("doctor", {
-      doctor_id: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -12,7 +12,7 @@ module.exports = {
           model: {
             tableName: "user",
           },
-          key: "user_id",
+          key: "id",
         },
         allowNull: false,
       },

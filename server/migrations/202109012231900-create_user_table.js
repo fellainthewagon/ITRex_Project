@@ -3,7 +3,7 @@ module.exports = {
     await queryInterface.createTable(
       "user",
       {
-        user_id: {
+        id: {
           allowNull: false,
           type: DataTypes.UUID,
           primaryKey: true,

@@ -16,7 +16,7 @@ const {
 const ApiError = require("../errors/apiError");
 
 module.exports.validateQueryParams = (req, res, next) => {
-  if (!validator(req.query)) {
+  if (!validator(req.query) && req.user.role !== "patient") {
     throw ApiError.BadRequest(INVALID_QUERY);
   }
   next();

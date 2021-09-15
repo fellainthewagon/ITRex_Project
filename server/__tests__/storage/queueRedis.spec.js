@@ -73,10 +73,8 @@ describe("'QueueRedis' class", () => {
     await catchBlockTest("lpopAsync", queueRedis.getNextFromList);
   });
 
-  it("'addToList' method, if 'patientId' is not in Redis", async () => {
-    client.getAsync.mockResolvedValue(null);
-
-    expect(await queueRedis.addToList(data)).toBeUndefined();
+  it("'addToList' method", async () => {
+    await queueRedis.addToList(data);
     expect(client.rpushAsync).toHaveBeenCalledTimes(1);
     expect(client.rpushAsync).toHaveBeenCalledWith(
       `${queueRedis.listName}:${data.specialization}`,
@@ -88,33 +86,7 @@ describe("'QueueRedis' class", () => {
       data.id
     );
 
-    expect(client.getAsync).toHaveBeenCalledTimes(1);
-    expect(client.getAsync).toHaveBeenCalledWith(
-      queueRedis.existPrefix + data.id
-    );
-
     await catchBlockTest("rpushAsync", queueRedis.addToList);
     await catchBlockTest("setAsync", queueRedis.addToList);
-  });
-
-  it("'addToList' method, if 'patientId' already in Redis", async () => {
-    client.getAsync.mockResolvedValue(99);
-
-    expect(await queueRedis.addToList(data)).toBeUndefined();
-    expect(client.rpushAsync).toHaveBeenCalledTimes(0);
-    expect(client.setAsync).toHaveBeenCalledTimes(0);
-  });
-
-  it("'inQueue' method, check if 'patientId' in Redis", async () => {
-    client.getAsync.mockResolvedValue(99);
-
-    expect(await queueRedis.inQueue(99)).toBeTruthy();
-    expect(client.getAsync).toHaveBeenCalledTimes(1);
-    expect(client.getAsync).toHaveBeenCalledWith(queueRedis.existPrefix + 99);
-
-    client.getAsync.mockResolvedValue(null);
-    expect(await queueRedis.inQueue(98)).toBeFalsy();
-
-    await catchBlockTest("getAsync", queueRedis.inQueue);
   });
 });

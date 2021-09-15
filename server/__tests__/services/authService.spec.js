@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const authService = require("../../src/components/auth/authService");
 const userService = require("../../src/components/user/userService");
+const doctorService = require("../../src/components/doctor/doctorService");
 const UserDto = require("../../src/dtos/userDto");
 const tokenService = require("../../src/components/token/tokenService");
 const userStorage = require("../../src/components/repositories/userStorage");
@@ -13,6 +14,7 @@ const patientStorage = require("../../src/components/repositories/patientStorage
 userStorage.create = jest.fn();
 patientStorage.findOrCreate = jest.fn();
 userService.checkCredential = jest.fn();
+doctorService.getDoctorId = jest.fn();
 bcrypt.hash = jest.fn();
 tokenService.generateTokens = jest.fn();
 jwt.sign = jest.fn();
@@ -28,6 +30,7 @@ const user = {
   password: "hashed ajhdi password",
   createdAt: "2021-09-03T01:54:41.000Z",
   updatedAt: "2021-09-03T01:54:41.000Z",
+  role: "doctor",
 };
 const hashedPassword = "hashed ajhdi password";
 const { name, email, password } = registerData;
@@ -60,7 +63,7 @@ describe("'AuthService' class", () => {
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
     expect(patientStorage.findOrCreate).toHaveBeenCalledWith(
       registerData,
-      user.user_id
+      user.id
     );
     expect(patientStorage.findOrCreate).toHaveBeenCalledTimes(1);
 

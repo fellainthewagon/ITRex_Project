@@ -16,6 +16,7 @@ module.exports = {
   TOKEN_REQUIRED: "A token is required for authentication",
   NOT_AUTH: "You are not authorized",
   WRONG_PASSWORD: "Wrong password",
+  NO_MATCHES: "No matches in db by this data",
   IT_WORKS: `<h1>Miracle! It works!</h1>`,
   PAGE_NOT_FOUND:
     `<h1>Error!</h1>` +

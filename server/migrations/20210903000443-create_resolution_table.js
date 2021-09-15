@@ -21,6 +21,14 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      specialization: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      doctor_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       expire_timestamp: {
         type: DataTypes.BIGINT,
         allowNull: false,

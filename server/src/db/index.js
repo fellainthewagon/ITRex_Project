@@ -38,14 +38,14 @@ db.User.hasOne(db.Patient, {
 db.Patient.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
 
 db.User.hasOne(db.Doctor, { foreignKey: "user_id", as: "doctor" });
-db.Doctor.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
+db.Doctor.belongsTo(db.User, { foreignKey: "id", as: "user" });
 
 db.Doctor.hasOne(db.Specialization, {
   foreignKey: "doctor_id",
   as: "specialization",
 });
 db.Specialization.hasMany(db.Doctor, {
-  foreignKey: "doctor_id",
+  foreignKey: "id",
   as: "doctor",
 });
 

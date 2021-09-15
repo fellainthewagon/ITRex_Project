@@ -16,6 +16,7 @@ const addResolutionSchema = {
   properties: {
     id: { type: "string" },
     resolution: { type: "string" },
+    doctorData: { type: "object" },
   },
   additionalProperties: false,
   oneOf: [{ required: ["id"] }, { required: ["resolution"] }],

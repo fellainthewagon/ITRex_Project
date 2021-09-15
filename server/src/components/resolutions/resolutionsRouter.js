@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const resolutionsController = require("./resolutionsController");
-const deserializeUser = require("../../middleware/deserializeUser");
 const {
   validateParams,
   validateQueryParams,
@@ -44,7 +43,6 @@ const resolutionsRouter = Router();
  */
 resolutionsRouter.patch(
   "/:id/resolution",
-  deserializeUser,
   validateAddResolution,
   async (req, res, next) => {
     await resolutionsController.addResolution(req, res, next);
@@ -120,7 +118,6 @@ resolutionsRouter.get(
  */
 resolutionsRouter.delete(
   "/:id/resolution",
-  deserializeUser,
   validateParams,
   async (req, res, next) => {
     await resolutionsController.deleteResolution(req, res, next);

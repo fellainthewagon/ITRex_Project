@@ -10,5 +10,8 @@ addPatientForm.addEventListener("submit", (e) => {
   const specialization = e.target.elements.specialization.value;
   handlers.addToQueue(specialization);
 });
-findResolutionForm.addEventListener("submit", handlers.findResolution);
+findResolutionForm.addEventListener(
+  "submit",
+  handlers.findResolutionForPatient
+);
 logout.addEventListener("click", handlers.logout);

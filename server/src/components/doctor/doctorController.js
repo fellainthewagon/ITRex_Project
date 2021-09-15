@@ -1,9 +1,11 @@
 const doctorService = require("./doctorService");
 
-class doctorController {
+class DoctorController {
   async getDoctor(req, res, next) {
     try {
-      const data = await doctorService.getDoctorSpecialization(req.params.id);
+      const data = await doctorService.getDoctorSpecializationByUserId(
+        req.params.id
+      );
       return res.json(data);
     } catch (error) {
       return next(error);
@@ -11,4 +13,4 @@ class doctorController {
   }
 }
 
-module.exports = new doctorController();
+module.exports = new DoctorController();

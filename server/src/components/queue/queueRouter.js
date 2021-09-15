@@ -26,7 +26,7 @@ const queueRouter = Router();
  *                    type: integer
  *                    example: 99
  */
-queueRouter.get("/current/:id", deserializeUser, async (req, res, next) => {
+queueRouter.get("/current/:id", async (req, res, next) => {
   await queueController.getCurrentPerson(req, res, next);
 });
 
@@ -51,7 +51,7 @@ queueRouter.get("/current/:id", deserializeUser, async (req, res, next) => {
  *                    type: integer
  *                    example: 100
  */
-queueRouter.get("/next/:id", deserializeUser, async (req, res, next) => {
+queueRouter.get("/next/:id", async (req, res, next) => {
   await queueController.getNextPerson(req, res, next);
 });
 
@@ -91,13 +91,8 @@ queueRouter.get("/next/:id", deserializeUser, async (req, res, next) => {
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
  */
-queueRouter.post(
-  "/",
-  validateQueueData,
-  deserializeUser,
-  async (req, res, next) => {
-    await queueController.addPerson(req, res, next);
-  }
-);
+queueRouter.post("/", validateQueueData, async (req, res, next) => {
+  await queueController.addPerson(req, res, next);
+});
 
 module.exports = queueRouter;
