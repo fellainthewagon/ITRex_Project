@@ -2,6 +2,7 @@ module.exports = {
   QUEUE_EMPTY: "The Queue is empty",
   PERSON_CREATED: "Person added to Queue",
   RESOLUTION_NOT_FOUND: "Resolution not found",
+  PATIENT_NOT_FOUND: "Patient not found",
   INVALID_PARAMS: "Parameter is not valid",
   INVALID_DATA: "Not valid data",
   INVALID_QUERY: "Query is not valid",

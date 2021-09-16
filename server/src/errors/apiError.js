@@ -2,6 +2,7 @@ const {
   UNAUTHORIZED,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
 } = require("http-status-codes");
 
 module.exports = class ApiError extends Error {
@@ -20,5 +21,9 @@ module.exports = class ApiError extends Error {
 
   static DatabaseException(message) {
     return new ApiError(INTERNAL_SERVER_ERROR, message);
+  }
+
+  static NotFound(message) {
+    return new ApiError(NOT_FOUND, message);
   }
 };

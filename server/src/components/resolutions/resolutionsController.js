@@ -29,15 +29,12 @@ class ResolutionsController {
 
   async getResolution(req, res, next) {
     try {
-      const resolution = await this.resolutionsService.getPatientResolutions(
-        req.query.name
-      );
+      const { patients, resolutions } =
+        await this.resolutionsService.getPatientResolutions(req.query.name);
 
-      return resolution
-        ? res.json(resolution)
-        : res
-            .status(StatusCodes.NOT_FOUND)
-            .json({ message: RESOLUTION_NOT_FOUND });
+      if (patients) return res.json({ patients });
+
+      return res.json({ resolutions });
     } catch (error) {
       return next(error);
     }

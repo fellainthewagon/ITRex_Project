@@ -122,18 +122,24 @@ class Handlers {
       searchInput.value = "";
 
       const jwt = localStorage.getItem("doctor-jwt");
+      const data = await this.resolution.find(search, jwt);
 
-      const res = await this.resolution.find(search, jwt);
-      if (res.message || res.length === 0) {
-        resolutionsWrapper.innerHTML = res.message || "Resolution not found";
+      const { resolutions, patients, message } = data;
+
+      if (message) {
+        resolutionsWrapper.innerHTML = message;
         return;
       }
 
+      if (patients) {
+        // TODO
+      }
+
       resolutionsWrapper.innerHTML = "";
-      res.forEach((resolution) => {
+      resolutions.forEach((resolution) => {
         addResolutionsToPage(resolutionsWrapper, resolution);
       });
-      this.findPatientId = res[0].patient_id || null;
+      this.findPatientId = resolutions[0].patient_id || null;
     } catch (error) {
       this.displayError(error);
     }
@@ -143,14 +149,21 @@ class Handlers {
     e.preventDefault();
     try {
       const jwt = localStorage.getItem("jwt");
+      const data = await this.resolution.find(nameField.innerText, jwt);
 
-      const res = await this.resolution.find(nameField.innerText, jwt);
-      if (res.message || res.length === 0) {
-        resolutionsWrapper.innerHTML = res.message || "Resolution not found";
+      const { resolutions, patients, message } = data;
+
+      if (message) {
+        resolutionsWrapper.innerHTML = message;
         return;
       }
+
+      if (patients) {
+        // TODO
+      }
+
       resolutionsWrapper.innerHTML = "";
-      res.forEach((resolution) => {
+      resolutions.forEach((resolution) => {
         addResolutionsToPage(resolutionsWrapper, resolution);
       });
     } catch (error) {

@@ -21,15 +21,14 @@ module.exports = class ResolutionStorage {
     try {
       const resolutionArr = await Resolution.findAll({
         where: { patient_id: id },
+        raw: true,
       });
-      if (!resolutionArr) return null;
+      if (!resolutionArr.length) return null;
+
       const resolutions = await Promise.all(
-        resolutionArr.map(async (resolution) => {
-          if (resolution.expire_timestamp < Date.now()) {
-            return null;
-          }
-          return resolution;
-        })
+        resolutionArr.filter(
+          async (resolution) => resolution.expire_timestamp >= Date.now()
+        )
       );
       return resolutions;
     } catch (error) {
@@ -39,7 +38,7 @@ module.exports = class ResolutionStorage {
 
   async deleteByIdAndDoctorName(patientId, doctorName) {
     try {
-      return await Resolution.destroy({
+      return Resolution.destroy({
         where: { doctor_name: doctorName, patient_id: patientId },
       });
     } catch (error) {

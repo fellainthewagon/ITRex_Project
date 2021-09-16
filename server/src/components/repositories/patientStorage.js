@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Patient } = require("../../db");
 
 class PatientStorage {
@@ -8,8 +9,22 @@ class PatientStorage {
     });
   }
 
-  async findPatientByName(name) {
-    return Patient.findOne({ where: { name } });
+  // async findPatientByName(name) {
+  //   return Patient.findOne({ where: { name } });
+  // }
+
+  async getPatientsByName(name) {
+    const patients = await Patient.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`,
+        },
+      },
+      attributes: ["name", "id", "gender", "dob"],
+      raw: true,
+    });
+
+    return patients.length ? patients : null;
   }
 
   async findPatientById(user_id) {

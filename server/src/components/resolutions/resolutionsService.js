@@ -1,5 +1,7 @@
 const patientStorage = require("../repositories/patientStorage");
 const CatchError = require("../../errors/catchError");
+const ApiError = require("../../errors/apiError");
+const { PATIENT_NOT_FOUND, RESOLUTION_NOT_FOUND } = require("../../constants");
 
 module.exports = class ResolutionsService {
   constructor(storageType) {
@@ -22,21 +24,17 @@ module.exports = class ResolutionsService {
 
   async getPatientResolutions(name) {
     try {
-      const patient = await patientStorage.findPatientByName(name);
-      if (!patient) return null;
+      const patients = await patientStorage.getPatientsByName(name);
 
-      const data = await this.storage.findById(patient.id);
-      if (!data) return null;
+      if (!patients) throw ApiError.NotFound(PATIENT_NOT_FOUND);
+      if (patients.length > 1) return { patients };
 
-      const resolutions = [];
-      data.forEach((resolution) => {
-        if (resolution) {
-          resolutions.push(resolution);
-        }
-      });
-      return resolutions;
+      const resolutions = await this.storage.findById(patients[0].id);
+      if (!resolutions) throw ApiError.NotFound(RESOLUTION_NOT_FOUND);
+
+      return { resolutions };
     } catch (error) {
-      throw new CatchError(error.message);
+      throw new CatchError(error.message, error.statusCode);
     }
   }
 
