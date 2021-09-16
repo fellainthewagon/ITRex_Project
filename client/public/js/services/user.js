@@ -1,21 +1,28 @@
 import config from "../../config/config.js";
+import { jumpToStartPage } from "../utils/index.js";
 
 class User {
   constructor({ protocol, host, port } = config) {
     this.url = `${protocol}://${host}:${port}/api`;
+    this.jwt = localStorage.getItem("jwt");
   }
 
-  async getUser(id) {
-    return fetch(this.url + `/user/${id}`, {
+  async getUser() {
+    if (!this.jwt) return jumpToStartPage();
+
+    const response = await fetch(this.url + "/user", {
       method: "GET",
-      credentials: "include",
+      headers: {
+        "x-access-token": `Bearer ${this.jwt}`,
+      },
     });
+
+    return response.status === 401 ? jumpToStartPage() : response.json();
   }
 
   async sendData(data, method) {
     return fetch(this.url + "/auth/" + method, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -23,10 +30,12 @@ class User {
     });
   }
 
-  async logout() {
+  async logout(jwt) {
     await fetch(this.url + "/auth/logout", {
       method: "POST",
-      credentials: "include",
+      headers: {
+        "x-access-token": `Bearer ${jwt}`,
+      },
     });
   }
 }

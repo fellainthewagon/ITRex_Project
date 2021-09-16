@@ -5,11 +5,8 @@ import doctor from "./services/doctor.js";
 import displayError from "./helpers/displayError.js";
 import {
   formatter,
-  deleteUserDataFomLS,
   jumpToStartPage,
-  getUserDataFromLS,
   addResolutionsToPage,
-  getDoctorIdFromLS,
   showPopup,
 } from "./utils/index.js";
 
@@ -19,14 +16,10 @@ const searchInput = document.querySelector("#search-input");
 const nameField = document.querySelector("#name");
 const emailField = document.querySelector("#email");
 const dobField = document.querySelector("#dob");
-const addedMessage = document.querySelector(".added-message");
 const resolutionsWrapper = document.querySelector(".resolutions-wrapper");
 const popup = document.querySelector(".popup");
 const popupWrapper = document.querySelector(".popupwrapper");
 
-const addedResolutionMessage = document.querySelector(
-  ".added-resolution-message"
-);
 const specialization = document.querySelector(".specialization");
 const doctorName = document.querySelector(".doctor-name");
 
@@ -43,14 +36,12 @@ class Handlers {
 
   getUser = async () => {
     try {
-      const userId = getUserDataFromLS();
-      if (!userId) {
-        jumpToStartPage();
-        return;
+      const profile = await user.getUser();
+
+      if (!profile) {
+        return jumpToStartPage();
       }
-      const response = await user.getUser(userId);
-      if (response.status === 401) jumpToStartPage();
-      const profile = await response.json();
+
       nameField.innerText = profile.name;
       emailField.innerText = profile.email;
       dobField.innerText = profile.dob.split("T")[0];
@@ -62,16 +53,14 @@ class Handlers {
 
   getDoctor = async () => {
     try {
-      const userId = getUserDataFromLS();
-      if (!userId) {
-        jumpToStartPage();
-        return;
+      const data = await doctor.getDoctor();
+
+      if (!data) {
+        return jumpToStartPage();
       }
-      const response = await doctor.getDoctor(userId);
-      if (response.status === 401) jumpToStartPage();
-      const res = await response.json();
-      doctorName.innerText = res.name;
-      specialization.innerText = res.specialization.specialization;
+
+      doctorName.innerText = data.name;
+      specialization.innerText = data.specialization.specialization;
     } catch (error) {
       this.displayError(error);
     }
@@ -79,19 +68,11 @@ class Handlers {
 
   addToQueue = async (specialization) => {
     try {
-      const response = await this.queue.add(
+      await this.queue.add(
         this.profile.id,
         nameField.innerText,
         specialization
       );
-      if (response.status === 201) {
-        addedMessage.innerText = "You have been added to the queue!";
-        addedMessage.style.display = "block";
-
-        setTimeout(() => {
-          addedMessage.style.display = "none";
-        }, 4000);
-      }
     } catch (error) {
       this.displayError(error);
     }
@@ -99,8 +80,7 @@ class Handlers {
 
   currentPatient = async () => {
     try {
-      const doctorId = localStorage.getItem("doctorId");
-      this.data = this.data || (await this.queue.getCurrent(doctorId));
+      this.data = this.data || (await this.queue.getCurrent());
       showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
@@ -110,8 +90,7 @@ class Handlers {
   nextPatient = async () => {
     try {
       if (!this.data.name) return;
-      const doctorId = localStorage.getItem("doctorId");
-      this.data = await this.queue.getNext(doctorId);
+      this.data = await this.queue.getNext();
       showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
@@ -121,27 +100,14 @@ class Handlers {
   addResolution = async (e) => {
     e.preventDefault();
     try {
-      if (!this.data.name) return;
-      const doctorId = getDoctorIdFromLS();
-      const { name } = await this.queue.getCurrent(doctorId);
+      if (!this.data.name || !this.data.id) return;
+      const { name } = await this.queue.getCurrent();
       if (!name) return;
 
       const resolution = resolutionInput.value;
-
-      if (!this.data.id) return;
-
-      const response = await this.resolution.add(this.data.id, {
+      await this.resolution.add(this.data.id, {
         resolution,
       });
-
-      if (response.status === 204) {
-        addedResolutionMessage.innerText = "Resolution added!";
-        addedResolutionMessage.style.display = "block";
-
-        setTimeout(() => {
-          addedResolutionMessage.style.display = "none";
-        }, 4000);
-      }
 
       resolutionInput.value = "";
     } catch (error) {
@@ -154,11 +120,15 @@ class Handlers {
     try {
       const search = formatter(searchInput.value);
       searchInput.value = "";
-      const res = await this.resolution.find(search);
+
+      const jwt = localStorage.getItem("doctor-jwt");
+
+      const res = await this.resolution.find(search, jwt);
       if (res.message || res.length === 0) {
         resolutionsWrapper.innerHTML = res.message || "Resolution not found";
         return;
       }
+
       resolutionsWrapper.innerHTML = "";
       res.forEach((resolution) => {
         addResolutionsToPage(resolutionsWrapper, resolution);
@@ -172,7 +142,9 @@ class Handlers {
   findResolutionForPatient = async (e) => {
     e.preventDefault();
     try {
-      const res = await this.resolution.find();
+      const jwt = localStorage.getItem("jwt");
+
+      const res = await this.resolution.find(nameField.innerText, jwt);
       if (res.message || res.length === 0) {
         resolutionsWrapper.innerHTML = res.message || "Resolution not found";
         return;
@@ -197,7 +169,7 @@ class Handlers {
         showPopup(popupWrapper, popup, noToDelete);
         return;
       }
-      showPopup(popupWrapper, popup, deleted);   
+      showPopup(popupWrapper, popup, deleted);
     } catch (error) {
       this.displayError(error);
     }
@@ -206,9 +178,21 @@ class Handlers {
   logout = async (e) => {
     e.preventDefault();
     try {
-      deleteUserDataFomLS();
-      await user.logout();
+      const jwt = localStorage.getItem("doctor-jwt");
+      await user.logout(jwt);
+      localStorage.removeItem("doctor-jwt");
+      jumpToStartPage();
+    } catch (error) {
+      this.displayError(error);
+    }
+  };
 
+  logoutPatient = async (e) => {
+    e.preventDefault();
+    try {
+      const jwt = localStorage.getItem("jwt");
+      await user.logout(jwt);
+      localStorage.removeItem("jwt");
       jumpToStartPage();
     } catch (error) {
       this.displayError(error);

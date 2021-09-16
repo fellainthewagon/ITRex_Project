@@ -3,7 +3,6 @@ const ResolutionsService = require("./resolutionsService");
 const ResolutionFactory = require("./resolutionRepositories/resolutionFactory");
 const config = require("../../../config");
 const { RESOLUTION_NOT_FOUND } = require("../../constants");
-const doctorService = require("../doctor/doctorService");
 
 class ResolutionsController {
   constructor() {
@@ -14,18 +13,12 @@ class ResolutionsController {
 
   async addResolution(req, res, next) {
     try {
-      const doctorData = await doctorService.getDoctorSpecializationByUserId(
-        req.user.id
-      );
-
-      const { resolution } = req.body;
-
       await this.resolutionsService.add(
         req.params.id,
-        resolution,
+        req.body.resolution,
         config.app.ttl,
-        doctorData.specialization.specialization,
-        doctorData.name
+        req.user.doctor_specialization,
+        req.user.doctor_name
       );
 
       return res.status(StatusCodes.NO_CONTENT).send();
@@ -37,9 +30,7 @@ class ResolutionsController {
   async getResolution(req, res, next) {
     try {
       const resolution = await this.resolutionsService.getPatientResolutions(
-        req.query.name,
-        req.user.role,
-        req.user.id
+        req.query.name
       );
 
       return resolution
@@ -54,14 +45,11 @@ class ResolutionsController {
 
   async deleteResolution(req, res, next) {
     try {
-      const doctor = await doctorService.getDoctorSpecializationByUserId(
-        req.user.id
-      );
-
       const isDeleted = await this.resolutionsService.delete(
         req.params.id,
-        doctor.name
+        req.user.doctor_name
       );
+
       return isDeleted
         ? res.status(StatusCodes.NO_CONTENT).send()
         : res

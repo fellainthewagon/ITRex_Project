@@ -20,16 +20,8 @@ class AuthController {
   async login(req, res, next) {
     try {
       const data = await authService.login(req.body);
-      res.cookie(refreshTokenName, data.refreshToken, {
-        httpOnly: true,
-        maxAge: maxAgeRefresh,
-      });
-      res.cookie(accessTokenName, data.accessToken, {
-        httpOnly: true,
-        maxAge: maxAgeAccess,
-      });
 
-      return res.json(data.user);
+      return res.json(data);
     } catch (error) {
       return next(error);
     }
@@ -37,11 +29,7 @@ class AuthController {
 
   async logout(req, res, next) {
     try {
-      const fakeToken = await authService.logout();
-      res.clearCookie(refreshTokenName);
-      res.clearCookie(accessTokenName);
-
-      return res.json({ token: fakeToken });
+      return res.send();
     } catch (error) {
       return next(error);
     }

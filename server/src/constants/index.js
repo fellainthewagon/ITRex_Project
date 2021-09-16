@@ -12,6 +12,7 @@ module.exports = {
   DATABASE_ERROR: "An error occurred in the database",
   UNSUPPORTED_TYPE: "This type of storage is not supported!",
   USER_NO_EXIST: "User with this email address does not exist",
+  DOCTOR_NO_EXIST: "A doctor with this email doesn't exists",
   USER_EXIST: "A user with this email address already exists",
   TOKEN_REQUIRED: "A token is required for authentication",
   NOT_AUTH: "You are not authorized",

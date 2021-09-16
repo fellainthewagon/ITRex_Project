@@ -1,14 +1,10 @@
 const { Doctor, Specialization } = require("../../db");
 
 class DoctorStorage {
-  async findById(id) {
-    return await Doctor.findOne({ where: { user_id: id } });
-  }
-
-  async findSpecialization(id) {
-    return await Doctor.findOne({
-      attributes: ["name"],
+  async getDoctorByUserId(id) {
+    return Doctor.findOne({
       where: { user_id: id },
+      attributes: ["name", "id"],
       include: {
         attributes: ["specialization"],
         model: Specialization,

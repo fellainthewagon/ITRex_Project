@@ -1,4 +1,3 @@
-import { setUserDataToLS } from "../utils/index.js";
 import config from "../../config/config.js";
 const { host, protocol, clientPort } = config;
 
@@ -27,15 +26,18 @@ async function displayLoginResponse(response) {
     failMessage.innerText = data.message;
 
     failMessage.style.display = "block";
-  } else if (response.status === 200) {
-    setUserDataToLS(data.id, data?.doctor_id);
-    if (data.role === "doctor") {
-      location.href = `${protocol}://${host}:${clientPort}/doctor`;
-    }
-    if (data.role === "patient") {
-      location.href = `${protocol}://${host}:${clientPort}/profile`;
-    }
   }
+
+  const { user, token } = data;
+
+  if (user.role === "doctor") {
+    localStorage.setItem("doctor-jwt", token);
+    location.href = `${protocol}://${host}:${clientPort}/doctor`;
+    return;
+  }
+
+  localStorage.setItem("jwt", token);
+  location.href = `${protocol}://${host}:${clientPort}/profile`;
 
   setTimeout(() => {
     failMessage.style.display = "none";

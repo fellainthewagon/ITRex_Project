@@ -1,12 +1,13 @@
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const userService = require("../user/userService");
-const doctorService = require("../doctor/doctorService");
 const tokenService = require("../token/tokenService");
 const userStorage = require("../repositories/userStorage");
 const patientStorage = require("../repositories/patientStorage");
 const UserDto = require("../../dtos/userDto");
 const CatchError = require("../../errors/catchError");
+const doctorStorage = require("../repositories/doctorStorage");
+const ApiError = require("../../errors/apiError");
+const { DOCTOR_NO_EXIST } = require("../../constants");
 
 class AuthService {
   async registration(body) {
@@ -27,23 +28,24 @@ class AuthService {
   async login(body) {
     try {
       const user = await userService.checkCredential(body);
+
       const userDto = new UserDto(user);
+
       if (user.role === "doctor") {
-        const doctor = await doctorService.getDoctorId(user.id);
+        const doctor = await doctorStorage.getDoctorByUserId(user.id);
+        if (!doctor) throw ApiError.Unauthorized(DOCTOR_NO_EXIST);
+
         userDto.doctor_id = doctor.id;
+        userDto.doctor_name = doctor.name;
+        userDto.doctor_specialization = doctor.specialization.specialization;
       }
-      const tokens = tokenService.generateTokens({ ...userDto });
 
-      return { user: { ...userDto }, ...tokens };
+      const token = tokenService.generateToken({ ...userDto });
+
+      return { user: { ...userDto }, token };
     } catch (error) {
-      throw new CatchError(error.message);
+      throw new CatchError(error.message, error.statusCode);
     }
-  }
-
-  async logout() {
-    return jwt.sign({}, "fake secret", {
-      expiresIn: "1s",
-    });
   }
 }
 

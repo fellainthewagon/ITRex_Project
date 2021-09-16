@@ -8,14 +8,24 @@ module.exports = class QueueRedis {
       host: config.redis.host,
       port: config.redis.port,
     });
-    this.listName = "queue";
-    this.existPrefix = "q:";
+    this.listName = "queue:";
+  }
+
+  async addToList(data) {
+    try {
+      const { id, name, specialization } = data;
+      const json = JSON.stringify({ id, name });
+
+      await this.client.rpushAsync(this.listName + specialization, json);
+    } catch (error) {
+      throw ApiError.DatabaseException(error.message, error);
+    }
   }
 
   async getFirstFromList(specialization) {
     try {
       const json = await this.client.lindexAsync(
-        `${this.listName}:${specialization}`,
+        this.listName + specialization,
         0
       );
 
@@ -27,27 +37,9 @@ module.exports = class QueueRedis {
 
   async getNextFromList(specialization) {
     try {
-      const json = await this.client.lpopAsync(
-        `${this.listName}:${specialization}`
-      );
+      const json = await this.client.lpopAsync(this.listName + specialization);
 
-      if (!json) return null;
-      const data = JSON.parse(json);
-      await this.client.delAsync(this.existPrefix + data.id);
-      return this.getFirstFromList(specialization);
-    } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
-    }
-  }
-
-  async addToList(data) {
-    try {
-      const json = JSON.stringify(data);
-      await this.client.rpushAsync(
-        `${this.listName}:${data.specialization}`,
-        json
-      );
-      await this.client.setAsync(this.existPrefix + data.id, data.id);
+      return json ? this.getFirstFromList(specialization) : null;
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
     }

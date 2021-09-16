@@ -8,10 +8,12 @@ const userStorage = require("../repositories/userStorage");
 class UserService {
   async getUser(id) {
     try {
-      const user = await userStorage.findByPk(id);
+      const user = await userStorage.findUserById(id);
       if (!user) return null;
+
       const { patient } = user;
       const profileDto = new ProfileDto(patient, user);
+
       return { ...profileDto };
     } catch (error) {
       throw new CatchError(error.message);
@@ -22,7 +24,7 @@ class UserService {
     try {
       const { email, password } = body;
 
-      const user = await userStorage.findOne(email);
+      const user = await userStorage.findUserByEmail(email);
 
       if (!user) throw ApiError.Unauthorized(USER_NO_EXIST);
 

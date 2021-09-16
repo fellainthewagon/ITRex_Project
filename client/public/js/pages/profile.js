@@ -14,4 +14,4 @@ findResolutionForm.addEventListener(
   "submit",
   handlers.findResolutionForPatient
 );
-logout.addEventListener("click", handlers.logout);
+logout.addEventListener("click", handlers.logoutPatient);

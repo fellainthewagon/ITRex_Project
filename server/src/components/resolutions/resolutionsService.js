@@ -20,18 +20,14 @@ module.exports = class ResolutionsService {
     }
   }
 
-  async getPatientResolutions(name, role, id) {
+  async getPatientResolutions(name) {
     try {
-      let patient;
-      if (role === "patient") {
-        patient = await patientStorage.findPatientById(id);
-      } else {
-        patient = await patientStorage.findPatientByName(name);
-      }
+      const patient = await patientStorage.findPatientByName(name);
       if (!patient) return null;
 
       const data = await this.storage.findById(patient.id);
       if (!data) return null;
+
       const resolutions = [];
       data.forEach((resolution) => {
         if (resolution) {

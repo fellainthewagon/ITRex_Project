@@ -20,18 +20,6 @@ function showPopup(popupWrapper, popup, text) {
   }, 2000);
 }
 
-function setUserDataToLS(userId, doctorId) {
-  localStorage.setItem("userId", userId);
-  if (doctorId) {
-    localStorage.setItem("doctorId", doctorId);
-  }
-}
-
-function deleteUserDataFomLS() {
-  localStorage.removeItem("userId");
-  localStorage.removeItem("doctorId");
-}
-
 function jumpToStartPage() {
   location.replace(`${protocol}://${host}:${clientPort}`);
 }
@@ -67,8 +55,6 @@ export {
   formatter,
   getUserDataFromLS,
   jumpToStartPage,
-  deleteUserDataFomLS,
-  setUserDataToLS,
   getDoctorIdFromLS,
   addResolutionsToPage,
   showPopup,

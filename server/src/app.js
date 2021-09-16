@@ -23,7 +23,7 @@ const app = express();
 /**
  * middleware
  */
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(cors({ credentials: true, origin: clientUrl }));
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(morgan(config.mode));

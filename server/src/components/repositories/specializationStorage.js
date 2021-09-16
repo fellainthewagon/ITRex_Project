@@ -2,7 +2,7 @@ const { Specialization } = require("../../db");
 
 class SpecializationStorage {
   async findById(id) {
-    return await Specialization.findOne({
+    return Specialization.findOne({
       where: { doctor_id: id },
     });
   }
