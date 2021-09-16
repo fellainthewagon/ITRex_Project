@@ -16,6 +16,16 @@ module.exports = {
         },
         allowNull: false,
       },
+      specialization_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: "specialization",
+          },
+          key: "id",
+        },
+        allowNull: false,
+      },
       name: DataTypes.STRING,
       createdAt: { type: DataTypes.DATE, allowNull: false },
       updatedAt: { type: DataTypes.DATE, allowNull: false },

@@ -1,5 +1,8 @@
 import config from "../../config/config.js";
+
 const { host, protocol, clientPort } = config;
+const popup = document.querySelector(".popup");
+const popupWrapper = document.querySelector(".popupwrapper");
 
 function formatter(data) {
   return data.toLowerCase().trim();
@@ -12,12 +15,12 @@ function getUserDataFromLS() {
 function getDoctorIdFromLS() {
   return localStorage.getItem("doctorId");
 }
-function showPopup(popupWrapper, popup, text) {
+function showPopup(text) {
   popup.innerText = text;
   popupWrapper.style.cssText = "display: flex";
   setTimeout(() => {
     popupWrapper.style.cssText = "display: none";
-  }, 2000);
+  }, 5000);
 }
 
 function jumpToStartPage() {

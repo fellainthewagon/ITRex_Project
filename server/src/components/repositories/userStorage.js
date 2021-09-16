@@ -6,9 +6,7 @@ class UserStorage {
   }
 
   async findUserById(id) {
-    return (await User.findByPk(id, { include: "patient" }))?.get({
-      plain: true,
-    });
+    return User.findByPk(id, { include: "patient", raw: true });
   }
 
   async findUserByEmail(email) {

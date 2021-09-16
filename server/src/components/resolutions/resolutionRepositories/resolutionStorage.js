@@ -1,16 +1,15 @@
-const { Resolution } = require("../../../db");
+const { Resolution, Doctor } = require("../../../db");
 const ApiError = require("../../../errors/apiError");
 
 module.exports = class ResolutionStorage {
-  async create(id, resolution, ttl, specialization, doctor_name) {
+  async create(id, resolution, doctorId, ttl) {
     try {
       const timestamp = Date.now() + ttl * 1000;
       await Resolution.create({
         patient_id: id,
         resolution,
+        doctor_id: doctorId,
         expire_timestamp: timestamp,
-        doctor_name,
-        specialization,
       });
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
@@ -19,17 +18,27 @@ module.exports = class ResolutionStorage {
 
   async findById(id) {
     try {
-      const resolutionArr = await Resolution.findAll({
+      const data = await Resolution.findAll({
         where: { patient_id: id },
+        include: [
+          {
+            model: Doctor,
+            as: "doctor",
+            include: ["specialization"],
+          },
+        ],
+        required: false,
         raw: true,
       });
-      if (!resolutionArr.length) return null;
+
+      if (!data.length) return null;
 
       const resolutions = await Promise.all(
-        resolutionArr.filter(
+        data.filter(
           async (resolution) => resolution.expire_timestamp >= Date.now()
         )
       );
+
       return resolutions;
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);

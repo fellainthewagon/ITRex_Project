@@ -14,6 +14,8 @@ module.exports = (req, res, next) => {
     );
 
     req.user = payload;
+    console.log(req.user);
+
     return next();
   } catch (error) {
     return next(ApiError.Unauthorized(NOT_AUTH));

@@ -16,7 +16,7 @@ const config = {
   refreshTokenTTL: process.env.REFRESH_TOKEN_AGE || "30d",
   accessSecret: process.env.JWT_ACCESS_SECRET || "",
   refreshSecret: process.env.JWT_REFRESH_SECRET || "",
-  refreshTokenName: "refreshToken",
+  bcryptSalt: parseInt(process.env.BCRYPT_SALT, 10) || 10,
   accessTokenName: "accessToken",
   maxAgeRefresh: 30 * 24 * 60 * 60 * 1000,
   maxAgeAccess: 60 * 60 * 1000,

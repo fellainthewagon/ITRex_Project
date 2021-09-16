@@ -4,7 +4,7 @@ const { USER_EXIST } = require("../constants");
 
 module.exports = async (req, res, next) => {
   const { email } = req.body;
-  const isExist = await userStorage.findOne(email);
+  const isExist = await userStorage.findUserByEmail(email);
 
   if (isExist) return res.status(CONFLICT).json({ message: USER_EXIST });
 

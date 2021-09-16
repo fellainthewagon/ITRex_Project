@@ -1,4 +1,4 @@
-const StatusCodes = require("http-status-codes");
+const { NO_CONTENT, NOT_FOUND } = require("http-status-codes");
 const ResolutionsService = require("./resolutionsService");
 const ResolutionFactory = require("./resolutionRepositories/resolutionFactory");
 const config = require("../../../config");
@@ -16,12 +16,11 @@ class ResolutionsController {
       await this.resolutionsService.add(
         req.params.id,
         req.body.resolution,
-        config.app.ttl,
-        req.user.doctor_specialization,
-        req.user.doctor_name
+        req.user.doctor_id,
+        config.app.ttl
       );
 
-      return res.status(StatusCodes.NO_CONTENT).send();
+      return res.status(NO_CONTENT).send();
     } catch (error) {
       return next(error);
     }
@@ -30,7 +29,7 @@ class ResolutionsController {
   async getResolution(req, res, next) {
     try {
       const { patients, resolutions } =
-        await this.resolutionsService.getPatientResolutions(req.query.name);
+        await this.resolutionsService.getResolutions(req.query.name);
 
       if (patients) return res.json({ patients });
 
@@ -48,10 +47,8 @@ class ResolutionsController {
       );
 
       return isDeleted
-        ? res.status(StatusCodes.NO_CONTENT).send()
-        : res
-            .status(StatusCodes.NOT_FOUND)
-            .json({ message: RESOLUTION_NOT_FOUND });
+        ? res.status(NO_CONTENT).send()
+        : res.status(NOT_FOUND).json({ message: RESOLUTION_NOT_FOUND });
     } catch (error) {
       return next(error);
     }

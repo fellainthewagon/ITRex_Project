@@ -2,6 +2,7 @@ module.exports = {
   QUEUE_EMPTY: "The Queue is empty",
   PERSON_CREATED: "Person added to Queue",
   RESOLUTION_NOT_FOUND: "Resolution not found",
+  DOCTOR_NOT_FOUND: "Doctor not found",
   PATIENT_NOT_FOUND: "Patient not found",
   INVALID_PARAMS: "Parameter is not valid",
   INVALID_DATA: "Not valid data",
@@ -17,7 +18,7 @@ module.exports = {
   USER_EXIST: "A user with this email address already exists",
   TOKEN_REQUIRED: "A token is required for authentication",
   NOT_AUTH: "You are not authorized",
-  WRONG_PASSWORD: "Wrong password",
+  WRONG_CREDENTIALS: "Wrong credentials",
   NO_MATCHES: "No matches in db by this data",
   IT_WORKS: `<h1>Miracle! It works!</h1>`,
   PAGE_NOT_FOUND:

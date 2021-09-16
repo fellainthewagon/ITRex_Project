@@ -29,7 +29,7 @@
       margin-bottom: 3rem;
     }
     section {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
     }
     .search-show {
@@ -40,12 +40,12 @@
       display: flex;
       justify-content: space-between;
       margin-left: 1rem;
-      margin-bottom: 7rem;
+      margin-bottom: 3rem;
     }
     .resolution-area {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 6rem;
+      margin-bottom: 3rem;
     }
     #current-patient {
       margin-left: 1rem;
@@ -63,10 +63,6 @@
     .title {
       display: flex;
       justify-content: space-between;
-    }
-    .resolutions-wrapper {
-      max-width: 400px;
-      overflow-wrap: break-word;
     }
     .resolution {
       margin-top: 10px;
@@ -132,7 +128,7 @@
           <form class="set-resolution">
             <div class="form-group">
               <label>Resolution</label>
-              <textarea id="resolution" rows="2" cols="100"></textarea>
+              <textarea id="resolution" rows="4" cols="50"></textarea>
             </div>
             <button type="submit" class="btn btn-success">Set</button>
           </form>
@@ -142,14 +138,13 @@
 
       <div class="search-show">
         <div>
-          <form class="find-resolution">
+          <form style="width: 125px" class="find-resolution">
             <div class="form-group">
-              <label>Find resolution</label>
               <input
                 type="text"
                 class="form-control"
                 id="search-input"
-                placeholder="name"
+                placeholder="search name"
                 required
               />
             </div>
@@ -159,16 +154,27 @@
 
         <div>
           <div>
-            <h6>Resolution:</h6>
-            <div class="resolutions-wrapper">
-              <h7 class="resolution-message"></h7>
+            <div style="font-size: small" class="resolutions-wrapper">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Medical card №</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Resolution №</th>
+                    <th scope="col">Text</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Doctor</th>
+                    <th scope="col">Specialization</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
             </div>
           </div>
         </div>
 
-        <div class="form-inline">
-          <button class="delete-resolution btn btn-danger">Delete</button>
-        </div>
+        <div class="form-inline"></div>
       </div>
     </section>
     <div class="popupwrapper">

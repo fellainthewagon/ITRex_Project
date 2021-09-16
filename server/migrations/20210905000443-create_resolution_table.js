@@ -21,12 +21,14 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      specialization: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      doctor_name: {
-        type: DataTypes.STRING,
+      doctor_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: "doctor",
+          },
+          key: "id",
+        },
         allowNull: false,
       },
       expire_timestamp: {

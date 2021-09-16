@@ -9,10 +9,6 @@ class PatientStorage {
     });
   }
 
-  // async findPatientByName(name) {
-  //   return Patient.findOne({ where: { name } });
-  // }
-
   async getPatientsByName(name) {
     const patients = await Patient.findAll({
       where: {
@@ -20,7 +16,6 @@ class PatientStorage {
           [Op.like]: `%${name}%`,
         },
       },
-      attributes: ["name", "id", "gender", "dob"],
       raw: true,
     });
 

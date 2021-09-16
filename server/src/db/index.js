@@ -21,9 +21,9 @@ db.Specialization = require("../models/specialization")(
 );
 
 db.Patient.hasMany(db.Resolution, {
-  onDelete: "cascade",
   foreignKey: "patient_id",
   as: "resolution",
+  onDelete: "cascade",
 });
 db.Resolution.belongsTo(db.Patient, {
   foreignKey: "patient_id",
@@ -40,14 +40,18 @@ db.Patient.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
 db.User.hasOne(db.Doctor, { foreignKey: "user_id", as: "doctor" });
 db.Doctor.belongsTo(db.User, { foreignKey: "id", as: "user" });
 
-db.Doctor.hasOne(db.Specialization, {
-  foreignKey: "doctor_id",
+db.Specialization.hasMany(db.Doctor, {
+  foreignKey: "specialization_id",
+  as: "doctor",
+  onDelete: "cascade",
+});
+db.Doctor.belongsTo(db.Specialization, {
+  foreignKey: "specialization_id",
   as: "specialization",
 });
-db.Specialization.hasMany(db.Doctor, {
-  foreignKey: "id",
-  as: "doctor",
-});
+
+db.Doctor.hasMany(db.Resolution, { as: "resolution", foreignKey: "doctor_id" });
+db.Resolution.belongsTo(db.Doctor, { as: "doctor", foreignKey: "doctor_id" });
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;

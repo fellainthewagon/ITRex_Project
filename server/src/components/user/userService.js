@@ -1,18 +1,17 @@
 const bcrypt = require("bcryptjs");
-const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../constants");
+const { WRONG_CREDENTIALS } = require("../../constants");
 const ProfileDto = require("../../dtos/profileDto");
-const ApiError = require("../../errors/apiError");
 const CatchError = require("../../errors/catchError");
 const userStorage = require("../repositories/userStorage");
+const UnauthorizedError = require("../../errors/unauthorizedError");
 
 class UserService {
   async getUser(id) {
     try {
-      const user = await userStorage.findUserById(id);
-      if (!user) return null;
+      const data = await userStorage.findUserById(id);
+      if (!data) return null;
 
-      const { patient } = user;
-      const profileDto = new ProfileDto(patient, user);
+      const profileDto = new ProfileDto(data);
 
       return { ...profileDto };
     } catch (error) {
@@ -25,11 +24,10 @@ class UserService {
       const { email, password } = body;
 
       const user = await userStorage.findUserByEmail(email);
-
-      if (!user) throw ApiError.Unauthorized(USER_NO_EXIST);
+      if (!user) throw new UnauthorizedError(WRONG_CREDENTIALS);
 
       const correct = await bcrypt.compare(password, user.password);
-      if (!correct) throw ApiError.Unauthorized(WRONG_PASSWORD);
+      if (!correct) throw new UnauthorizedError(WRONG_CREDENTIALS);
 
       return user;
     } catch (error) {

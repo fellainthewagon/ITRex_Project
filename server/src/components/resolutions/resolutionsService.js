@@ -1,38 +1,37 @@
 const patientStorage = require("../repositories/patientStorage");
 const CatchError = require("../../errors/catchError");
-const ApiError = require("../../errors/apiError");
 const { PATIENT_NOT_FOUND, RESOLUTION_NOT_FOUND } = require("../../constants");
+const NotFoundError = require("../../errors/notFoundError");
+const ResolutionDto = require("../../dtos/resolutionDto");
 
 module.exports = class ResolutionsService {
   constructor(storageType) {
     this.storage = storageType;
   }
 
-  async add(patientId, resolution, ttl, specialization, doctor_name) {
+  async add(patientId, resolution, doctorId, ttl) {
     try {
-      await this.storage.create(
-        patientId,
-        resolution,
-        ttl,
-        specialization,
-        doctor_name
-      );
+      await this.storage.create(patientId, resolution, doctorId, ttl);
     } catch (error) {
       throw new CatchError(error.message);
     }
   }
 
-  async getPatientResolutions(name) {
+  async getResolutions(name) {
     try {
       const patients = await patientStorage.getPatientsByName(name);
 
-      if (!patients) throw ApiError.NotFound(PATIENT_NOT_FOUND);
+      if (!patients) throw new NotFoundError(PATIENT_NOT_FOUND);
       if (patients.length > 1) return { patients };
 
       const resolutions = await this.storage.findById(patients[0].id);
-      if (!resolutions) throw ApiError.NotFound(RESOLUTION_NOT_FOUND);
+      if (!resolutions) throw new NotFoundError(RESOLUTION_NOT_FOUND);
 
-      return { resolutions };
+      const resolutionsDto = resolutions.map(
+        (resolution) => new ResolutionDto(patients[0], resolution)
+      );
+
+      return { resolutions: resolutionsDto };
     } catch (error) {
       throw new CatchError(error.message, error.statusCode);
     }

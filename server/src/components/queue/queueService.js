@@ -11,6 +11,7 @@ module.exports = class QueueService {
     } catch (error) {
       throw new CatchError(error.message);
     }
+    // { id: 1, name: 'mia walles', specialization: 'therapist' }
   }
 
   async getCurrentPerson(specialization) {
