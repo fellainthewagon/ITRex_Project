@@ -26,9 +26,8 @@ class QueueController {
     try {
       const doctorSpecialization =
         await specializationService.getSpecializationByDoctorId(req.params.id);
-
       const person = await this.queueService.getCurrentPerson(
-        doctorSpecialization.specialization
+        doctorSpecialization.specialization.specialization
       );
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
@@ -43,7 +42,7 @@ class QueueController {
         await specializationService.getSpecializationByDoctorId(req.params.id);
 
       const person = await this.queueService.getNextPerson(
-        doctorSpecialization.specialization
+        doctorSpecialization.specialization.specialization
       );
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });

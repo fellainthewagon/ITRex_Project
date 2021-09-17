@@ -2,6 +2,7 @@ const doctorStorage = require("../../src/components/repositories/doctorStorage")
 
 jest.mock("../../src/db");
 const db = require("../../src/db");
+
 const id = "1EA321";
 const data = { name: "name", id };
 beforeEach(() => jest.clearAllMocks());
@@ -19,11 +20,11 @@ describe("'DoctorStorage' class", () => {
 });
 
 describe("'DoctorStorage' class", () => {
-  it("'findSpecialization' method", async () => {    
+  it("'findSpecialization' method", async () => {
     db.Doctor.findOne.mockResolvedValue(data);
     const doctor = await doctorStorage.findSpecialization(id);
     expect(db.Doctor.findOne).toHaveBeenCalledWith({
-      attributes: ["name"],
+      attributes: ["name", "id"],
       where: { user_id: id },
       include: {
         attributes: ["specialization"],

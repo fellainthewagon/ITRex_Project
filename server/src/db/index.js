@@ -40,12 +40,20 @@ db.Patient.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
 db.User.hasOne(db.Doctor, { foreignKey: "user_id", as: "doctor" });
 db.Doctor.belongsTo(db.User, { foreignKey: "id", as: "user" });
 
-db.Doctor.hasOne(db.Specialization, {
-  foreignKey: "doctor_id",
+db.Doctor.belongsTo(db.Specialization, {
   as: "specialization",
+  foreignKey: "specialization_id",
 });
 db.Specialization.hasMany(db.Doctor, {
-  foreignKey: "id",
+  as: "doctor",
+  foreignKey: "specialization_id",
+});
+db.Doctor.hasMany(db.Resolution, {
+  foreignKey: "doctor_id",
+  as: "resolution",
+});
+db.Resolution.belongsTo(db.Doctor, {
+  foreignKey: "doctor_id",
   as: "doctor",
 });
 

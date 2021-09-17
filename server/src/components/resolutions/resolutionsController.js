@@ -24,8 +24,7 @@ class ResolutionsController {
         req.params.id,
         resolution,
         config.app.ttl,
-        doctorData.specialization.specialization,
-        doctorData.name
+        doctorData.id
       );
 
       return res.status(StatusCodes.NO_CONTENT).send();
@@ -60,7 +59,7 @@ class ResolutionsController {
 
       const isDeleted = await this.resolutionsService.delete(
         req.params.id,
-        doctor.name
+        doctor.id
       );
       return isDeleted
         ? res.status(StatusCodes.NO_CONTENT).send()

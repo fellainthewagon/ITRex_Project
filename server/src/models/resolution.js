@@ -19,12 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      specialization: {
+      doctor_id: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      doctor_name: {
-        type: DataTypes.STRING,
+        references: {
+          model: {
+            tableName: "doctor",
+          },
+          key: "id",
+        },
         allowNull: false,
       },
       expire_timestamp: {

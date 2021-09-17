@@ -197,7 +197,7 @@ class Handlers {
         showPopup(popupWrapper, popup, noToDelete);
         return;
       }
-      showPopup(popupWrapper, popup, deleted);   
+      showPopup(popupWrapper, popup, deleted);
     } catch (error) {
       this.displayError(error);
     }

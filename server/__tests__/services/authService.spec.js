@@ -76,6 +76,10 @@ describe("'AuthService' class", () => {
       accessToken: "access token",
       refreshToken: "refresh token",
     });
+    doctorService.getDoctorId.mockResolvedValue((userDto) => {
+      userDto.doctor_id = doctor.id;
+      return { id: 1 };
+    });
 
     expect(await authService.login(reqBody)).toEqual({
       user: { ...userDto },

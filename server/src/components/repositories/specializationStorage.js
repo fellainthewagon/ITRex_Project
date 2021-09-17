@@ -1,9 +1,14 @@
-const { Specialization } = require("../../db");
+const { Specialization, Doctor } = require("../../db");
 
 class SpecializationStorage {
   async findById(id) {
-    return await Specialization.findOne({
-      where: { doctor_id: id },
+    return await Doctor.findOne({
+      where: { id },
+      include: {
+        attributes: ["specialization"],
+        model: Specialization,
+        as: "specialization",
+      },
     });
   }
 }

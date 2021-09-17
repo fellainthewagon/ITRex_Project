@@ -51,8 +51,8 @@ function addResolutionsToPage(resolutionsWrapper, resolution) {
   resolutionDate.innerText = `Date of resolution: ${
     resolution.createdAt.split("T")[0]
   }`;
-  specialization.innerText = `Specialization: ${resolution.specialization}`;
-  doctorName.innerText = `Doctor: ${resolution.doctor_name}`;
+  specialization.innerText = `Specialization: ${resolution.doctor.specialization.specialization}`;
+  doctorName.innerText = `Doctor: ${resolution.doctor.name}`;
 
   resolutions.append(specialization);
   resolutions.append(resolutionText);

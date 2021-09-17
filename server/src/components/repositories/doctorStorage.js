@@ -7,7 +7,7 @@ class DoctorStorage {
 
   async findSpecialization(id) {
     return await Doctor.findOne({
-      attributes: ["name"],
+      attributes: ["name", "id"],
       where: { user_id: id },
       include: {
         attributes: ["specialization"],

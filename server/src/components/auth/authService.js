@@ -33,7 +33,6 @@ class AuthService {
         userDto.doctor_id = doctor.id;
       }
       const tokens = tokenService.generateTokens({ ...userDto });
-
       return { user: { ...userDto }, ...tokens };
     } catch (error) {
       throw new CatchError(error.message);

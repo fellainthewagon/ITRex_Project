@@ -13,7 +13,7 @@ const dob = "1972-01-09T00:00:00.000Z";
 const gender = "female";
 const name = "mia";
 const id = "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3";
-const user_id ='wqe2332d32'
+const user_id = "wqe2332d32";
 const patient = {
   id: 1,
   user_id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",

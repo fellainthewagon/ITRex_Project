@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const queueController = require("./queueController");
 const { validateQueueData } = require("../../middleware/validators");
-const deserializeUser = require("../../middleware/deserializeUser");
 
 const queueRouter = Router();
 

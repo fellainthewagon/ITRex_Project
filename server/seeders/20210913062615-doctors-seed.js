@@ -15,35 +15,6 @@ module.exports = {
       ],
       {}
     );
-
-    await queryInterface.bulkInsert(
-      "doctor",
-      [
-        {
-          id: 1,
-          user_id: "dba35030-145d-11ec-88a6-671ebb3b8072",
-          name: "John Jones",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
-
-    await queryInterface.bulkInsert(
-      "specialization",
-      [
-        {
-          id: 1,
-          doctor_id: 1,
-          specialization: "therapist",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
-
     await queryInterface.bulkInsert(
       "user",
       [
@@ -59,35 +30,6 @@ module.exports = {
       ],
       {}
     );
-
-    await queryInterface.bulkInsert(
-      "doctor",
-      [
-        {
-          id: 2,
-          user_id: "ef9dced0-1462-11ec-8f7f-3100de2fc697",
-          name: "Stas Mihailov",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
-
-    await queryInterface.bulkInsert(
-      "specialization",
-      [
-        {
-          id: 2,
-          doctor_id: 2,
-          specialization: "surgeon",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
-
     await queryInterface.bulkInsert(
       "user",
       [
@@ -105,12 +47,11 @@ module.exports = {
     );
 
     await queryInterface.bulkInsert(
-      "doctor",
+      "specialization",
       [
         {
-          id: 3,
-          user_id: "f031d170-1462-11ec-8f7f-3100de2fc697",
-          name: "Conor McGregor",
+          id: 1,
+          specialization: "therapist",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -122,9 +63,65 @@ module.exports = {
       "specialization",
       [
         {
+          id: 2,
+          specialization: "surgeon",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+
+    await queryInterface.bulkInsert(
+      "doctor",
+      [
+        {
+          id: 1,
+          user_id: "dba35030-145d-11ec-88a6-671ebb3b8072",
+          name: "John Jones",
+          specialization_id: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+    await queryInterface.bulkInsert(
+      "specialization",
+      [
+        {
           id: 3,
-          doctor_id: 3,
           specialization: "dentist",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+
+    await queryInterface.bulkInsert(
+      "doctor",
+      [
+        {
+          id: 2,
+          user_id: "ef9dced0-1462-11ec-8f7f-3100de2fc697",
+          specialization_id: 2,
+          name: "Stas Mihailov",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+
+    await queryInterface.bulkInsert(
+      "doctor",
+      [
+        {
+          id: 3,
+          user_id: "f031d170-1462-11ec-8f7f-3100de2fc697",
+          name: "Conor McGregor",
+          specialization_id: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },

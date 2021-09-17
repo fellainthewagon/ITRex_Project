@@ -14,8 +14,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      name: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+      },
+      specialization_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
+
     {
       sequelize,
       tableName: "doctor",

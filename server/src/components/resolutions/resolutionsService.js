@@ -6,15 +6,9 @@ module.exports = class ResolutionsService {
     this.storage = storageType;
   }
 
-  async add(patientId, resolution, ttl, specialization, doctor_name) {
+  async add(patientId, resolution, ttl, doctorId) {
     try {
-      await this.storage.create(
-        patientId,
-        resolution,
-        ttl,
-        specialization,
-        doctor_name
-      );
+      await this.storage.create(patientId, resolution, ttl, doctorId);
     } catch (error) {
       throw new CatchError(error.message);
     }
@@ -29,7 +23,6 @@ module.exports = class ResolutionsService {
         patient = await patientStorage.findPatientByName(name);
       }
       if (!patient) return null;
-
       const data = await this.storage.findById(patient.id);
       if (!data) return null;
       const resolutions = [];
@@ -44,11 +37,11 @@ module.exports = class ResolutionsService {
     }
   }
 
-  async delete(patientId, doctorName) {
+  async delete(patientId, doctorId) {
     try {
       const isDeleted = await this.storage.deleteByIdAndDoctorName(
         patientId,
-        doctorName
+        doctorId
       );
 
       return isDeleted || null;

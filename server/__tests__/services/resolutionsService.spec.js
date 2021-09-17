@@ -36,8 +36,8 @@ describe("'ResolutionsService' class", () => {
   it("'add' method", async () => {
     storage.create.mockResolvedValue();
 
-    expect(await resolutionsService.add(1, "hello", 30, 'dentist', 'alex')).toBeUndefined();
-    expect(storage.create).toHaveBeenCalledWith(1, "hello", 30,'dentist', 'alex');
+    expect(await resolutionsService.add(1, "hello", 30, 412)).toBeUndefined();
+    expect(storage.create).toHaveBeenCalledWith(1, "hello", 30, 412);
     expect(storage.create).toHaveBeenCalledTimes(1);
 
     await catchBlockTest("create", resolutionsService.add);
@@ -53,18 +53,26 @@ describe("'ResolutionsService' class", () => {
         "1Ad3322Fd3"
       )
     ).toBeNull();
-    expect(patientStorage.findPatientById).toHaveBeenCalledWith('1Ad3322Fd3');
+    expect(patientStorage.findPatientById).toHaveBeenCalledWith("1Ad3322Fd3");
     expect(patientStorage.findPatientById).toHaveBeenCalledTimes(1);
     expect(storage.findOne).toHaveBeenCalledTimes(0);
   });
 
   const value = { patient_id: 1, name: "mia", id: 99 };
-  const resolution = [{resolution:'resolution'},{resolution:'resolution2'}]
+  const resolution = [
+    { resolution: "resolution" },
+    { resolution: "resolution2" },
+  ];
   it("'get' method, if the 'name' is in the DB and the 'patientId' in the storage", async () => {
     patientStorage.findPatientById.mockResolvedValue(value);
-    storage.findById.mockResolvedValue([{resolution:'resolution'},{resolution:'resolution2'}]);  
+    storage.findById.mockResolvedValue([
+      { resolution: "resolution" },
+      { resolution: "resolution2" },
+    ]);
 
-    expect(await resolutionsService.getPatientResolutions("mia", 'patient', 2)).toEqual(resolution);
+    expect(
+      await resolutionsService.getPatientResolutions("mia", "patient", 2)
+    ).toEqual(resolution);
     expect(patientStorage.findPatientById).toHaveBeenCalledTimes(1);
     expect(storage.findById).toHaveBeenCalledTimes(1);
 
@@ -72,8 +80,11 @@ describe("'ResolutionsService' class", () => {
   });
 
   it("'getPatientResolutions' method, if the 'name' is in the DB and the 'patientId' isn't in the storage", async () => {
-    storage.findPatientById.mockResolvedValue(null);   
-    await catchBlockTest("findPatientById", resolutionsService.getPatientResolutions);
+    storage.findPatientById.mockResolvedValue(null);
+    await catchBlockTest(
+      "findPatientById",
+      resolutionsService.getPatientResolutions
+    );
   });
 
   it("'delete' method, if the 'patientId' is in the storage", async () => {

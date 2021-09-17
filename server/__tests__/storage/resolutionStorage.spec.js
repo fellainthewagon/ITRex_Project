@@ -37,8 +37,18 @@ const fullValue2 = {
   destroy: jest.fn(),
 };
 
-const condition = { where: { doctor_name: "name", patient_id: 99 } };
-const findCondition = { where: { patient_id: 99 } };
+const condition = { where: { doctor_id: 33, patient_id: 99 } };
+const findCondition = {
+  where: { patient_id: 99 },
+  include: {
+    model: db.Doctor,
+    as: "doctor",
+    include: {
+      model: db.Specialization,
+      as: "specialization",
+    },
+  },
+};
 const TTL = 30;
 
 beforeEach(() => jest.clearAllMocks());
@@ -93,7 +103,7 @@ describe("'ResolutionStorage' class", () => {
   it("'deleteByIdAndDoctorName' method, when 'resolution' is successfully deleted or not found", async () => {
     db.Resolution.destroy.mockResolvedValue(1);
 
-    expect(await resolutionStorage.deleteByIdAndDoctorName(99, "name")).toBe(1);
+    expect(await resolutionStorage.deleteByIdAndDoctorName(99, 33)).toBe(1);
     expect(db.Resolution.destroy).toHaveBeenCalledTimes(1);
     expect(db.Resolution.destroy).toHaveBeenCalledWith(condition);
 

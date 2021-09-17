@@ -1,16 +1,15 @@
-const { Resolution } = require("../../../db");
+const { Resolution, Doctor, Specialization } = require("../../../db");
 const ApiError = require("../../../errors/apiError");
 
 module.exports = class ResolutionStorage {
-  async create(id, resolution, ttl, specialization, doctor_name) {
+  async create(id, resolution, ttl, doctor_id) {
     try {
       const timestamp = Date.now() + ttl * 1000;
       await Resolution.create({
         patient_id: id,
         resolution,
         expire_timestamp: timestamp,
-        doctor_name,
-        specialization,
+        doctor_id,
       });
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
@@ -21,6 +20,14 @@ module.exports = class ResolutionStorage {
     try {
       const resolutionArr = await Resolution.findAll({
         where: { patient_id: id },
+        include: {
+          model: Doctor,
+          as: "doctor",
+          include: {
+            model: Specialization,
+            as: "specialization",
+          },
+        },
       });
       if (!resolutionArr) return null;
       const resolutions = await Promise.all(
@@ -37,10 +44,10 @@ module.exports = class ResolutionStorage {
     }
   }
 
-  async deleteByIdAndDoctorName(patientId, doctorName) {
+  async deleteByIdAndDoctorName(patientId, doctorId) {
     try {
       return await Resolution.destroy({
-        where: { doctor_name: doctorName, patient_id: patientId },
+        where: { doctor_id: doctorId, patient_id: patientId },
       });
     } catch (error) {
       throw ApiError.DatabaseException(error.message, error);
