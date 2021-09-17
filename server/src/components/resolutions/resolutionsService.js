@@ -37,11 +37,11 @@ module.exports = class ResolutionsService {
     }
   }
 
-  async delete(patientId, doctorName) {
+  async delete(patientId, doctorId) {
     try {
       const isDeleted = await this.storage.deleteByIdAndDoctorName(
         patientId,
-        doctorName
+        doctorId
       );
 
       return isDeleted || null;

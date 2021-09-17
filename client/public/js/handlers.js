@@ -8,9 +8,6 @@ import { formatter, jumpToStartPage, showPopup } from "./utils/index.js";
 const showCurrentPatient = document.querySelector(".current-patient");
 const resolutionInput = document.querySelector("#resolution");
 const searchInput = document.querySelector("#search-input");
-const nameField = document.querySelector("#name");
-const emailField = document.querySelector("#email");
-const dobField = document.querySelector("#dob");
 const tbody = document.querySelector("#tbody");
 
 const specialization = document.querySelector(".specialization");
@@ -18,27 +15,9 @@ const doctorName = document.querySelector(".doctor-name");
 
 class Handlers {
   constructor() {
-    this.profile = {};
     this.findPatientId;
     this.data;
   }
-
-  getUser = async () => {
-    try {
-      const profile = await user.getUser();
-
-      if (!profile) {
-        return jumpToStartPage();
-      }
-
-      nameField.innerText = profile.name;
-      emailField.innerText = profile.email;
-      dobField.innerText = profile.dob.split("T")[0];
-      this.profile = profile;
-    } catch (error) {
-      displayError(error);
-    }
-  };
 
   getDoctor = async () => {
     try {
@@ -48,16 +27,9 @@ class Handlers {
         return jumpToStartPage();
       }
 
-      doctorName.innerText = data.name;
-      specialization.innerText = data.specialization.specialization;
-    } catch (error) {
-      displayError(error);
-    }
-  };
-
-  addToQueue = async (specialization) => {
-    try {
-      await queue.add(this.profile.id, nameField.innerText, specialization);
+      doctorName.innerText = "Doctor: " + data.name;
+      specialization.innerText =
+        "Specialization: " + data.specialization.specialization;
     } catch (error) {
       displayError(error);
     }
@@ -89,9 +61,8 @@ class Handlers {
       const { name } = await queue.getCurrent();
       if (!name) return;
 
-      const resolution = resolutionInput.value;
       await resolution.add(this.data.id, {
-        resolution,
+        resolution: resolutionInput.value,
       });
 
       resolutionInput.value = "";

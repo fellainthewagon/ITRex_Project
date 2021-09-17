@@ -31,9 +31,7 @@ class ResolutionsController {
       const { patients, resolutions } =
         await this.resolutionsService.getResolutions(req.query.name);
 
-      if (patients) return res.json({ patients });
-
-      return res.json({ resolutions });
+      return patients ? res.json({ patients }) : res.json({ resolutions });
     } catch (error) {
       return next(error);
     }
@@ -43,7 +41,7 @@ class ResolutionsController {
     try {
       const isDeleted = await this.resolutionsService.delete(
         req.params.id,
-        req.user.doctor_name
+        req.user.doctor_id
       );
 
       return isDeleted

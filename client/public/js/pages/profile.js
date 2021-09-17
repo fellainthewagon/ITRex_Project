@@ -1,20 +1,45 @@
-import handlers from "../handlers.js";
 import resolution from "../services/resolution.js";
 import displayError from "../helpers/displayError.js";
 import { jumpToStartPage, showPopup } from "../utils/index.js";
 import user from "../services/user.js";
+import queue from "../services/queue.js";
 
 const findResolutionForm = document.querySelector(".find-resolution");
 const addPatientForm = document.querySelector(".add-form");
 const logout = document.querySelector(".logout");
 const tbody = document.querySelector("#tbody");
 const nameField = document.querySelector("#name");
+const emailField = document.querySelector("#email");
+const dobField = document.querySelector("#dob");
 
-document.addEventListener("DOMContentLoaded", handlers.getUser);
-addPatientForm.addEventListener("submit", (e) => {
+const profile = {};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const data = await user.getUser();
+
+    if (!data) {
+      return jumpToStartPage();
+    }
+
+    nameField.innerText = data.name;
+    emailField.innerText = "E-mail:  " + data.email;
+    dobField.innerText = "Date of Birth:  " + data.dob.split("T")[0];
+    profile.user = data;
+  } catch (error) {
+    displayError(error);
+  }
+});
+
+addPatientForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const specialization = e.target.elements.specialization.value;
-  handlers.addToQueue(specialization);
+
+  try {
+    await queue.add(profile.user.id, nameField.innerText, specialization);
+  } catch (error) {
+    displayError(error);
+  }
 });
 
 findResolutionForm.addEventListener("submit", async (e) => {
@@ -40,7 +65,6 @@ findResolutionForm.addEventListener("submit", async (e) => {
             <td>${resolution.createdData.split("T")[0]}</td>
             <td>${resolution.doctorName}</td>
             <td>${resolution.doctorSpecialization}</td>
-            <td><button>Delete</button></td>
           </tr>
         `;
       })
