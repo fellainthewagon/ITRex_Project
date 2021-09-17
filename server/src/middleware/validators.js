@@ -13,18 +13,18 @@ const {
   INVALID_REGISTER_DATA,
   INVALID_PARAMS,
 } = require("../constants");
-const ApiError = require("../errors/apiError");
+const BadRequestError = require("../errors/badRequestError");
 
 module.exports.validateQueryParams = (req, res, next) => {
   if (!validator(req.query) && req.user.role !== "patient") {
-    throw ApiError.BadRequest(INVALID_QUERY);
+    throw new BadRequestError(INVALID_QUERY);
   }
   next();
 };
 
 module.exports.validateParams = (req, res, next) => {
   if (!validator(req.params)) {
-    throw ApiError.BadRequest(INVALID_PARAMS);
+    throw new BadRequestError(INVALID_PARAMS);
   }
   next();
 };
@@ -34,28 +34,28 @@ module.exports.validateAddResolution = (req, res, next) => {
     !addResolutionValidator(req.params) ||
     !addResolutionValidator(req.body)
   ) {
-    throw ApiError.BadRequest(INVALID_DATA);
+    throw new BadRequestError(INVALID_DATA);
   }
   next();
 };
 
 module.exports.validateQueueData = (req, res, next) => {
   if (!addPatientToQueueValidator(req.body)) {
-    throw ApiError.BadRequest(INVALID_BODY);
+    throw new BadRequestError(INVALID_BODY);
   }
   next();
 };
 
 module.exports.validateRegisterData = (req, res, next) => {
   if (!registerValidator(req.body)) {
-    throw ApiError.BadRequest(INVALID_REGISTER_DATA);
+    throw new BadRequestError(INVALID_REGISTER_DATA);
   }
   next();
 };
 
 module.exports.validateLoginData = (req, res, next) => {
   if (!loginValidator(req.body)) {
-    throw ApiError.BadRequest(INVALID_CREDENTIAL);
+    throw new BadRequestError(INVALID_CREDENTIAL);
   }
   next();
 };

@@ -71,7 +71,7 @@ class Handlers {
     }
   };
 
-  findResolution = async (e) => {
+  findResolutionAndDelete = async (e) => {
     e.preventDefault();
     try {
       const search = formatter(searchInput.value);
@@ -101,52 +101,42 @@ class Handlers {
       const body = resolutions
         .map((resolution) => {
           return `
-          <tr>
+          <tr id="del-${resolution.resolutionId}">
             <th scope="row">${resolution.patientId}</th>
             <td>${resolution.name}</td>
-            <td>${resolution.resolutionId}</td>
+            <td id="">${resolution.resolutionId}</td>
             <td>${resolution.resolution}</td>
             <td>${resolution.createdData.split("T")[0]}</td>
             <td>${resolution.doctorName}</td>
             <td>${resolution.doctorSpecialization}</td>
-            <td><button>Delete</button></td>
+            <td><button class="delete-btn">Delete</button></td>
           </tr>
         `;
         })
         .join("");
 
       tbody.innerHTML = body;
+      const patientId = resolutions[0].patientId || null;
 
-      this.findPatientId = resolutions[0].patient_id || null;
-    } catch (error) {
-      displayError(error);
-    }
-  };
+      const deleteBtn = document.querySelectorAll(".delete-btn");
 
-  deleteResolution = async () => {
-    try {
-      if (!this.findPatientId) return;
-      const response = await resolution.delete(this.findPatientId);
-      this.name = null;
-      const deleted = "Resolutions deleted";
-      const noToDelete = "No your resolutions for delete";
-      if (response.status >= 400) {
-        showPopup(noToDelete);
-        return;
-      }
-      showPopup(deleted);
-    } catch (error) {
-      displayError(error);
-    }
-  };
+      deleteBtn.forEach((resolutionLine) => {
+        resolutionLine.addEventListener("click", async (e) => {
+          const resolutionId =
+            e.target.parentElement.parentElement.id.split("-")[1];
 
-  logout = async (e) => {
-    e.preventDefault();
-    try {
-      const jwt = localStorage.getItem("doctor-jwt");
-      await user.logout(jwt);
-      localStorage.removeItem("doctor-jwt");
-      jumpToStartPage();
+          const response = await resolution.delete(patientId, resolutionId);
+          if (response.status === 404) {
+            showPopup("No resolution you can delete");
+            return;
+          }
+
+          if (response.status === 204) {
+            showPopup("resolution deleted!");
+            e.target.parentElement.parentElement.remove();
+          }
+        });
+      });
     } catch (error) {
       displayError(error);
     }

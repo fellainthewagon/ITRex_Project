@@ -1,5 +1,5 @@
 const config = require("../../../../config");
-const ApiError = require("../../../errors/apiError");
+const DatabaseError = require("../../../errors/databaseError");
 const redis = require("../../../redis");
 
 module.exports = class QueueRedis {
@@ -18,7 +18,7 @@ module.exports = class QueueRedis {
 
       await this.client.rpushAsync(this.listName + specialization, json);
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 
@@ -31,7 +31,7 @@ module.exports = class QueueRedis {
 
       return JSON.parse(json);
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 
@@ -41,7 +41,7 @@ module.exports = class QueueRedis {
 
       return json ? this.getFirstFromList(specialization) : null;
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 };

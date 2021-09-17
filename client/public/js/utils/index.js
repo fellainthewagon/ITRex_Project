@@ -20,7 +20,7 @@ function showPopup(text) {
   popupWrapper.style.cssText = "display: flex";
   setTimeout(() => {
     popupWrapper.style.cssText = "display: none";
-  }, 5000);
+  }, 4000);
 }
 
 function jumpToStartPage() {

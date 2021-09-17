@@ -1,6 +1,10 @@
 module.exports = class CatchError extends Error {
-  constructor(message, status) {
-    super(message);
-    this.statusCode = status;
+  constructor(error) {
+    super(error.message);
+    global.console.log(error);
+
+    if (error.statusCode) {
+      this.statusCode = error.statusCode;
+    }
   }
 };

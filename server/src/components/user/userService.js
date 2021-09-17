@@ -15,7 +15,7 @@ class UserService {
 
       return { ...profileDto };
     } catch (error) {
-      throw new CatchError(error.message);
+      throw new CatchError(error);
     }
   }
 
@@ -31,7 +31,7 @@ class UserService {
 
       return user;
     } catch (error) {
-      throw new CatchError(error.message, error.statusCode);
+      throw new CatchError(error);
     }
   }
 }

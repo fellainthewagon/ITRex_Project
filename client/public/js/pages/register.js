@@ -22,7 +22,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   const data = {
-    name: formatter(name.value),
+    name: name.value,
     dob: dob.value,
     gender: gender.value,
     email: formatter(email.value),

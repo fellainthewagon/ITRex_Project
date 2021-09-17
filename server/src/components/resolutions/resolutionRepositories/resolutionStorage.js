@@ -1,5 +1,5 @@
+const DatabaseError = require("../../../errors/databaseError");
 const { Resolution, Doctor } = require("../../../db");
-const ApiError = require("../../../errors/apiError");
 
 module.exports = class ResolutionStorage {
   async create(id, resolution, doctorId, ttl) {
@@ -12,7 +12,7 @@ module.exports = class ResolutionStorage {
         expire_timestamp: timestamp,
       });
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 
@@ -41,17 +41,19 @@ module.exports = class ResolutionStorage {
 
       return resolutions;
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 
-  async deleteByIdAndDoctorName(patientId, doctorName) {
+  async delete(params, doctorId) {
+    const { id, resolutionId } = params;
+
     try {
       return Resolution.destroy({
-        where: { doctor_name: doctorName, patient_id: patientId },
+        where: { id: resolutionId, doctor_id: doctorId, patient_id: id },
       });
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 };

@@ -26,6 +26,7 @@ async function displayLoginResponse(response) {
     failMessage.innerText = data.message;
 
     failMessage.style.display = "block";
+    return;
   }
 
   const { user, token } = data;

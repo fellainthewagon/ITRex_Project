@@ -23,7 +23,7 @@ class AuthService {
 
       return { ...userDto };
     } catch (error) {
-      throw new CatchError(error.message);
+      throw new CatchError(error);
     }
   }
 
@@ -45,7 +45,7 @@ class AuthService {
 
       return { user: { ...userDto }, token };
     } catch (error) {
-      throw new CatchError(error.message, error.statusCode);
+      throw new CatchError(error);
     }
   }
 }

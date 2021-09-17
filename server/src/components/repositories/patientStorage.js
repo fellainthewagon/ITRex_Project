@@ -22,8 +22,8 @@ class PatientStorage {
     return patients.length ? patients : null;
   }
 
-  async findPatientById(user_id) {
-    return Patient.findOne({ where: { user_id } });
+  async findPatientById(userId) {
+    return Patient.findOne({ where: { user_id: userId } });
   }
 }
 

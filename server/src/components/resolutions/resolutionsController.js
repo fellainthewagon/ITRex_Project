@@ -1,8 +1,7 @@
-const { NO_CONTENT, NOT_FOUND } = require("http-status-codes");
+const { NO_CONTENT } = require("http-status-codes");
 const ResolutionsService = require("./resolutionsService");
 const ResolutionFactory = require("./resolutionRepositories/resolutionFactory");
 const config = require("../../../config");
-const { RESOLUTION_NOT_FOUND } = require("../../constants");
 
 class ResolutionsController {
   constructor() {
@@ -39,14 +38,9 @@ class ResolutionsController {
 
   async deleteResolution(req, res, next) {
     try {
-      const isDeleted = await this.resolutionsService.delete(
-        req.params.id,
-        req.user.doctor_id
-      );
+      await this.resolutionsService.delete(req.params, req.user.doctor_id);
 
-      return isDeleted
-        ? res.status(NO_CONTENT).send()
-        : res.status(NOT_FOUND).json({ message: RESOLUTION_NOT_FOUND });
+      return res.status(NO_CONTENT).send();
     } catch (error) {
       return next(error);
     }

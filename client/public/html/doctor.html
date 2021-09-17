@@ -68,8 +68,8 @@
     }
     .popup {
       width: 300px;
-      height: 100px;
       background-color: rgba(30, 33, 53, 0.463);
+      padding: 2rem;
       border: 1px solid black;
       border-radius: 10px;
       display: flex;
@@ -110,12 +110,12 @@
         <div class="row">
           <div>
             <h5>Current patient:</h5>
-            <div class="current-patient"></div>
+            <h6 class="current-patient"></h6>
           </div>
         </div>
 
         <div class="form-inline">
-          <button class="next-patient btn btn-success">Next patient</button>
+          <button class="next-patient btn btn-success">next patient</button>
         </div>
       </div>
 
@@ -126,7 +126,7 @@
               <label>Resolution</label>
               <textarea id="resolution" rows="4" cols="50"></textarea>
             </div>
-            <button type="submit" class="btn btn-success">Set</button>
+            <button type="submit" class="btn btn-success">set</button>
           </form>
         </div>
         <div>
@@ -140,7 +140,9 @@
                 required
               />
             </div>
-            <button type="submit" class="btn btn-success">find</button>
+            <button type="submit" class="btn btn-success">
+              find resolution
+            </button>
           </form>
         </div>
       </div>

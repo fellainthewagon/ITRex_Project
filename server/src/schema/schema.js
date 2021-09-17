@@ -4,6 +4,7 @@ const schema = {
   type: "object",
   properties: {
     id: { type: "string" },
+    resolutionId: { type: "string" },
     name: { type: "string" },
   },
   additionalProperties: false,

@@ -117,7 +117,7 @@ resolutionsRouter.get(
  *             example: {message: "Resolution not found"}
  */
 resolutionsRouter.delete(
-  "/:id/resolution",
+  "/:id/resolution/:resolutionId",
   validateParams,
   async (req, res, next) => {
     await resolutionsController.deleteResolution(req, res, next);

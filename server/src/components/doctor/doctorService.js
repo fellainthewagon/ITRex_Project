@@ -11,7 +11,7 @@ class DoctorService {
 
       return doctor;
     } catch (error) {
-      throw new CatchError(error.message, error.statusCode);
+      throw new CatchError(error);
     }
   }
 }

@@ -13,7 +13,7 @@ module.exports = class ResolutionsService {
     try {
       await this.storage.create(patientId, resolution, doctorId, ttl);
     } catch (error) {
-      throw new CatchError(error.message);
+      throw new CatchError(error);
     }
   }
 
@@ -33,20 +33,19 @@ module.exports = class ResolutionsService {
 
       return { resolutions: resolutionsDto };
     } catch (error) {
-      throw new CatchError(error.message, error.statusCode);
+      throw new CatchError(error);
     }
   }
 
-  async delete(patientId, doctorId) {
+  async delete(params, doctorId) {
     try {
-      const isDeleted = await this.storage.deleteByIdAndDoctorName(
-        patientId,
-        doctorId
-      );
+      const isDeleted = await this.storage.delete(params, doctorId);
 
-      return isDeleted || null;
+      if (!isDeleted) throw new NotFoundError(RESOLUTION_NOT_FOUND);
+
+      return isDeleted;
     } catch (error) {
-      throw new CatchError(error.message);
+      throw new CatchError(error);
     }
   }
 };

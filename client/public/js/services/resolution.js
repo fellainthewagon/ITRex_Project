@@ -13,7 +13,6 @@ class Resolution {
   async add(id, value) {
     const response = await fetch(this.url + id + "/resolution", {
       method: "PATCH",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": `Bearer ${this.jwt}`,
@@ -38,7 +37,7 @@ class Resolution {
       name: value,
     });
 
-    const response = await fetch(this.url + "resolution?" + params, {
+    const response = await fetch(`${this.url}resolution?${params}`, {
       method: "GET",
       headers: {
         "x-access-token": `Bearer ${jwt}`,
@@ -47,8 +46,8 @@ class Resolution {
     return response.json();
   }
 
-  async delete(id) {
-    return fetch(this.url + id + "/resolution", {
+  async delete(patientId, resolutionId) {
+    return fetch(`${this.url}${patientId}/resolution/${resolutionId}`, {
       method: "DELETE",
       headers: {
         "x-access-token": `Bearer ${this.jwt}`,

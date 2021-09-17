@@ -1,5 +1,5 @@
 const config = require("../../../../config");
-const ApiError = require("../../../errors/apiError");
+const DatabaseError = require("../../../errors/databaseError");
 const redis = require("../../../redis");
 
 module.exports = class ResolutionRedis {
@@ -15,7 +15,7 @@ module.exports = class ResolutionRedis {
     try {
       await this.client.setexAsync(this.prefix + patientId, ttl, resolution);
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 
@@ -25,7 +25,7 @@ module.exports = class ResolutionRedis {
 
       return resolution ? { patient_id: patientId, resolution } : null;
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 
@@ -33,7 +33,7 @@ module.exports = class ResolutionRedis {
     try {
       return this.client.delAsync(this.prefix + patientId);
     } catch (error) {
-      throw ApiError.DatabaseException(error.message, error);
+      throw new DatabaseError(error);
     }
   }
 };

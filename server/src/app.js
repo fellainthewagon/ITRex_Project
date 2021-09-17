@@ -1,5 +1,4 @@
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const cors = require("cors");
@@ -23,8 +22,7 @@ const app = express();
 /**
  * middleware
  */
-// app.use(cookieParser());
-app.use(cors({ credentials: true, origin: clientUrl }));
+app.use(cors({ origin: clientUrl }));
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(morgan(config.mode));
 app.use(express.json());
@@ -33,7 +31,7 @@ app.use(express.json());
  * database connection
  */
 db.sequelize
-  .authenticate(/* {force: true} */)
+  .authenticate()
   .then(() => {
     global.console.log("...connected to DB!");
   })
