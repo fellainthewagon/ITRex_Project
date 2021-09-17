@@ -1,36 +1,36 @@
 const userStorage = require("../../src/components/repositories/userStorage");
 const userService = require("../../src/components/user/userService");
-const { USER_NO_EXIST, WRONG_PASSWORD } = require("../../src/constants");
+const { USER_NOT_FOUND, WRONG_CREDENTIALS } = require("../../src/constants");
 const ProfileDto = require("../../src/dtos/profileDto");
-const CatchError = require("../../src/errors/catchError");
+const bcrypt = require("bcryptjs");
 
 /**
  * mocking funcs
  */
-userStorage.findByPk = jest.fn();
-userStorage.findOne = jest.fn();
+userStorage.findUserById = jest.fn();
+userStorage.findUserByEmail = jest.fn();
+bcrypt.compare = jest.fn();
 
 /**
  * vars
  */
 const userPatient = {
-  id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
-  email: "mia@mail.ru",
-  password: "$2a$10$b626iZTDFvDRshqi2lcDa.KuZrJzNysn2eIhvKcjmu/LFWDFkqjsS",
-  createdAt: "2021-09-03T01:54:41.000Z",
-  updatedAt: "2021-09-03T01:54:41.000Z",
-  patient: {
-    id: 1,
-    user_id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
-    name: "mia",
-    dob: "1972-01-09T00:00:00.000Z",
-    gender: "female",
-    createdAt: "2021-09-03T01:54:41.000Z",
-    updatedAt: "2021-09-03T01:54:41.000Z",
-  },
+  id: "9627aeb0-17e7-11ec-8a8a-95895ec7e17f",
+  email: "user@mail.ru",
+  password: "$2a$10$6CT6ND2YjufucVfG/9co1eI8i13WPCEYsy1uM.f1U0fHUgwagP1uW",
+  role: "patient",
+  createdAt: "2021-09-17T18:46:36.000Z",
+  updatedAt: "2021-09-17T18:46:36.000Z",
+  "patient.id": 3,
+  "patient.user_id": "9627aeb0-17e7-11ec-8a8a-95895ec7e17f",
+  "patient.name": "user user",
+  "patient.dob": "2020-02-20T00:00:00.000Z",
+  "patient.gender": "male",
+  "patient.createdAt": "2021-09-17T18:46:36.000Z",
+  "patient.updatedAt": "2021-09-17T18:46:36.000Z",
 };
-const { patient, id } = userPatient;
-const profileDto = new ProfileDto(patient, userPatient);
+const { id } = userPatient;
+const profileDto = new ProfileDto(userPatient);
 const reqBody = {
   email: "mia@mail.ru",
   password: "123123",
@@ -61,43 +61,45 @@ async function catchBlockTest(method, fn) {
  */
 describe("'UserService' class", () => {
   it("'getUser' method, if 'user' is exist", async () => {
-    userStorage.findByPk.mockResolvedValue(userPatient);
+    userStorage.findUserById.mockResolvedValue(userPatient);
 
     expect(await userService.getUser(id)).toEqual({ ...profileDto });
-    expect(userStorage.findByPk).toHaveBeenCalledWith(id);
-    expect(userStorage.findByPk).toHaveBeenCalledTimes(1);
+    expect(userStorage.findUserById).toHaveBeenCalledWith(id);
+    expect(userStorage.findUserById).toHaveBeenCalledTimes(1);
 
-    await catchBlockTest("findByPk", userService.getUser);
+    await catchBlockTest("findUserById", userService.getUser);
   });
 
   it("'getUser' method, if 'user' doesn't exist", async () => {
-    userStorage.findByPk.mockResolvedValue(null);
-    expect(await userService.getUser(id)).toBeNull();
+    userStorage.findUserById.mockResolvedValue(null);
+    await expect(userService.getUser(id)).rejects.toThrowError(USER_NOT_FOUND);
   });
 
   it("'checkCredential' method, if 'user' exist and 'password' is valid", async () => {
-    userStorage.findOne.mockResolvedValue(user);
+    userStorage.findUserByEmail.mockResolvedValue(user);
+    bcrypt.compare.mockResolvedValue(true);
 
     expect(await userService.checkCredential(reqBody)).toEqual(user);
-    expect(userStorage.findOne).toHaveBeenCalledWith(reqBody.email);
-    expect(userStorage.findOne).toHaveBeenCalledTimes(1);
+    expect(userStorage.findUserByEmail).toHaveBeenCalledWith(reqBody.email);
+    expect(userStorage.findUserByEmail).toHaveBeenCalledTimes(1);
+    expect(bcrypt.compare).toHaveBeenCalledTimes(1);
 
-    await catchBlockTest("findOne", userService.checkCredential);
+    await catchBlockTest("findUserByEmail", userService.checkCredential);
   });
 
   it("'checkCredential' method, if 'user' doesn't exist or invalid 'password'", async () => {
-    userStorage.findOne.mockResolvedValue(null);
-    await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
-      USER_NO_EXIST
-    );
+    userStorage.findUserByEmail.mockResolvedValue(null);
 
-    userStorage.findOne.mockResolvedValue(user);
-    user.password = "invalid password";
     await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
-      WRONG_PASSWORD
+      WRONG_CREDENTIALS
     );
+    expect(bcrypt.compare).toHaveBeenCalledTimes(0);
+
+    userStorage.findUserByEmail.mockResolvedValue(user);
+    bcrypt.compare.mockResolvedValue(false);
     await expect(userService.checkCredential(reqBody)).rejects.toThrowError(
-      CatchError
+      WRONG_CREDENTIALS
     );
+    expect(bcrypt.compare).toHaveBeenCalledTimes(1);
   });
 });
