@@ -9,16 +9,14 @@ const client = (queueRedis.client = jest.fn());
 client.lindexAsync = jest.fn();
 client.lpopAsync = jest.fn();
 client.rpushAsync = jest.fn();
-client.setAsync = jest.fn();
-client.getAsync = jest.fn();
-client.delAsync = jest.fn();
 
 /**
  *  vars
  */
 const data = { id: 99, name: "mia", specialization: "dentist" };
 const delData = { id: 98, name: "vin" };
-const json = JSON.stringify(data);
+const { id, name, specialization } = data;
+const json = JSON.stringify({ id, name });
 const delJson = JSON.stringify(delData);
 
 beforeEach(() => jest.clearAllMocks());
@@ -37,12 +35,14 @@ async function catchBlockTest(method, fn) {
 describe("'QueueRedis' class", () => {
   it("'getFirstFromList' method", async () => {
     client.lindexAsync.mockResolvedValue(json);
-    expect(await queueRedis.getFirstFromList(data.specialization)).toEqual(
-      data
-    );
+
+    expect(await queueRedis.getFirstFromList(specialization)).toEqual({
+      id,
+      name,
+    });
     expect(client.lindexAsync).toHaveBeenCalledTimes(1);
     expect(client.lindexAsync).toHaveBeenCalledWith(
-      `${queueRedis.listName}:${data.specialization}`,
+      `${queueRedis.listName}${data.specialization}`,
       0
     );
 
@@ -54,18 +54,19 @@ describe("'QueueRedis' class", () => {
 
   it("'getNextFromList' method", async () => {
     client.lpopAsync.mockResolvedValue(delJson);
-    client.lindexAsync.mockResolvedValue(json);
-    client.delAsync.mockResolvedValue();
+    queueRedis.getFirstFromList = jest.fn();
+    queueRedis.getFirstFromList.mockResolvedValue({ id, name });
 
-    expect(await queueRedis.getNextFromList(data.specialization)).toEqual(data);
+    expect(await queueRedis.getNextFromList(specialization)).toEqual({
+      id,
+      name,
+    });
     expect(client.lpopAsync).toHaveBeenCalledTimes(1);
     expect(client.lpopAsync).toHaveBeenCalledWith(
-      `${queueRedis.listName}:${data.specialization}`
+      `${queueRedis.listName}${specialization}`
     );
-    expect(client.delAsync).toHaveBeenCalledTimes(1);
-    expect(client.delAsync).toHaveBeenCalledWith(
-      queueRedis.existPrefix + delData.id
-    );
+    expect(queueRedis.getFirstFromList).toHaveBeenCalledTimes(1);
+    expect(queueRedis.getFirstFromList).toHaveBeenCalledWith(specialization);
 
     client.lpopAsync.mockResolvedValue(null);
     expect(await queueRedis.getNextFromList()).toBeNull();
@@ -74,19 +75,15 @@ describe("'QueueRedis' class", () => {
   });
 
   it("'addToList' method", async () => {
-    await queueRedis.addToList(data);
+    client.rpushAsync.mockResolvedValue();
+
+    expect(await queueRedis.addToList(data)).toBeUndefined();
     expect(client.rpushAsync).toHaveBeenCalledTimes(1);
     expect(client.rpushAsync).toHaveBeenCalledWith(
-      `${queueRedis.listName}:${data.specialization}`,
+      `${queueRedis.listName}${data.specialization}`,
       json
-    );
-    expect(client.setAsync).toHaveBeenCalledTimes(1);
-    expect(client.setAsync).toHaveBeenCalledWith(
-      queueRedis.existPrefix + data.id,
-      data.id
     );
 
     await catchBlockTest("rpushAsync", queueRedis.addToList);
-    await catchBlockTest("setAsync", queueRedis.addToList);
   });
 });

@@ -6,9 +6,6 @@ const userStorage = require("../../src/components/repositories/userStorage");
 jest.mock("../../src/db");
 const db = require("../../src/db");
 
-const objectUser = {};
-objectUser.get = jest.fn();
-
 /**
  * vars
  */
@@ -56,23 +53,21 @@ describe("'UserStorage' class", () => {
     expect(db.User.create).toHaveBeenCalledTimes(1);
   });
 
-  it("'findByPk' method, if 'user' is exist", async () => {
-    db.User.findByPk.mockResolvedValue(objectUser);
-    objectUser.get.mockReturnValue(userPatient);
+  it("'findUserById' method, if 'user' is exist", async () => {
+    db.User.findByPk.mockResolvedValue(userPatient);
 
-    expect(await userStorage.findByPk(id)).toEqual(userPatient);
+    expect(await userStorage.findUserById(id)).toEqual(userPatient);
     expect(db.User.findByPk).toHaveBeenCalledWith(id, {
       include: "patient",
+      raw: true,
     });
     expect(db.User.findByPk).toHaveBeenCalledTimes(1);
-    expect(objectUser.get).toHaveBeenCalledWith({ plain: true });
-    expect(objectUser.get).toHaveBeenCalledTimes(1);
   });
 
-  it("'findOne' method", async () => {
+  it("'findUserByEmail' method", async () => {
     db.User.findOne.mockResolvedValue(user);
 
-    expect(await userStorage.findOne(email)).toEqual(user);
+    expect(await userStorage.findUserByEmail(email)).toEqual(user);
     expect(db.User.findOne).toHaveBeenCalledWith({
       where: { email },
       raw: true,
