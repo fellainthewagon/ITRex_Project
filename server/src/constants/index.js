@@ -17,7 +17,6 @@ module.exports = {
   NOT_AUTH: "You are not authorized",
   WRONG_PASSWORD: "Wrong password",
   IT_WORKS: `<h1>Miracle! It works!</h1>`,
-  NO_MATCHES: 'No matches in db by this data',
   PAGE_NOT_FOUND:
     `<h1>Error!</h1>` +
     `<h2>404. Not Found.</h2>` +

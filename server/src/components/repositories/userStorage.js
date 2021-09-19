@@ -2,7 +2,7 @@ const { User } = require("../../db");
 
 class UserStorage {
   async create(email, password) {
-    return await User.create({ email, password, role: "patient" });
+    return User.create({ email, password });
   }
 
   async findByPk(id) {
@@ -12,7 +12,7 @@ class UserStorage {
   }
 
   async findOne(email) {
-    return await User.findOne({ where: { email }, raw: true });
+    return User.findOne({ where: { email }, raw: true });
   }
 }
 

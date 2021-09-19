@@ -9,7 +9,6 @@ const queueRouter = require("./components/queue/queueRouter");
 const resolutionsRouter = require("./components/resolutions/resolutionsRouter");
 const authRouter = require("./components/auth/authRouter");
 const userRouter = require("./components/user/userRouter");
-const doctorRouter = require("./components/doctor/doctorRouter");
 
 const swaggerDocs = require("./doc/swaggerDocs");
 const apiErrorsHandler = require("./middleware/apiErrorsHandler");
@@ -47,7 +46,6 @@ app.use("/api/", deserializeUser);
 app.use("/api/patients/queue", queueRouter);
 app.use("/api/patients", resolutionsRouter);
 app.use("/api/user", userRouter);
-app.use("/api/doctor", doctorRouter);
 
 /**
  * API face

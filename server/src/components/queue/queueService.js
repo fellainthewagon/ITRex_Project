@@ -13,9 +13,9 @@ module.exports = class QueueService {
     }
   }
 
-  async getCurrentPerson(specialization) {
+  async getCurrentPerson() {
     try {
-      const data = await this.storage.getFirstFromList(specialization);
+      const data = await this.storage.getFirstFromList();
 
       return data || null;
     } catch (error) {
@@ -23,9 +23,9 @@ module.exports = class QueueService {
     }
   }
 
-  async getNextPerson(specialization) {
+  async getNextPerson() {
     try {
-      const data = await this.storage.getNextFromList(specialization);
+      const data = await this.storage.getNextFromList();
 
       return data || null;
     } catch (error) {
