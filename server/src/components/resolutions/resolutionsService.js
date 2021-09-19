@@ -1,5 +1,4 @@
 const patientStorage = require("../repositories/patientStorage");
-const ResolutionDto = require("../../dtos/resolutionDto");
 const CatchError = require("../../errors/catchError");
 
 module.exports = class ResolutionsService {
@@ -7,33 +6,43 @@ module.exports = class ResolutionsService {
     this.storage = storageType;
   }
 
-  async add(patientId, resolution, ttl) {
+  async add(patientId, resolution, ttl, doctorId) {
     try {
-      await this.storage.create(patientId, resolution, ttl);
+      await this.storage.create(patientId, resolution, ttl, doctorId);
     } catch (error) {
       throw new CatchError(error.message);
     }
   }
 
-  async get(name) {
+  async getPatientResolutions(name, role, id) {
     try {
-      const patient = await patientStorage.findOne(name);
+      let patient;
+      if (role === "patient") {
+        patient = await patientStorage.findPatientById(id);
+      } else {
+        patient = await patientStorage.findPatientByName(name);
+      }
       if (!patient) return null;
-
       const data = await this.storage.findById(patient.id);
       if (!data) return null;
-
-      const resolution = new ResolutionDto(data);
-
-      return resolution;
+      const resolutions = [];
+      data.forEach((resolution) => {
+        if (resolution) {
+          resolutions.push(resolution);
+        }
+      });
+      return resolutions;
     } catch (error) {
       throw new CatchError(error.message);
     }
   }
 
-  async delete(patientId) {
+  async delete(patientId, doctorId) {
     try {
-      const isDeleted = await this.storage.deleteById(patientId);
+      const isDeleted = await this.storage.deleteByIdAndDoctorName(
+        patientId,
+        doctorId
+      );
 
       return isDeleted || null;
     } catch (error) {

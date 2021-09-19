@@ -8,8 +8,12 @@ class PatientStorage {
     });
   }
 
-  async findOne(name) {
-    return Patient.findOne({ where: { name } });
+  async findPatientByName(name) {
+    return await Patient.findOne({ where: { name } });
+  }
+
+  async findPatientById(user_id) {
+    return await Patient.findOne({ where: { user_id } });
   }
 }
 

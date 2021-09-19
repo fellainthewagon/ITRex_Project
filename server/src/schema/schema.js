@@ -16,6 +16,7 @@ const addResolutionSchema = {
   properties: {
     id: { type: "string" },
     resolution: { type: "string" },
+    doctorData: { type: "object" },
   },
   additionalProperties: false,
   oneOf: [{ required: ["id"] }, { required: ["resolution"] }],
@@ -27,6 +28,7 @@ const addPatientToQueueSchema = {
   properties: {
     id: { type: "number" },
     name: { type: "string", minLength: 2 },
+    specialization: { type: "string", minLength: 3 },
   },
   required: ["id", "name"],
   additionalProperties: false,

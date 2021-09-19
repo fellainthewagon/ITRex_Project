@@ -19,6 +19,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      doctor_id: {
+        type: DataTypes.STRING,
+        references: {
+          model: {
+            tableName: "doctor",
+          },
+          key: "id",
+        },
+        allowNull: false,
+      },
       expire_timestamp: {
         type: DataTypes.BIGINT,
         allowNull: false,

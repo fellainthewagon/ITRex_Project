@@ -60,12 +60,52 @@
       display: none;
       margin: 0 auto 2rem;
     }
+    .title {
+      display: flex;
+      justify-content: space-between;
+    }
+    .resolutions-wrapper {
+      max-width: 400px;
+      overflow-wrap: break-word;
+    }
+    .resolution {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .popup {
+      width: 300px;
+      height: 100px;
+      background-color: rgba(30, 33, 53, 0.463);
+      border: 1px solid black;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+    }
+    .popupwrapper {
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      justify-content: center;
+      align-items: center;
+      display: none;
+    }
   </style>
 
   <body>
     <header>
       <div class="title">
         <h2>Cabinet</h2>
+        <a class="logout" href=""><h5>LogOut</h5></a>
+      </div>
+      <div class="doctorName">
+        <h5 class="doctor-name"></h5>
+        <h5 class="specialization"></h5>
       </div>
     </header>
 
@@ -120,7 +160,9 @@
         <div>
           <div>
             <h6>Resolution:</h6>
-            <div style="width: 350px" class="show-resolution"></div>
+            <div class="resolutions-wrapper">
+              <h7 class="resolution-message"></h7>
+            </div>
           </div>
         </div>
 
@@ -129,6 +171,9 @@
         </div>
       </div>
     </section>
+    <div class="popupwrapper">
+      <div class="popup"></div>
+    </div>
   </body>
 
   <script type="module" src="../js/pages/doctor.js"></script>

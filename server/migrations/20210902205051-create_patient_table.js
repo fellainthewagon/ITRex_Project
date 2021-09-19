@@ -9,16 +9,6 @@ module.exports = {
           autoIncrement: true,
           primaryKey: true,
         },
-        user_id: {
-          type: DataTypes.UUID,
-          references: {
-            model: {
-              tableName: "user",
-            },
-            key: "id",
-          },
-          allowNull: false,
-        },
         name: {
           type: DataTypes.STRING,
           allowNull: false,

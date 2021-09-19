@@ -7,6 +7,7 @@ const resolutionStorage = new ResolutionStorage();
  */
 jest.mock("../../src/db");
 const db = require("../../src/db");
+
 Date.now = jest.fn();
 
 /**
@@ -18,14 +19,36 @@ const rawValue = {
   expire_timestamp: 1000,
 };
 
+const rawValue2 = {
+  patient_id: 99,
+  resolution: "hello",
+  expire_timestamp: 2000,
+};
+
 const fullValue = {
   dataValues: rawValue,
   expire_timestamp: 1000,
   destroy: jest.fn(),
 };
 
-const condition = { where: { patient_id: 99 } };
+const fullValue2 = {
+  dataValues: rawValue2,
+  expire_timestamp: 2000,
+  destroy: jest.fn(),
+};
 
+const condition = { where: { doctor_id: 33, patient_id: 99 } };
+const findCondition = {
+  where: { patient_id: 99 },
+  include: {
+    model: db.Doctor,
+    as: "doctor",
+    include: {
+      model: db.Specialization,
+      as: "specialization",
+    },
+  },
+};
 const TTL = 30;
 
 beforeEach(() => jest.clearAllMocks());
@@ -56,41 +79,36 @@ describe("'ResolutionStorage' class", () => {
   });
 
   it("'findById' method, if the 'resolution' not found in the DB", async () => {
-    db.Resolution.findOne.mockResolvedValue(null);
+    db.Resolution.findAll.mockResolvedValue(null);
 
     expect(await resolutionStorage.findById(99)).toBeNull();
-    expect(db.Resolution.findOne).toHaveBeenCalledTimes(1);
-    expect(db.Resolution.findOne).toHaveBeenCalledWith(condition);
+    expect(db.Resolution.findAll).toHaveBeenCalledTimes(1);
+    expect(db.Resolution.findAll).toHaveBeenCalledWith(findCondition);
   });
 
-  it("'findById' method, if the 'resolution' found but the 'TTL' has expired", async () => {
-    db.Resolution.findOne.mockResolvedValue(fullValue);
+  it("'findById' method, if the 'resolution' not found", async () => {
+    db.Resolution.findAll.mockResolvedValue(null);
     Date.now.mockReturnValue(1001);
-
     expect(await resolutionStorage.findById(99)).toBeNull();
-    expect(fullValue.destroy).toHaveBeenCalledTimes(1);
+    expect(db.Resolution.findAll).toHaveBeenCalledTimes(1);
+    catchBlockTest("findAll", resolutionStorage.findById);
   });
 
-  it("'findById' method, if the 'resolution' found and the 'TTL' hasn't expired", async () => {
-    db.Resolution.findOne.mockResolvedValue(fullValue);
-    Date.now.mockReturnValue(999);
-
-    expect(await resolutionStorage.findById(99)).toEqual(rawValue);
-    expect(fullValue.destroy).toHaveBeenCalledTimes(0);
-
-    catchBlockTest("findOne", resolutionStorage.findById);
+  it("'findById' method, if the 'resolution' found", async () => {
+    db.Resolution.findAll.mockResolvedValue([fullValue2, fullValue]);
+    Date.now.mockReturnValue(1001);
+    expect(await resolutionStorage.findById(99)).toEqual([fullValue2, null]);
   });
 
-  it("'deleteById' method, when 'resolution' is successfully deleted or not found", async () => {
+  it("'deleteByIdAndDoctorName' method, when 'resolution' is successfully deleted or not found", async () => {
     db.Resolution.destroy.mockResolvedValue(1);
 
-    expect(await resolutionStorage.deleteById(99)).toBe(1);
+    expect(await resolutionStorage.deleteByIdAndDoctorName(99, 33)).toBe(1);
     expect(db.Resolution.destroy).toHaveBeenCalledTimes(1);
     expect(db.Resolution.destroy).toHaveBeenCalledWith(condition);
 
     db.Resolution.destroy.mockResolvedValue(0);
-    expect(await resolutionStorage.deleteById(99)).toBe(0);
-
-    catchBlockTest("destroy", resolutionStorage.deleteById);
+    expect(await resolutionStorage.deleteByIdAndDoctorName(99)).toBe(0);
+    catchBlockTest("destroy", resolutionStorage.deleteByIdAndDoctorName);
   });
 });

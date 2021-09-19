@@ -28,6 +28,14 @@ class Resolution {
     return response.json();
   }
 
+  async findForPatient() {
+    const response = await fetch(this.url + "resolution", {
+      method: "GET",
+      credentials: "include",
+    });
+    return response.json();
+  }
+
   async delete(id) {
     return fetch(this.url + id + "/resolution", {
       method: "DELETE",

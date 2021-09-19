@@ -14,6 +14,11 @@ const db = {};
 db.Patient = require("../models/patient")(sequelize, Sequelize.DataTypes);
 db.Resolution = require("../models/resolution")(sequelize, Sequelize.DataTypes);
 db.User = require("../models/user")(sequelize, Sequelize.DataTypes);
+db.Doctor = require("../models/doctor")(sequelize, Sequelize.DataTypes);
+db.Specialization = require("../models/specialization")(
+  sequelize,
+  Sequelize.DataTypes
+);
 
 db.Patient.hasMany(db.Resolution, {
   onDelete: "cascade",
@@ -31,6 +36,26 @@ db.User.hasOne(db.Patient, {
   onDelete: "cascade",
 });
 db.Patient.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
+
+db.User.hasOne(db.Doctor, { foreignKey: "user_id", as: "doctor" });
+db.Doctor.belongsTo(db.User, { foreignKey: "id", as: "user" });
+
+db.Doctor.belongsTo(db.Specialization, {
+  as: "specialization",
+  foreignKey: "specialization_id",
+});
+db.Specialization.hasMany(db.Doctor, {
+  as: "doctor",
+  foreignKey: "specialization_id",
+});
+db.Doctor.hasMany(db.Resolution, {
+  foreignKey: "doctor_id",
+  as: "resolution",
+});
+db.Resolution.belongsTo(db.Doctor, {
+  foreignKey: "doctor_id",
+  as: "doctor",
+});
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
