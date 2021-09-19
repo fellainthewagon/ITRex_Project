@@ -9,22 +9,7 @@ function getUserDataFromLS() {
   return localStorage.getItem("userId");
 }
 
-<<<<<<< HEAD
-function getDoctorIdFromLS() {
-  return localStorage.getItem("doctorId");
-}
-function showPopup(popupWrapper, popup, text) {
-  popup.innerText = text;
-  popupWrapper.style.cssText = "display: flex";
-  setTimeout(() => {
-    popupWrapper.style.cssText = "display: none";
-  }, 2000);
-}
-
-function setUserDataToLS(userId, doctorId) {
-=======
 function setUserDataToLS(userId) {
->>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
   localStorage.setItem("userId", userId);
 }
 
@@ -69,10 +54,4 @@ export {
   jumpToStartPage,
   deleteUserDataFomLS,
   setUserDataToLS,
-<<<<<<< HEAD
-  getDoctorIdFromLS,
-  addResolutionsToPage,
-  showPopup,
-=======
->>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
 };

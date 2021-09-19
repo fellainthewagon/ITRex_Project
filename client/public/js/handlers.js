@@ -104,12 +104,8 @@ class Handlers {
     e.preventDefault();
     try {
       if (!this.data.name) return;
-<<<<<<< HEAD
-      const doctorId = getDoctorIdFromLS();
-      const { name } = await this.queue.getCurrent(doctorId);
-=======
+
       const { name } = await this.queue.getCurrent();
->>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
       if (!name) return;
 
       const resolution = resolutionInput.value;

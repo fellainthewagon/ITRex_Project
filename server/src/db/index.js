@@ -32,7 +32,6 @@ db.User.hasOne(db.Patient, {
 });
 db.Patient.belongsTo(db.User, { foreignKey: "user_id", as: "user" });
 
-<<<<<<< HEAD
 db.User.hasOne(db.Doctor, { foreignKey: "user_id", as: "doctor" });
 db.Doctor.belongsTo(db.User, { foreignKey: "id", as: "user" });
 
@@ -53,8 +52,6 @@ db.Resolution.belongsTo(db.Doctor, {
   as: "doctor",
 });
 
-=======
->>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
