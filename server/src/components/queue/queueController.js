@@ -3,7 +3,6 @@ const QueueService = require("./queueService");
 const QueueFactory = require("./queueRepositories/queueFactory");
 const config = require("../../../config");
 const { QUEUE_EMPTY } = require("../../constants");
-const specializationService = require("../specialization/specializationService");
 
 class QueueController {
   constructor() {
@@ -24,12 +23,7 @@ class QueueController {
 
   async getCurrentPerson(req, res, next) {
     try {
-      const doctorSpecialization =
-        await specializationService.getSpecializationByDoctorId(req.params.id);
-      console.log(doctorSpecialization)
-      const person = await this.queueService.getCurrentPerson(
-        doctorSpecialization.specialization
-      );
+      const person = await this.queueService.getCurrentPerson();
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
     } catch (error) {
@@ -39,12 +33,7 @@ class QueueController {
 
   async getNextPerson(req, res, next) {
     try {
-      const doctorSpecialization =
-        await specializationService.getSpecializationByDoctorId(req.params.id);
-
-      const person = await this.queueService.getNextPerson(
-        doctorSpecialization.specialization
-      );
+      const person = await this.queueService.getNextPerson();
 
       return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
     } catch (error) {

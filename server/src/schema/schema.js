@@ -27,7 +27,6 @@ const addPatientToQueueSchema = {
   properties: {
     id: { type: "number" },
     name: { type: "string", minLength: 2 },
-    specialization: { type: "string", minLength: 3 },
   },
   required: ["id", "name"],
   additionalProperties: false,
