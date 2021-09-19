@@ -2,11 +2,8 @@ const { Op } = require("sequelize");
 const { Patient } = require("../../db");
 
 class PatientStorage {
-  async findOrCreate({ name, dob, gender }, id) {
-    await Patient.findOrCreate({
-      where: { name },
-      defaults: { user_id: id, dob, gender },
-    });
+  async create({ name, dob, gender }, id) {
+    await Patient.create({ name, user_id: id, dob, gender });
   }
 
   async getPatientsByName(name) {
@@ -24,6 +21,10 @@ class PatientStorage {
 
   async findPatientById(userId) {
     return Patient.findOne({ where: { user_id: userId } });
+  }
+
+  async findPatientByName(name) {
+    return Patient.findOne({ where: { name }, raw: true });
   }
 }
 

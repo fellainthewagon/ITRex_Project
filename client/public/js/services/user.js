@@ -7,17 +7,40 @@ class User {
     this.jwt = localStorage.getItem("jwt");
   }
 
-  async getUser() {
+  async getProfile() {
     if (!this.jwt) return jumpToStartPage();
 
-    const response = await fetch(this.url + "/user", {
+    const response = await fetch(this.url + "/profile", {
       method: "GET",
       headers: {
-        "x-access-token": `Bearer ${this.jwt}`,
+        Authorization: `Bearer ${this.jwt}`,
       },
     });
 
     return response.status === 401 ? jumpToStartPage() : response.json();
+  }
+
+  async getDoctor() {
+    const jwt = localStorage.getItem("doctor-jwt");
+    if (!jwt) return jumpToStartPage();
+
+    const response = await fetch(this.url + `/doctor`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    const data = await response.json();
+
+    if (response.status === 401) {
+      return jumpToStartPage();
+    }
+
+    if (response.status >= 400) {
+      throw new Error(data.message);
+    }
+
+    return data;
   }
 
   async sendData(data, method) {
@@ -34,7 +57,7 @@ class User {
     await fetch(this.url + "/auth/logout", {
       method: "POST",
       headers: {
-        "x-access-token": `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
     });
   }

@@ -1,4 +1,5 @@
 import config from "../../config/config.js";
+import { jumpToStartPage } from "../utils/index.js";
 
 const addedResolutionMessage = document.querySelector(
   ".added-resolution-message"
@@ -11,11 +12,13 @@ class Resolution {
   }
 
   async add(id, value) {
+    if (!this.jwt) return jumpToStartPage();
+
     const response = await fetch(this.url + id + "/resolution", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": `Bearer ${this.jwt}`,
+        Authorization: `Bearer ${this.jwt}`,
       },
       body: JSON.stringify(value),
     });
@@ -40,17 +43,19 @@ class Resolution {
     const response = await fetch(`${this.url}resolution?${params}`, {
       method: "GET",
       headers: {
-        "x-access-token": `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
     });
     return response.json();
   }
 
   async delete(patientId, resolutionId) {
+    if (!this.jwt) return jumpToStartPage();
+
     return fetch(`${this.url}${patientId}/resolution/${resolutionId}`, {
       method: "DELETE",
       headers: {
-        "x-access-token": `Bearer ${this.jwt}`,
+        Authorization: `Bearer ${this.jwt}`,
       },
     });
   }

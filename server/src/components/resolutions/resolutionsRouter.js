@@ -10,9 +10,11 @@ const resolutionsRouter = Router();
 
 /**
  * @swagger
- * /patients/{id}/resolution:
+ * /api/patients/{id}/resolution:
  *   patch:
  *     tags: [resolutions]
+ *     security:
+ *       - bearerAuth: []
  *     description: Add resolution
  *     parameters:
  *       - in: path
@@ -31,15 +33,25 @@ const resolutionsRouter = Router();
  *             properties:
  *               resolution:
  *                 type: object
- *                 example: "hello dniwe"
+ *                 example: "Resolution for Vincent"
  *     responses:
  *       '204':
- *         description: It means resolution successfully created
+ *         description: It means resolution successfully added to database
  *       '400':
  *         description: It means that request body is invalid
  *         content:
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Invalid body"}
+ *       '401':
+ *         description: Authentication information is missing or invalid
+ *         content:
+ *           application/json:
+ *             example: {error: {"statusCode": 401}, message: "A token is required for authentication"}
+ *       '500':
+ *         description:  Internal Server Error
+ *         content:
+ *           application/json:
+ *             example: {error: {"statusCode": 500}, message: "Some server error message"}
  */
 resolutionsRouter.patch(
   "/:id/resolution",
@@ -51,10 +63,12 @@ resolutionsRouter.patch(
 
 /**
  * @swagger
- * /patients/resolution?name=vincent:
+ * /api/patients/resolution?name=vincent:
  *   get:
  *     tags: [resolutions]
- *     description: Get patient resolution
+ *     security:
+ *       - bearerAuth: []
+ *     description: Get resolution by patient name
  *     parameters:
  *       - in: query
  *         name: name
@@ -65,10 +79,10 @@ resolutionsRouter.patch(
  *         description: Patient name
  *     responses:
  *       '200':
- *         description: Get resolution has been successfully
+ *         description: Getting resolution has been successfully
  *         content:
  *           application/json:
- *             example: {patientId: "1", resolution: "hello dniwe", id: "1"}
+ *             example: [{ patientId: 1, name: 'Vincent Vega', gender: 'male', dob: 2020-02-20T00:00:00.000Z, resolutionId: 1, resolution: 'Resolution for Vincent', createdData: 2021-09-18T20:47:11.000Z, doctorName: 'John Jones', doctorSpecialization: 'therapist' }]
  *       '400':
  *         description: It means that params property in URL is invalid
  *         content:
@@ -78,7 +92,17 @@ resolutionsRouter.patch(
  *         description: It means that resolution not found
  *         content:
  *           application/json:
- *             example: {message: "Resolution not found"}
+ *             example: {error: {"statusCode": 404}, message: "Resolution not found"}
+ *       '401':
+ *         description: Authentication information is missing or invalid
+ *         content:
+ *           application/json:
+ *             example: {error: {"statusCode": 401}, message: "A token is required for authentication"}
+ *       '500':
+ *         description:  Internal Server Error
+ *         content:
+ *           application/json:
+ *             example: {error: {"statusCode": 500}, message: "Some server error message"}
  */
 resolutionsRouter.get(
   "/resolution",
@@ -90,9 +114,11 @@ resolutionsRouter.get(
 
 /**
  * @swagger
- * /patients/{id}/resolution:
+ * /api/patients/{id}/resolution/{resolutionId}:
  *   delete:
  *     tags: [resolutions]
+ *     security:
+ *       - bearerAuth: []
  *     description: Delete patient resolution
  *     parameters:
  *       - in: path
@@ -102,6 +128,13 @@ resolutionsRouter.get(
  *         required: true
  *         example: "1"
  *         description: PatientId of resolution that need to delete
+ *       - in: path
+ *         name: resolutionId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         example: "1"
+ *         description: Resolution id that need to delete
  *     responses:
  *       '204':
  *         description: Resolution has been successfully deleted
@@ -111,10 +144,20 @@ resolutionsRouter.get(
  *           application/json:
  *             example: {error: {"statusCode": 400}, message: "Parameter is not valid"}
  *       '404':
- *         description: It means that resolution not found in the repo
+ *         description: It means that resolution not found
  *         content:
  *           application/json:
- *             example: {message: "Resolution not found"}
+ *             example: {error: {"statusCode": 404}, message: "Resolution not found"}
+ *       '401':
+ *         description: Authentication information is missing or invalid
+ *         content:
+ *           application/json:
+ *             example: {error: {"statusCode": 401}, message: "A token is required for authentication"}
+ *       '500':
+ *         description:  Internal Server Error
+ *         content:
+ *           application/json:
+ *             example: {error: {"statusCode": 500}, message: "Some server error message"}
  */
 resolutionsRouter.delete(
   "/:id/resolution/:resolutionId",

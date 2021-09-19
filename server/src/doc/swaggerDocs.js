@@ -9,7 +9,7 @@ const swaggerOptions = {
       description: "Really juicy API",
       contact: { name: "Rylkov Andrey", email: "fellainthewagon@gmail.com" },
     },
-    servers: [{ url: "http://localhost:3000/api" }],
+    servers: [{ url: "http://localhost:3000" }],
     tags: [
       {
         name: "queue",
@@ -17,12 +17,33 @@ const swaggerOptions = {
       {
         name: "resolutions",
       },
+      {
+        name: "auth",
+      },
+      {
+        name: "profile",
+      },
+      {
+        name: "doctor",
+      },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
   apis: [
     "./src/app.js",
     "./src/components/queue/*.js",
     "./src/components/resolutions/*.js",
+    "./src/components/auth/*.js",
+    "./src/components/profile/*.js",
+    "./src/components/doctor/*.js",
   ],
 };
 

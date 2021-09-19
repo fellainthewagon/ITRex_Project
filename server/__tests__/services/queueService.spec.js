@@ -52,7 +52,9 @@ describe("'QueueService' class", () => {
   it("'getCurrentPerson' method, if negative result", async () => {
     storage.getFirstFromList.mockResolvedValue(null);
 
-    expect(await queueService.getCurrentPerson(test.specialization)).toBeNull();
+    await expect(
+      queueService.getCurrentPerson(test.specialization)
+    ).rejects.toThrowError();
     expect(storage.getFirstFromList).toHaveBeenCalledTimes(1);
     expect(storage.getFirstFromList).toHaveBeenCalledWith(test.specialization);
   });
@@ -70,7 +72,7 @@ describe("'QueueService' class", () => {
   it("'getNextPerson' method, if negative result", async () => {
     storage.getNextFromList.mockResolvedValue(null);
 
-    expect(await queueService.getNextPerson(test.id)).toBeNull();
+    await expect(queueService.getNextPerson(test.id)).rejects.toThrowError();
     expect(storage.getNextFromList).toHaveBeenCalledTimes(1);
     expect(storage.getNextFromList).toHaveBeenCalledWith(test.id);
   });

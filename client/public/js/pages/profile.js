@@ -14,13 +14,11 @@ const dobField = document.querySelector("#dob");
 
 const profile = {};
 
+// load personal patient data
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const data = await user.getUser();
-
-    if (!data) {
-      return jumpToStartPage();
-    }
+    const data = await user.getProfile();
+    if (!data) return jumpToStartPage();
 
     nameField.innerText = data.name;
     emailField.innerText = "E-mail:  " + data.email;
@@ -31,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// add patient to queue
 addPatientForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const specialization = e.target.elements.specialization.value;
@@ -42,6 +41,7 @@ addPatientForm.addEventListener("submit", async (e) => {
   }
 });
 
+// find patient resolutions
 findResolutionForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
@@ -76,6 +76,7 @@ findResolutionForm.addEventListener("submit", async (e) => {
   }
 });
 
+// logout patient
 logout.addEventListener("click", async (e) => {
   e.preventDefault();
   const jwt = localStorage.getItem("jwt");

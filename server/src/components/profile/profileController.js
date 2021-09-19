@@ -1,7 +1,7 @@
 const userService = require("./userService");
 
-class UserController {
-  async getUser(req, res, next) {
+class ProfileController {
+  async getProfile(req, res, next) {
     try {
       const data = await userService.getUser(req.user.id);
 
@@ -12,4 +12,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController();
+module.exports = new ProfileController();

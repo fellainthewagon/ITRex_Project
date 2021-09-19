@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const authService = require("../../src/components/auth/authService");
-const userService = require("../../src/components/user/userService");
+const userService = require("../../src/components/profile/userService");
 const UserDto = require("../../src/dtos/userDto");
 const tokenService = require("../../src/components/token/tokenService");
 const userStorage = require("../../src/components/repositories/userStorage");
@@ -13,7 +13,7 @@ const { DOCTOR_NO_EXIST } = require("../../src/constants");
  * mocking funcs
  */
 userStorage.create = jest.fn();
-patientStorage.findOrCreate = jest.fn();
+patientStorage.create = jest.fn();
 userService.checkCredential = jest.fn();
 doctorStorage.getDoctorByUserId = jest.fn();
 tokenService.generateToken = jest.fn();
@@ -68,11 +68,8 @@ describe("'AuthService' class", () => {
     expect(userStorage.create).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
-    expect(patientStorage.findOrCreate).toHaveBeenCalledWith(
-      registerData,
-      user.id
-    );
-    expect(patientStorage.findOrCreate).toHaveBeenCalledTimes(1);
+    expect(patientStorage.create).toHaveBeenCalledWith(registerData, user.id);
+    expect(patientStorage.create).toHaveBeenCalledTimes(1);
 
     await catchBlockTest("create", authService.registration, userStorage);
   });

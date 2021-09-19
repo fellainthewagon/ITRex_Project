@@ -1,8 +1,11 @@
 import user from "../services/user.js";
 import displayError from "../helpers/displayError.js";
-import { displayRegisterResponse } from "../helpers/displayResponse.js";
 import { formatter } from "../utils/index.js";
+import config from "../../config/config.js";
 
+const { host, protocol, clientPort } = config;
+
+const errMessage = document.querySelector(".fail-msg");
 const form = document.querySelector(".register-form");
 const name = document.querySelector("#name");
 const dob = document.querySelector("#dob");
@@ -21,7 +24,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  const data = {
+  const userData = {
     name: name.value,
     dob: dob.value,
     gender: gender.value,
@@ -30,9 +33,19 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await user.sendData(data, "register");
+    const response = await user.sendData(userData, "register");
+    const data = await response.json();
 
-    await displayRegisterResponse(response);
+    if (response.status >= 400) {
+      errMessage.innerText = data.message;
+      errMessage.style.display = "block";
+
+      setTimeout(() => {
+        errMessage.style.display = "none";
+      }, 4000);
+    } else {
+      location.href = `${protocol}://${host}:${clientPort}/login`;
+    }
   } catch (error) {
     displayError(error);
   }

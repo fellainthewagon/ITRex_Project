@@ -1,4 +1,5 @@
 import config from "../../config/config.js";
+import { jumpToStartPage } from "../utils/index.js";
 
 const addedMessage = document.querySelector(".added-message");
 
@@ -15,12 +16,16 @@ class Queue {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify({ id, name, specialization }),
     });
 
     if (response.status === 401) return jumpToStartPage();
+    if (response.status >= 400) {
+      const data = await response.json();
+      throw new Error(data.message);
+    }
 
     if (response.status === 201) {
       addedMessage.innerText = "You have been added to the queue!";
@@ -33,34 +38,39 @@ class Queue {
   }
 
   async getCurrent() {
-    const jwt = localStorage.getItem("doctor-jwt");
-    if (!jwt) {
-      jumpToStartPage();
-    }
+    if (!this.jwt) return jumpToStartPage();
 
     const response = await fetch(this.url + `/current`, {
       method: "GET",
       headers: {
-        "x-access-token": `Bearer ${this.jwt}`,
+        Authorization: `Bearer ${this.jwt}`,
       },
     });
+    const data = await response.json();
 
-    return response.status === 401 ? jumpToStartPage() : response.json();
+    if (response.status === 401) return jumpToStartPage();
+    if (response.status === 404) return null;
+    if (response.status >= 400) throw new Error(data.message);
+
+    return data;
   }
 
   async getNext() {
-    const jwt = localStorage.getItem("doctor-jwt");
-    if (!jwt) {
-      jumpToStartPage();
-    }
+    if (!this.jwt) return jumpToStartPage();
 
     const response = await fetch(this.url + `/next`, {
       method: "GET",
       headers: {
-        "x-access-token": `Bearer ${this.jwt}`,
+        Authorization: `Bearer ${this.jwt}`,
       },
     });
-    return response.status === 401 ? jumpToStartPage() : response.json();
+    const data = await response.json();
+
+    if (response.status === 401) return jumpToStartPage();
+    if (response.status === 404) return null;
+    if (response.status >= 400) throw new Error(data.message);
+
+    return data;
   }
 }
 

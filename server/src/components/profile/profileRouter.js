@@ -1,19 +1,19 @@
 const { Router } = require("express");
-const doctorController = require("./doctorController");
+const profileController = require("./profileController");
 
-const doctorRouter = Router();
+const profileRouter = Router();
 
 /**
  * @swagger
- * /api/doctor:
+ * /api/profile:
  *   get:
- *     tags: [doctor]
+ *     tags: [profile]
  *     security:
  *       - bearerAuth: []
- *     description: Get doctor information
+ *     description: Get profile information
  *     responses:
  *       '200':
- *         description: It means get doctor data
+ *         description: It means get profile data
  *         content:
  *           application/json:
  *             schema:
@@ -24,15 +24,21 @@ const doctorRouter = Router();
  *                    example: 1
  *                  name:
  *                    type: string
- *                    example: "John Jones"
- *                  specialization:
- *                    type: object
- *                    example: {specialization: "therapist"}
+ *                    example: "Jules Winnfield"
+ *                  dob:
+ *                    type: date
+ *                    example: "2929-09-08T00:00:00.000Z"
+ *                  gender:
+ *                    type: string
+ *                    example: "male"
+ *                  email:
+ *                    type: string
+ *                    example: "jules@mail.ru"
  *       '404':
- *         description: It means that doctor not found
+ *         description: It means that user not found
  *         content:
  *           application/json:
- *             example: {error: {"statusCode": 404}, message: "Doctor not found"}
+ *             example: {error: {"statusCode": 404}, message: "User not found"}
  *       '401':
  *         description: Authentication information is missing or invalid
  *         content:
@@ -44,8 +50,8 @@ const doctorRouter = Router();
  *           application/json:
  *             example: {error: {"statusCode": 500}, message: "Some server error message"}
  */
-doctorRouter.get("/", async (req, res, next) => {
-  await doctorController.getDoctor(req, res, next);
+profileRouter.get("/", async (req, res, next) => {
+  await profileController.getProfile(req, res, next);
 });
 
-module.exports = doctorRouter;
+module.exports = profileRouter;

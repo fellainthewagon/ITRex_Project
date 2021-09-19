@@ -2,7 +2,6 @@ const { CREATED } = require("http-status-codes");
 const QueueService = require("./queueService");
 const QueueFactory = require("./queueRepositories/queueFactory");
 const config = require("../../../config");
-const { QUEUE_EMPTY } = require("../../constants");
 
 class QueueController {
   constructor() {
@@ -27,7 +26,7 @@ class QueueController {
         req.user.doctor_specialization
       );
 
-      return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
+      return res.json(person);
     } catch (error) {
       return next(error);
     }
@@ -39,7 +38,7 @@ class QueueController {
         req.user.doctor_specialization
       );
 
-      return person ? res.json(person) : res.json({ message: QUEUE_EMPTY });
+      return res.json(person);
     } catch (error) {
       return next(error);
     }

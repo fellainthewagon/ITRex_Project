@@ -1,3 +1,4 @@
+const { CREATED } = require("http-status-codes");
 const authService = require("./authService");
 
 class AuthController {
@@ -5,7 +6,7 @@ class AuthController {
     try {
       const user = await authService.registration(req.body);
 
-      return res.json(user);
+      return res.status(CREATED).json(user);
     } catch (error) {
       return next(error);
     }

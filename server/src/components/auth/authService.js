@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const userService = require("../user/userService");
+const userService = require("../profile/userService");
 const tokenService = require("../token/tokenService");
 const userStorage = require("../repositories/userStorage");
 const patientStorage = require("../repositories/patientStorage");
@@ -18,7 +18,7 @@ class AuthService {
       const hashedPassword = await bcrypt.hash(password, bcryptSalt);
       const user = await userStorage.create(email, hashedPassword);
 
-      await patientStorage.findOrCreate(body, user.id);
+      await patientStorage.create(body, user.id);
       const userDto = new UserDto(user);
 
       return { ...userDto };

@@ -40,15 +40,17 @@ beforeEach(() => jest.clearAllMocks());
  * TEST
  */
 describe("'PatientStorage' class", () => {
-  it("'findOrCreate' method", async () => {
-    db.Patient.findOrCreate.mockResolvedValue();
+  it("'create' method", async () => {
+    db.Patient.create.mockResolvedValue();
 
-    expect(await patientStorage.findOrCreate(reqBody, id)).toBeUndefined();
-    expect(db.Patient.findOrCreate).toHaveBeenCalledWith({
-      where: { name },
-      defaults: { user_id: id, dob, gender },
+    expect(await patientStorage.create(reqBody, id)).toBeUndefined();
+    expect(db.Patient.create).toHaveBeenCalledWith({
+      name,
+      user_id: id,
+      dob,
+      gender,
     });
-    expect(db.Patient.findOrCreate).toHaveBeenCalledTimes(1);
+    expect(db.Patient.create).toHaveBeenCalledTimes(1);
   });
 
   it("'getPatientsByName' method", async () => {
@@ -75,6 +77,17 @@ describe("'PatientStorage' class", () => {
     expect(await patientStorage.findPatientById(userId)).toEqual(patient[0]);
     expect(db.Patient.findOne).toHaveBeenCalledWith({
       where: { user_id: userId },
+    });
+    expect(db.Patient.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it("'findPatientByName' method", async () => {
+    db.Patient.findOne.mockResolvedValue(patient[0]);
+
+    expect(await patientStorage.findPatientByName(name)).toEqual(patient[0]);
+    expect(db.Patient.findOne).toHaveBeenCalledWith({
+      where: { name },
+      raw: true,
     });
     expect(db.Patient.findOne).toHaveBeenCalledTimes(1);
   });

@@ -1,8 +1,8 @@
+const bcrypt = require("bcryptjs");
 const userStorage = require("../../src/components/repositories/userStorage");
-const userService = require("../../src/components/user/userService");
+const userService = require("../../src/components/profile/userService");
 const { USER_NOT_FOUND, WRONG_CREDENTIALS } = require("../../src/constants");
 const ProfileDto = require("../../src/dtos/profileDto");
-const bcrypt = require("bcryptjs");
 
 /**
  * mocking funcs
