@@ -9,6 +9,7 @@ function getUserDataFromLS() {
   return localStorage.getItem("userId");
 }
 
+<<<<<<< HEAD
 function getDoctorIdFromLS() {
   return localStorage.getItem("doctorId");
 }
@@ -21,15 +22,14 @@ function showPopup(popupWrapper, popup, text) {
 }
 
 function setUserDataToLS(userId, doctorId) {
+=======
+function setUserDataToLS(userId) {
+>>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
   localStorage.setItem("userId", userId);
-  if (doctorId) {
-    localStorage.setItem("doctorId", doctorId);
-  }
 }
 
 function deleteUserDataFomLS() {
   localStorage.removeItem("userId");
-  localStorage.removeItem("doctorId");
 }
 
 function jumpToStartPage() {
@@ -69,7 +69,10 @@ export {
   jumpToStartPage,
   deleteUserDataFomLS,
   setUserDataToLS,
+<<<<<<< HEAD
   getDoctorIdFromLS,
   addResolutionsToPage,
   showPopup,
+=======
+>>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
 };

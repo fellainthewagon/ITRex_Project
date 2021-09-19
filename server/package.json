@@ -4,7 +4,7 @@
   "description": "Clinic",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --legacy-watch index",
+    "dev": "nodemon index",
     "test:coverage": "jest --coverage --watchAll"
   },
   "keywords": [],

@@ -1,7 +1,6 @@
 import resolution from "./services/resolution.js";
 import queue from "./services/queue.js";
 import user from "./services/user.js";
-import doctor from "./services/doctor.js";
 import displayError from "./helpers/displayError.js";
 import {
   formatter,
@@ -27,8 +26,6 @@ const popupWrapper = document.querySelector(".popupwrapper");
 const addedResolutionMessage = document.querySelector(
   ".added-resolution-message"
 );
-const specialization = document.querySelector(".specialization");
-const doctorName = document.querySelector(".doctor-name");
 
 class Handlers {
   constructor(resolution, queue, displayError) {
@@ -48,9 +45,12 @@ class Handlers {
         jumpToStartPage();
         return;
       }
+
       const response = await user.getUser(userId);
       if (response.status === 401) jumpToStartPage();
+
       const profile = await response.json();
+
       nameField.innerText = profile.name;
       emailField.innerText = profile.email;
       dobField.innerText = profile.dob.split("T")[0];
@@ -60,29 +60,11 @@ class Handlers {
     }
   };
 
-  getDoctor = async () => {
-    try {
-      const userId = getUserDataFromLS();
-      if (!userId) {
-        jumpToStartPage();
-        return;
-      }
-      const response = await doctor.getDoctor(userId);
-      if (response.status === 401) jumpToStartPage();
-      const res = await response.json();
-      doctorName.innerText = res.name;
-      specialization.innerText = res.specialization.specialization;
-    } catch (error) {
-      this.displayError(error);
-    }
-  };
-
-  addToQueue = async (specialization) => {
+  addToQueue = async () => {
     try {
       const response = await this.queue.add(
         this.profile.id,
-        nameField.innerText,
-        specialization
+        nameField.innerText
       );
       if (response.status === 201) {
         addedMessage.innerText = "You have been added to the queue!";
@@ -99,8 +81,8 @@ class Handlers {
 
   currentPatient = async () => {
     try {
-      const doctorId = localStorage.getItem("doctorId");
-      this.data = this.data || (await this.queue.getCurrent(doctorId));
+      this.data = this.data || (await this.queue.getCurrent());
+
       showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
@@ -110,8 +92,8 @@ class Handlers {
   nextPatient = async () => {
     try {
       if (!this.data.name) return;
-      const doctorId = localStorage.getItem("doctorId");
-      this.data = await this.queue.getNext(doctorId);
+      this.data = await this.queue.getNext();
+
       showCurrentPatient.innerText = this.data.name || this.data.message;
     } catch (error) {
       this.displayError(error);
@@ -122,8 +104,12 @@ class Handlers {
     e.preventDefault();
     try {
       if (!this.data.name) return;
+<<<<<<< HEAD
       const doctorId = getDoctorIdFromLS();
       const { name } = await this.queue.getCurrent(doctorId);
+=======
+      const { name } = await this.queue.getCurrent();
+>>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
       if (!name) return;
 
       const resolution = resolutionInput.value;

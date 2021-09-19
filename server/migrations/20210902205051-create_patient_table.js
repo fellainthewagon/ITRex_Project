@@ -9,6 +9,19 @@ module.exports = {
           autoIncrement: true,
           primaryKey: true,
         },
+<<<<<<< HEAD
+=======
+        user_id: {
+          type: DataTypes.UUID,
+          references: {
+            model: {
+              tableName: "user",
+            },
+            key: "id",
+          },
+          allowNull: false,
+        },
+>>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
         name: {
           type: DataTypes.STRING,
           allowNull: false,

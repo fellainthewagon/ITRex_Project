@@ -22,7 +22,6 @@ docker-compose up -d
 // then you need to create database and migrate with folowing commands:
 docker-compose exec api npx sequelize db:create
 docker-compose exec api npx sequelize db:migrate
-docker-compose exec api npx sequelize db:seed:all
 ```
 
 2. Click http://localhost:5000

@@ -17,6 +17,7 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const response = await user.sendData(loginData, "login");
+
     displayLoginResponse(response);
   } catch (error) {
     displayError(error);

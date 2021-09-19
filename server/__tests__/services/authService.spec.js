@@ -25,7 +25,7 @@ jwt.sign = jest.fn();
 const registerData = { name: "mia", email: "mia@mail.ru", password: "123123" };
 const reqBody = { email: "mia@mail.ru", password: "123123" };
 const user = {
-  user_id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
+  id: "e7a0f1f0-0c59-11ec-acf4-3f4b5c85ffb3",
   email: "mia@mail.ru",
   password: "hashed ajhdi password",
   createdAt: "2021-09-03T01:54:41.000Z",

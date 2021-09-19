@@ -25,7 +25,11 @@ const queueRouter = Router();
  *                    type: integer
  *                    example: 99
  */
+<<<<<<< HEAD
 queueRouter.get("/current/:id", async (req, res, next) => {
+=======
+queueRouter.get("/current", async (req, res, next) => {
+>>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
   await queueController.getCurrentPerson(req, res, next);
 });
 
@@ -50,7 +54,11 @@ queueRouter.get("/current/:id", async (req, res, next) => {
  *                    type: integer
  *                    example: 100
  */
+<<<<<<< HEAD
 queueRouter.get("/next/:id", async (req, res, next) => {
+=======
+queueRouter.get("/next", async (req, res, next) => {
+>>>>>>> faf34a66d5bf9c8822039045afbfca170d1b9f6a
   await queueController.getNextPerson(req, res, next);
 });
 
