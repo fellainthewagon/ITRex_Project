@@ -79,10 +79,20 @@
           <div style="margin-left: 1rem;" id="dob"></div>
         </div>
       </div>
-      <div class="form-inline">
-        <div class="mr-4">Add to Queue</div>
-        <button class="add-patient btn btn-success">Add</button>
-      </div>
+      <form action="#" class="add-form">
+        <div class="form-inline" style="margin-bottom:10px">
+          <div class="mr-4">Add to Queue</div>      
+          <button class="add-patient btn btn-success" type="submit">Add</button>
+        </div>
+        <span>Chose doctor</span>
+        <select name='specialization' required>
+          <option></option>
+          <option value="therapist">therapist</option>
+          <option value="surgeon">surgeon</option>
+          <option value="dentist">dentist</option>
+      </select>
+      </form>
+   
     </div>
 
 

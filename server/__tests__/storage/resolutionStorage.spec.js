@@ -7,6 +7,7 @@ const resolutionStorage = new ResolutionStorage();
  */
 jest.mock("../../src/db");
 const db = require("../../src/db");
+
 Date.now = jest.fn();
 
 /**

@@ -9,12 +9,20 @@ function getUserDataFromLS() {
   return localStorage.getItem("userId");
 }
 
-function setUserDataToLS(userId) {
+function getDoctorDataFromLS() {
+  return localStorage.getItem("doctorId");
+}
+
+function setUserDataToLS(userId, doctorId) {
   localStorage.setItem("userId", userId);
+  if (doctorId) {
+    localStorage.setItem("doctorId", doctorId);
+  }
 }
 
 function deleteUserDataFomLS() {
   localStorage.removeItem("userId");
+  localStorage.removeItem("doctorId");
 }
 
 function jumpToStartPage() {
@@ -27,4 +35,5 @@ export {
   jumpToStartPage,
   deleteUserDataFomLS,
   setUserDataToLS,
+  getDoctorDataFromLS
 };
