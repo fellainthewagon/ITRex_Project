@@ -24,6 +24,7 @@ const tbody = document.querySelector("#tbody");
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const data = await user.getDoctor();
+    if (!data) return jumpToStartPage();
 
     doctorName.innerText = "Doctor: " + data.name;
     specialization.innerText =

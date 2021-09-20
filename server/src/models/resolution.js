@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      indexes: [
+        {
+          name: "resolution_id_patient_id_doctor_id",
+          fields: ["id", "patient_id", "doctor_id"],
+        },
+      ],
       sequelize,
       tableName: "resolution",
       modelName: "Resolution",

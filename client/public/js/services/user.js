@@ -8,7 +8,7 @@ class User {
   }
 
   async getProfile() {
-    if (!this.jwt) return jumpToStartPage();
+    if (!this.jwt) return null;
 
     const response = await fetch(this.url + "/profile", {
       method: "GET",
@@ -16,13 +16,17 @@ class User {
         Authorization: `Bearer ${this.jwt}`,
       },
     });
+    const data = await response.json();
 
-    return response.status === 401 ? jumpToStartPage() : response.json();
+    if (response.status === 401) return jumpToStartPage();
+    if (response.status >= 400) throw new Error(data.message);
+
+    return data;
   }
 
   async getDoctor() {
     const jwt = localStorage.getItem("doctor-jwt");
-    if (!jwt) return jumpToStartPage();
+    if (!jwt) return null;
 
     const response = await fetch(this.url + `/doctor`, {
       method: "GET",
@@ -32,13 +36,8 @@ class User {
     });
     const data = await response.json();
 
-    if (response.status === 401) {
-      return jumpToStartPage();
-    }
-
-    if (response.status >= 400) {
-      throw new Error(data.message);
-    }
+    if (response.status === 401) return jumpToStartPage();
+    if (response.status >= 400) throw new Error(data.message);
 
     return data;
   }

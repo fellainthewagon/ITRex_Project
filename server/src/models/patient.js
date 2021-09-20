@@ -36,10 +36,10 @@ module.exports = (sequelize, DataTypes) => {
           unique: true,
           fields: ["name"],
         },
-        // {
-        //   name: "user_id",
-        //   fields: ["user_id"],
-        // },
+        {
+          name: "user_id",
+          fields: ["user_id"],
+        },
       ],
       sequelize,
       tableName: "patient",
