@@ -19,7 +19,13 @@
   </head>
   <style>
     body {
-      background-color: #e3f7fa;
+      background: rgb(255, 247, 247);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 247, 247, 1) 0%,
+        rgba(255, 252, 244, 1) 44%,
+        rgba(247, 254, 255, 1) 100%
+      );
       margin: 5rem 5rem;
     }
     form {
@@ -98,7 +104,7 @@
       <form action="#" class="add-form">
         <div class="form-inline" style="margin-bottom: 10px">
           <div class="mr-4">Add to Queue</div>
-          <button class="add-patient btn btn-success" type="submit">Add</button>
+          <button class="add-patient btn btn-info" type="submit">Add</button>
         </div>
         <span>Chose doctor</span>
         <select name="specialization" required>
@@ -114,9 +120,7 @@
       <div style="margin-bottom: 1rem">
         <form class="find-resolution">
           <div class="form-group"></div>
-          <button type="submit" class="btn btn-success">
-            Show resolutions
-          </button>
+          <button type="submit" class="btn btn-info">Show resolutions</button>
         </form>
       </div>
 

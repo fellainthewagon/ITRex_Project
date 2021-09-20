@@ -58,10 +58,6 @@ npm start
 #### Storage type
 
 You can use different types of storage for different entities(change `.env.example`).
-The app provides the following repositories:
-
-Queue: `memory` or `redis`
-Resolutions: `memory`, `redis` or `storage`
 
 > NOTE: you must have [redis server](https://redis.io/topics/quickstart) running before running the application. Or run it with Docker.
 

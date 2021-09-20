@@ -19,7 +19,13 @@
   </head>
   <style>
     body {
-      background-color: #e3f7fa;
+      background: rgb(255, 247, 247);
+      background: linear-gradient(
+        90deg,
+        rgba(255, 247, 247, 1) 0%,
+        rgba(255, 252, 244, 1) 44%,
+        rgba(247, 254, 255, 1) 100%
+      );
       margin: 5rem 5rem;
     }
     form {
@@ -96,7 +102,7 @@
         <a class="logout" href=""><h5>LogOut</h5></a>
       </div>
       <div class="doctorName">
-        <h7 class="doctor-name"></h7><br />
+        <h6 class="doctor-name"></h6>
         <h7 class="specialization"></h7>
       </div>
     </header>
@@ -115,7 +121,7 @@
         </div>
 
         <div class="form-inline">
-          <button class="next-patient btn btn-success">next patient</button>
+          <button class="next-patient btn btn-info">next patient</button>
         </div>
       </div>
 
@@ -126,7 +132,7 @@
               <label>Resolution</label>
               <textarea id="resolution" rows="4" cols="50"></textarea>
             </div>
-            <button type="submit" class="btn btn-success">set</button>
+            <button type="submit" class="btn btn-info">set</button>
           </form>
         </div>
         <div>
@@ -140,9 +146,7 @@
                 required
               />
             </div>
-            <button type="submit" class="btn btn-success">
-              find resolution
-            </button>
+            <button type="submit" class="btn btn-info">find resolution</button>
           </form>
         </div>
       </div>

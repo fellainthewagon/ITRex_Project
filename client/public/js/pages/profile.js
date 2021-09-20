@@ -51,8 +51,8 @@ findResolutionForm.addEventListener("submit", async (e) => {
     const { resolutions, message } = data;
 
     if (message) {
-      showPopup(message);
-      return;
+      tbody.innerHTML = "";
+      return showPopup(message);
     }
 
     const body = resolutions
