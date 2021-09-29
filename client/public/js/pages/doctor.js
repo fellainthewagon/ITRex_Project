@@ -1,4 +1,5 @@
 import {
+  CANNOT_DELETE,
   CANNOT_SET_RESOLUTION,
   EMPTY_QUEUE,
   RESOLUTION_DELETED,
@@ -125,7 +126,7 @@ findResolutionForm.addEventListener("submit", async (e) => {
 
         const response = await resolution.delete(patientId, resolutionId);
         if (response.status === 404) {
-          showPopup("No resolution you can delete");
+          showPopup(CANNOT_DELETE);
           return;
         }
 
